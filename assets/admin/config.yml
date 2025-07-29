@@ -1,0 +1,40 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/images/uploads"
+public_folder: "/assets/images/uploads"
+
+collections:
+  - name: "homepage"
+    label: "Homepage"
+    files:
+      - file: "index.html"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - label: "Main Heading"
+            name: "main_heading"
+            widget: "string"
+
+  - name: "privacy"
+    label: "Privacy Policy"
+    files:
+      - file: "privacy.html"
+        label: "Privacy Page"
+        name: "privacy"
+        fields:
+          - label: "Content"
+            name: "body"
+            widget: "markdown"
+
+  - name: "terms"
+    label: "Terms of Service"
+    files:
+      - file: "terms.html"
+        label: "Terms Page"
+        name: "terms"
+        fields:
+          - label: "Content"
+            name: "body"
+            widget: "markdown"
