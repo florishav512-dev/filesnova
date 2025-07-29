@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reset Password</title>
+</head>
+<body>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    // Parse recovery token from URL hash
+    const hash = window.location.hash;
+    if (hash.includes('recovery_token')) {
+      const token = hash.split('=')[1];
+      const identity = netlifyIdentity;
+      identity.on('init', () => {
+        identity.recover(token, true).then(() => {
+          identity.open('login');
+        });
+      });
+      identity.init();
+    } else {
+      document.body.innerHTML = '<p>Invalid recovery link.</p>';
+    }
+  </script>
+</body>
+</html>
