@@ -27,13 +27,57 @@
     <style>
       body {
         font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      footer {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        text-align: center;
+        font-size: 14px;
+        color: #333;
+      }
+
+      footer a {
+        color: #007bff;
+        text-decoration: none;
+        margin: 0 0.5rem;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 600px) {
+        footer {
+          font-size: 13px;
+          padding: 1rem;
+        }
+
+        footer a {
+          display: inline-block;
+          margin: 0.3rem 0.5rem;
+        }
       }
     </style>
+
     <script type="module" crossorigin src="/assets/index-B8LMy8tS.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-fUy7GNqQ.css">
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Footer with working support links -->
+    <footer>
+      <strong>Support:</strong>
+      <a href="help-center.html">Help Center</a> |
+      <a href="contact.html">Contact Us</a> |
+      <a href="privacy-policy.html">Privacy Policy</a> |
+      <a href="terms-of-service.html">Terms of Service</a> |
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </footer>
+
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
   </body>
 </html>
