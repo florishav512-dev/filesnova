@@ -1,4 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Files Nova</title>
+    <meta name="description" content="Get in touch with Files Nova support team. Contact us for technical support, feature requests, or general inquiries about our file conversion tools.">
+    <link rel="canonical" href="https://www.filesnova.com/support/contact.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html" style="text-decoration: none; color: inherit;">
+                    <h1>Files Nova</h1>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" id="supportDropdown">
+                        Support <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="nav-dropdown-content" id="supportDropdownContent">
+                        <a href="help-center.html">Help Center</a>
+                        <a href="contact.html">Contact Us</a>
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="cookie-policy.html">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
+    <main class="main-content">
+        <section class="hero" style="padding: 2rem 0;">
+            <div class="container">
+                <h1 class="hero-title" style="font-size: 2.5rem;">Contact Us</h1>
+                <p class="hero-subtitle">We're here to help! Get in touch with our support team for any questions or assistance.</p>
+            </div>
+        </section>
+
+        <section style="padding: 3rem 0;">
+            <div class="container">
+                <div class="contact-content">
+                    <div class="contact-grid">
+                        <div class="contact-info">
+                            <div class="contact-card">
+                                <h3>Email Support</h3>
+                                <p>For technical support, bug reports, or general inquiries, please email us at:</p>
+                                <a href="mailto:filesnova@zohomail.in" class="contact-email">filesnova@zohomail.in</a>
+                                <p class="response-time">We typically respond within 24-48 hours during business days.</p>
+                            </div>
+
+                            <div class="contact-card">
+                                <h3>What to Include</h3>
+                                <p>To help us assist you better, please include:</p>
+                                <ul>
+                                    <li>Detailed description of your issue</li>
+                                    <li>Browser and version you're using</li>
+                                    <li>Operating system (Windows, Mac, etc.)</li>
+                                    <li>Steps you took before encountering the problem</li>
+                                    <li>Any error messages you received</li>
+                                </ul>
+                            </div>
+
+                            <div class="contact-card">
+                                <h3>Common Issues</h3>
+                                <p>Before contacting us, you might find quick solutions in our <a href="help-center.html">Help Center</a> for:</p>
+                                <ul>
+                                    <li>File conversion problems</li>
+                                    <li>Browser compatibility issues</li>
+                                    <li>Download difficulties</li>
+                                    <li>Tool not responding</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="contact-form-section">
+                            <div class="contact-card">
+                                <h3>Quick Contact Form</h3>
+                                <p>Fill out this form and we'll get back to you as soon as possible.</p>
+                                
+                                <form class="contact-form" id="contactForm">
+                                    <div class="form-group">
+                                        <label for="name">Your Name</label>
+                                        <input type="text" id="name" name="name" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="email" id="email" name="email" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="subject">Subject</label>
+                                        <select id="subject" name="subject" required>
+                                            <option value="">Select a topic</option>
+                                            <option value="technical-support">Technical Support</option>
+                                            <option value="bug-report">Bug Report</option>
+                                            <option value="feature-request">Feature Request</option>
+                                            <option value="general-inquiry">General Inquiry</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="browser">Browser & Version</label>
+                                        <input type="text" id="browser" name="browser" placeholder="e.g., Chrome 120, Firefox 115">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="message">Message</label>
+                                        <textarea id="message" name="message" rows="6" required placeholder="Please describe your issue or question in detail..."></textarea>
+                                    </div>
+
+                                    <button type="submit" class="convert-btn">Send Message</button>
+                                </form>
+
+                                <div id="form-success" class="form-message success" style="display: none;">
+                                    <p>Thank you for your message! We'll get back to you within 24-48 hours.</p>
+                                </div>
+
+                                <div id="form-error" class="form-message error" style="display: none;">
+                                    <p>Sorry, there was an error sending your message. Please try emailing us directly at filesnova@zohomail.in</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="additional-info">
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <h4>Business Hours</h4>
+                                <p>Monday - Friday: 9:00 AM - 6:00 PM (UTC)<br>
+                                Saturday - Sunday: Limited support</p>
+                            </div>
+
+                            <div class="info-card">
+                                <h4>Response Time</h4>
+                                <p>Technical Support: 24-48 hours<br>
+                                General Inquiries: 48-72 hours<br>
+                                Bug Reports: 12-24 hours</p>
+                            </div>
+
+                            <div class="info-card">
+                                <h4>Languages</h4>
+                                <p>We provide support in English.<br>
+                                For other languages, please use translation tools as needed.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-cta">
+                        <h3>Need Immediate Help?</h3>
+                        <p>Check out our comprehensive <a href="help-center.html">Help Center</a> for instant answers to common questions and step-by-step guides.</p>
+                        <a href="help-center.html" class="convert-btn" style="display: inline-block; text-decoration: none; margin-top: 1rem;">Visit Help Center</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Files Nova</h3>
+                    <p>Free online file conversion tools. Convert, compress, and process your files securely in your browser.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="help-center.html">Help Center</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="../index.html#tool-jpg-to-pdf">JPG to PDF</a></li>
+                        <li><a href="../index.html#tool-png-to-pdf">PNG to PDF</a></li>
+                        <li><a href="../index.html#tool-pdf-to-jpg">PDF to JPG</a></li>
+                        <li><a href="../index.html#tool-merge-pdf">Merge PDFs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Files Nova. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+
+    <style>
+        .contact-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .contact-card h3,
+        .contact-card h4 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .contact-card p,
+        .contact-card li {
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-email {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 1rem 0;
+            transition: background 0.3s ease;
+        }
+
+        .contact-email:hover {
+            background: #2563eb;
+        }
+
+        .response-time {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-message {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        .form-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .form-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .additional-info {
+            margin: 3rem 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .info-card h4 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-cta {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-cta h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-cta p {
+            color: #4b5563;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-cta a:not(.convert-btn) {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .contact-cta a:not(.convert-btn):hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-card,
+            .info-card,
+            .contact-cta {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Simulate form submission (replace with actual form handling)
+            setTimeout(() => {
+                document.getElementById('form-success').style.display = 'block';
+                document.getElementById('form-error').style.display = 'none';
+                this.reset();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
