@@ -1,84 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Files Nova - Free Online File Converter | Convert PDF, Images & Documents</title>
-    <meta name="description" content="Convert files online for free with Files Nova. JPG to PDF, PNG to PDF, merge PDFs, compress images, and more. No registration required, works in your browser.">
-
-    <!-- Open Graph tags for social sharing -->
-    <meta property="og:title" content="Files Nova - Free Online File Converter">
-    <meta property="og:description" content="Convert PDF, images, documents and more - all processing happens in your browser for complete privacy.">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files Nova - Free Online File Converter | Convert PDF, Images, Documents</title>
+    <meta name="description" content="Free online file converter. Convert JPG to PDF, PNG to PDF, merge PDFs, compress images, and more. All tools work in your browser - no upload required.">
+    <link rel="canonical" href="https://www.filesnova.com">
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.filesnova.com">
-
-    <!-- Twitter Card tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Files Nova - Free Online File Converter">
-    <meta name="twitter:description" content="Convert files instantly in your browser. No uploads, complete privacy.">
-
-    <!-- SEO and Canonical -->
+    <meta property="og:title" content="Files Nova - Free Online File Converter">
+    <meta property="og:description" content="Convert files instantly in your browser. PDF tools, image conversion, document processing - all free and secure.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.filesnova.com">
+    <meta property="twitter:title" content="Files Nova - Free Online File Converter">
+    <meta property="twitter:description" content="Convert files instantly in your browser. PDF tools, image conversion, document processing - all free and secure.">
+    
     <meta name="robots" content="index, follow">
-    <meta name="keywords" content="file converter, PDF converter, image converter, JPG to PDF, PNG to PDF, merge PDF, compress images, online converter">
-    <link rel="canonical" href="https://www.filesnova.com">
-
-    <!-- Fonts and Assets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-      }
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Header Ad Placeholder -->
+    <div class="ad-banner-header">
+        <div class="ad-placeholder">
+            <span>Advertisement</span>
+        </div>
+    </div>
 
-      footer {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        text-align: center;
-        font-size: 14px;
-        color: #333;
-      }
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1>Files Nova</h1>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn" id="supportDropdown">
+                        Support <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <div class="nav-dropdown-content" id="supportDropdownContent">
+                        <a href="support/help-center.html">Help Center</a>
+                        <a href="support/contact.html">Contact Us</a>
+                        <a href="support/privacy-policy.html">Privacy Policy</a>
+                        <a href="support/terms.html">Terms of Service</a>
+                        <a href="support/cookie-policy.html">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
 
-      footer a {
-        color: #007bff;
-        text-decoration: none;
-        margin: 0 0.5rem;
-      }
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Free Online File Converter</h1>
+                <p class="hero-subtitle">Convert, compress, and process your files instantly in your browser. No uploads, completely secure and private.</p>
+            </div>
+        </section>
 
-      footer a:hover {
-        text-decoration: underline;
-      }
+        <!-- Tools Grid -->
+        <section class="tools-section">
+            <div class="container">
+                <div class="tools-grid">
+                    <!-- Sidebar Ad Placeholder -->
+                    <div class="sidebar-ad">
+                        <div class="ad-placeholder">
+                            <span>Advertisement</span>
+                        </div>
+                    </div>
 
-      @media (max-width: 600px) {
-        footer {
-          font-size: 13px;
-          padding: 1rem;
-        }
+                    <!-- Tool 1: JPG to PDF -->
+                    <div class="tool-card" id="tool-jpg-to-pdf">
+                        <div class="tool-header">
+                            <h3>JPG to PDF</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Convert JPG images to PDF documents</p>
+                            <div class="file-input-area">
+                                <input type="file" id="jpg-input" accept="image/jpeg,image/jpg" multiple>
+                                <label for="jpg-input" class="file-input-label">
+                                    Choose JPG files or drag and drop
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="jpg-to-pdf-btn" disabled>Convert to PDF</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
 
-        footer a {
-          display: inline-block;
-          margin: 0.3rem 0.5rem;
-        }
-      }
-    </style>
+                    <!-- Tool 2: PNG to PDF -->
+                    <div class="tool-card" id="tool-png-to-pdf">
+                        <div class="tool-header">
+                            <h3>PNG to PDF</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Convert PNG images to PDF documents</p>
+                            <div class="file-input-area">
+                                <input type="file" id="png-input" accept="image/png" multiple>
+                                <label for="png-input" class="file-input-label">
+                                    Choose PNG files or drag and drop
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="png-to-pdf-btn" disabled>Convert to PDF</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
 
-    <script type="module" crossorigin src="/assets/index-B8LMy8tS.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-fUy7GNqQ.css">
-  </head>
-  <body>
-    <div id="root"></div>
+                    <!-- Tool 3: PDF to JPG -->
+                    <div class="tool-card" id="tool-pdf-to-jpg">
+                        <div class="tool-header">
+                            <h3>PDF to JPG</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Convert PDF pages to JPG images</p>
+                            <div class="file-input-area">
+                                <input type="file" id="pdf-jpg-input" accept="application/pdf">
+                                <label for="pdf-jpg-input" class="file-input-label">
+                                    Choose PDF file or drag and drop
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="pdf-to-jpg-btn" disabled>Convert to JPG</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Footer with working support links -->
-    <footer style="padding: 2rem; text-align: center; font-size: 14px;">
-  <p><strong>Support:</strong>
-    <a href="help-center.html">Help Center</a> |
-    <a href="contact.html">Contact Us</a> |
-    <a href="privacy-policy.html">Privacy Policy</a> |
-    <a href="terms-of-service.html">Terms of Service</a> |
-    <a href="cookie-policy.html">Cookie Policy</a>
-  </p>
-</footer>
+                    <!-- Tool 4: Merge PDFs -->
+                    <div class="tool-card" id="tool-merge-pdf">
+                        <div class="tool-header">
+                            <h3>Merge PDFs</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Combine multiple PDF files into one</p>
+                            <div class="file-input-area">
+                                <input type="file" id="merge-pdf-input" accept="application/pdf" multiple>
+                                <label for="merge-pdf-input" class="file-input-label">
+                                    Choose PDF files or drag and drop
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="merge-pdf-btn" disabled>Merge PDFs</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
 
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
-  </body>
-</html>
+                    <!-- Tool 5: Compress Images -->
+                    <div class="tool-card" id="tool-compress-images">
+                        <div class="tool-header">
+                            <h3>Compress Images</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Reduce image file size while maintaining quality</p>
+                            <div class="file-input-area">
+                                <input type="file" id="compress-input" accept="image/*" multiple>
+                                <label for="compress-input" class="file-input-label">
+                                    Choose images or drag and drop
+                                </label>
+                            </div>
+                            <div class="compression-options">
+                                <label>Quality: <input type="range" id="quality-slider" min="10" max="100" value="80"></label>
+                                <span id="quality-value">80%</span>
+                            </div>
+                            <button class="convert-btn" id="compress-btn" disabled>Compress Images</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 6: Text to PDF -->
+                    <div class="tool-card" id="tool-text-to-pdf">
+                        <div class="tool-header">
+                            <h3>Text to PDF</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Convert text content to PDF document</p>
+                            <textarea id="text-input" placeholder="Enter your text here..." rows="6"></textarea>
+                            <button class="convert-btn" id="text-to-pdf-btn">Generate PDF</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 7: Files to ZIP -->
+                    <div class="tool-card" id="tool-files-to-zip">
+                        <div class="tool-header">
+                            <h3>Files to ZIP</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Create ZIP archive from multiple files</p>
+                            <div class="file-input-area">
+                                <input type="file" id="zip-input" multiple>
+                                <label for="zip-input" class="file-input-label">
+                                    Choose files or drag and drop
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="create-zip-btn" disabled>Create ZIP</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 8: PDF Splitter -->
+                    <div class="tool-card" id="tool-pdf-splitter">
+                        <div class="tool-header">
+                            <h3>PDF Splitter</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Split PDF into separate pages or ranges</p>
+                            <div class="file-input-area">
+                                <input type="file" id="split-pdf-input" accept="application/pdf">
+                                <label for="split-pdf-input" class="file-input-label">
+                                    Choose PDF file or drag and drop
+                                </label>
+                            </div>
+                            <div class="split-options">
+                                <label>Pages to extract (e.g., 1-3, 5, 7-9):</label>
+                                <input type="text" id="page-range" placeholder="1-3, 5, 7-9">
+                            </div>
+                            <button class="convert-btn" id="split-pdf-btn" disabled>Split PDF</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 9: Image Resizer -->
+                    <div class="tool-card" id="tool-image-resizer">
+                        <div class="tool-header">
+                            <h3>Image Resizer</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Resize images to specific dimensions</p>
+                            <div class="file-input-area">
+                                <input type="file" id="resize-input" accept="image/*">
+                                <label for="resize-input" class="file-input-label">
+                                    Choose image or drag and drop
+                                </label>
+                            </div>
+                            <div class="resize-options">
+                                <div class="size-inputs">
+                                    <label>Width: <input type="number" id="resize-width" placeholder="800"></label>
+                                    <label>Height: <input type="number" id="resize-height" placeholder="600"></label>
+                                </div>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="maintain-aspect" checked>
+                                    Maintain aspect ratio
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="resize-btn" disabled>Resize Image</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 10: Text/Word Counter -->
+                    <div class="tool-card" id="tool-word-counter">
+                        <div class="tool-header">
+                            <h3>Text/Word Counter</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Count words, characters, and paragraphs</p>
+                            <textarea id="counter-text" placeholder="Enter or paste your text here..." rows="6"></textarea>
+                            <div class="counter-results">
+                                <div class="counter-item">
+                                    <span class="counter-label">Words:</span>
+                                    <span class="counter-value" id="word-count">0</span>
+                                </div>
+                                <div class="counter-item">
+                                    <span class="counter-label">Characters:</span>
+                                    <span class="counter-value" id="char-count">0</span>
+                                </div>
+                                <div class="counter-item">
+                                    <span class="counter-label">Characters (no spaces):</span>
+                                    <span class="counter-value" id="char-no-space-count">0</span>
+                                </div>
+                                <div class="counter-item">
+                                    <span class="counter-label">Paragraphs:</span>
+                                    <span class="counter-value" id="paragraph-count">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 11: PDF Unlock -->
+                    <div class="tool-card" id="tool-pdf-unlock">
+                        <div class="tool-header">
+                            <h3>PDF Unlock</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Remove password protection from PDF files</p>
+                            <div class="file-input-area">
+                                <input type="file" id="unlock-pdf-input" accept="application/pdf">
+                                <label for="unlock-pdf-input" class="file-input-label">
+                                    Choose PDF file or drag and drop
+                                </label>
+                            </div>
+                            <div class="password-input">
+                                <label>PDF Password:</label>
+                                <input type="password" id="pdf-password" placeholder="Enter PDF password">
+                            </div>
+                            <button class="convert-btn" id="unlock-pdf-btn" disabled>Unlock PDF</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tool 12: DOCX to PDF -->
+                    <div class="tool-card" id="tool-docx-to-pdf">
+                        <div class="tool-header">
+                            <h3>DOCX to PDF</h3>
+                            <button class="tool-toggle">▼</button>
+                        </div>
+                        <div class="tool-content">
+                            <p>Convert Word documents to PDF format</p>
+                            <div class="file-input-area">
+                                <input type="file" id="docx-input" accept=".docx">
+                                <label for="docx-input" class="file-input-label">
+                                    Choose DOCX file or drag and drop
+                                </label>
+                            </div>
+                            <button class="convert-btn" id="docx-to-pdf-btn" disabled>Convert to PDF</button>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Ad Placeholder -->
+    <div class="ad-banner-footer">
+        <div class="ad-placeholder">
+            <span>Advertisement</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Files Nova</h3>
+                    <p>Free online file conversion tools. Convert, compress, and process your files securely in your browser.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="support/help-center.html">Help Center</a></li>
+                        <li><a href="support/contact.html">Contact Us</a></li>
+                        <li><a href="support/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="support/terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="#tool-jpg-to-pdf">JPG to PDF</a></li>
+                        <li><a href="#tool-png-to-pdf">PNG to PDF</a></li>
+                        <li><a href="#tool-pdf-to-jpg">PDF to JPG</a></li>
+                        <li><a href="#tool-merge-pdf">Merge PDFs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Files Nova. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/browser-image-compression/2.0.2/browser-image-compression.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pica/9.0.1/pica.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/tools.js"></script>
