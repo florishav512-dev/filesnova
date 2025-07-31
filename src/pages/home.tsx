@@ -417,7 +417,7 @@ export default function Home() {
 
           <Separator className="my-8 bg-slate-700" />
           <div className="text-center text-slate-400">
-            <p>© 2024 Files Nova. All rights reserved. Built with privacy and performance in mind.</p>
+            <p>© 2025 Files Nova. All rights reserved. Built with privacy and performance in mind.</p>
           </div>
         </div>
       </footer>
