@@ -28,9 +28,9 @@
                     <div class="nav-dropdown-content" id="supportDropdownContent">
                         <a href="help-center.html">Help Center</a>
                         <a href="contact.html">Contact Us</a></li>
-                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
-                        <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                        <a href="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="cookie-policy.html">Cookie Policy</a>
                     </div>
                 </div>
             </div>
@@ -331,6 +331,40 @@
 
     <script src="../assets/js/main.js"></script>
 
+    <script>
+        // Mobile navigation and dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Support dropdown toggle
+            const supportDropdown = document.getElementById('supportDropdown');
+            const supportDropdownContent = document.getElementById('supportDropdownContent');
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (supportDropdown && supportDropdownContent) {
+                supportDropdown.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    supportDropdownContent.classList.toggle('show');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!supportDropdown.contains(e.target) && !supportDropdownContent.contains(e.target)) {
+                        supportDropdownContent.classList.remove('show');
+                    }
+                });
+            }
+
+            // Mobile menu toggle
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navMenu.classList.toggle('open');
+                    navToggle.classList.toggle('open');
+                });
+            }
+        });
+    </script>
+
     <style>
         .cookie-content {
             max-width: 800px;
@@ -470,6 +504,134 @@
 
             .browser-instructions {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        /* Navigation dropdown and mobile menu styles */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-dropdown-content {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        .nav-dropdown-content.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-dropdown-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #374151;
+            text-decoration: none;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .nav-dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .nav-dropdown-content a:hover {
+            background: #f9fafb;
+            color: #3b82f6;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.2s ease;
+        }
+
+        .nav-dropdown-btn:hover .dropdown-arrow,
+        .nav-dropdown-content.show ~ .nav-dropdown-btn .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Mobile navigation styles */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #374151;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .nav-toggle.open span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .nav-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.open span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid #e5e7eb;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+            }
+
+            .nav-menu.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-dropdown-content {
+                position: static;
+                box-shadow: none;
+                border: none;
+                border-top: 1px solid #f3f4f6;
+                border-radius: 0;
+                background: #f9fafb;
             }
         }
     </style>
