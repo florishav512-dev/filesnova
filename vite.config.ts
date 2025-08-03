@@ -1,8 +1,9 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'path'
 
 export default defineConfig({
+  base: './', // ✅ This line fixes Netlify path loading
   plugins: [react()],
   resolve: {
     alias: {
@@ -12,4 +13,4 @@ export default defineConfig({
   server: {
     port: 5173,
   },
-});
+})
