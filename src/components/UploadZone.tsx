@@ -66,6 +66,10 @@ const UploadZone: React.FC<UploadZoneProps> = ({
     if (fs.length > 0) {
       onFilesSelected(fs);
     }
+    // Reset the input so the same file can be selected again if needed
+    if (e.target) {
+      e.target.value = '';
+    }
   };
 
   /**
@@ -82,7 +86,7 @@ const UploadZone: React.FC<UploadZoneProps> = ({
 
   return (
     <div
-      className="border-3 border-dashed border-gray-300 rounded-2xl p-12 text-center hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300 cursor-pointer group"
+      className="border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300 cursor-pointer group"
       onClick={() => inputRef.current?.click()}
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
