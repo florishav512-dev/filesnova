@@ -26,6 +26,7 @@ const QrScannerPage: React.FC = () => {
   const [cameraLoading, setCameraLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const animationFrameId = useRef<number>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] || null;
@@ -90,52 +91,17 @@ const QrScannerPage: React.FC = () => {
     setCameraLoading(true);
     
     try {
-      // Try rear camera first, fallback to any available camera
-      let stream: MediaStream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
-            facingMode: 'environment',
-            width: { ideal: 640, max: 1280 },
-            height: { ideal: 480, max: 720 }
-          } 
-        });
-      } catch (err) {
-        // Fallback to any available camera
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          video: {
-            width: { ideal: 640, max: 1280 },
-            height: { ideal: 480, max: 720 }
-          }
-        });
-      }
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'environment' }
+      });
 
       streamRef.current = stream;
       const video = videoRef.current;
       
       if (video) {
-        // Set video properties for better compatibility
-        video.setAttribute('autoplay', '');
-        video.setAttribute('muted', '');
-        video.setAttribute('playsinline', '');
-        
         video.srcObject = stream;
-        
-        // Force video to show by setting scanning state first
         setScanning(true);
         setCameraLoading(false);
-        
-        // Then handle video loading
-        video.onloadedmetadata = async () => {
-          try {
-            await video.play();
-          } catch (playErr) {
-            console.error('Video play error:', playErr);
-          }
-        };
-        
-        // Trigger metadata loading
-        video.load();
       }
     } catch (err: any) {
       console.error('Camera access error:', err);
@@ -144,8 +110,6 @@ const QrScannerPage: React.FC = () => {
         setError('Camera permission denied. Please allow camera access and try again.');
       } else if (err.name === 'NotFoundError') {
         setError('No camera found on this device.');
-      } else if (err.name === 'NotSupportedError') {
-        setError('Camera not supported in this browser.');
       } else {
         setError('Unable to access camera. Please check permissions.');
       }
@@ -158,6 +122,11 @@ const QrScannerPage: React.FC = () => {
       stream.getTracks().forEach((track) => track.stop());
       streamRef.current = null;
     }
+    
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
+    }
+    
     setScanning(false);
     setCameraLoading(false);
     
@@ -177,45 +146,43 @@ const QrScannerPage: React.FC = () => {
 
   // Scanning loop: run when scanning is true
   useEffect(() => {
-    let rafId: number;
-    const scanFrame = () => {
+    const tick = () => {
       const video = videoRef.current;
       const canvas = canvasRef.current;
       
-      if (video && canvas && scanning && video.readyState >= 2) {
-        const width = video.videoWidth;
-        const height = video.videoHeight;
+      if (video && canvas && scanning && video.readyState === video.HAVE_ENOUGH_DATA) {
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
         
-        if (width && height) {
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
+        if (ctx) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height, {
+            inversionAttempts: 'dontInvert',
+          });
           
-          if (ctx) {
-            ctx.drawImage(video, 0, 0, width, height);
-            const imageData = ctx.getImageData(0, 0, width, height);
-            const code = jsQR(imageData.data, width, height);
-            
-            if (code) {
-              setResult(code.data);
-              stopCamera();
-              return;
-            }
+          if (code) {
+            setResult(code.data);
+            stopCamera();
+            return;
           }
         }
-        rafId = requestAnimationFrame(scanFrame);
-      } else if (scanning) {
-        // Keep trying if video isn't ready yet
-        rafId = requestAnimationFrame(scanFrame);
+      }
+      
+      if (scanning) {
+        animationFrameId.current = requestAnimationFrame(tick);
       }
     };
     
     if (scanning) {
-      rafId = requestAnimationFrame(scanFrame);
+      animationFrameId.current = requestAnimationFrame(tick);
     }
     
     return () => {
-      if (rafId) cancelAnimationFrame(rafId);
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
     };
   }, [scanning]);
 
