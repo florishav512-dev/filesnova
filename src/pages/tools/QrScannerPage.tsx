@@ -10,18 +10,12 @@ import {
   Star,
 } from 'lucide-react';
 
-/**
- * QrScannerPage decodes QR codes from uploaded images. It uses the jsQR
- * library to analyze pixel data from a canvas and extract the embedded
- * message. Only static image files (PNG/JPEG) are supported.
- */
 const QrScannerPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // Camera scanning state
   const [scanning, setScanning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -77,12 +71,6 @@ const QrScannerPage: React.FC = () => {
     }
   };
 
-  /**
-   * Start camera scanning by requesting access to the rear camera. Frames
-   * are continuously analyzed with jsQR. When a code is detected the
-   * result is stored and scanning stops automatically. The upload section
-   * remains available.
-   */
   const startCamera = async () => {
     setError(null);
     setResult(null);
@@ -92,7 +80,10 @@ const QrScannerPage: React.FC = () => {
       const video = videoRef.current;
       if (video) {
         video.srcObject = stream;
-        await video.play();
+        video.setAttribute('playsinline', 'true');
+        video.setAttribute('autoplay', 'true');
+        video.setAttribute('muted', 'true');
+        video.play();
         setScanning(true);
       }
     } catch (err: any) {
@@ -110,7 +101,6 @@ const QrScannerPage: React.FC = () => {
     setScanning(false);
   };
 
-  // Scanning loop: run when scanning is true
   useEffect(() => {
     let rafId: number;
     const scanFrame = () => {
@@ -221,7 +211,6 @@ const QrScannerPage: React.FC = () => {
             >
               Scan Uploaded Image
             </button>
-            {/* Camera controls */}
             {!scanning ? (
               <button
                 onClick={startCamera}
@@ -255,7 +244,6 @@ const QrScannerPage: React.FC = () => {
             <p className="text-gray-700 break-all">{result}</p>
           </div>
         )}
-        {/* Hidden canvas used for decoding QR codes */}
         <canvas ref={canvasRef} className="hidden" />
       </div>
     </div>
