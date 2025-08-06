@@ -96,16 +96,16 @@ const QrScannerPage: React.FC = () => {
         stream = await navigator.mediaDevices.getUserMedia({ 
           video: { 
             facingMode: 'environment',
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+            width: { ideal: 640, max: 1280 },
+            height: { ideal: 480, max: 720 }
           } 
         });
       } catch (err) {
         // Fallback to any available camera
         stream = await navigator.mediaDevices.getUserMedia({ 
           video: {
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+            width: { ideal: 640, max: 1280 },
+            height: { ideal: 480, max: 720 }
           }
         });
       }
@@ -114,19 +114,28 @@ const QrScannerPage: React.FC = () => {
       const video = videoRef.current;
       
       if (video) {
+        // Set video properties for better compatibility
+        video.setAttribute('autoplay', '');
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        
         video.srcObject = stream;
         
-        // Wait for video metadata to load
-        await new Promise<void>((resolve, reject) => {
-          video.onloadedmetadata = () => {
-            resolve();
-          };
-          video.onerror = reject;
-        });
-        
-        await video.play();
+        // Force video to show by setting scanning state first
         setScanning(true);
         setCameraLoading(false);
+        
+        // Then handle video loading
+        video.onloadedmetadata = async () => {
+          try {
+            await video.play();
+          } catch (playErr) {
+            console.error('Video play error:', playErr);
+          }
+        };
+        
+        // Trigger metadata loading
+        video.load();
       }
     } catch (err: any) {
       console.error('Camera access error:', err);
@@ -315,14 +324,18 @@ const QrScannerPage: React.FC = () => {
         {scanning && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
             <h3 className="text-xl font-bold text-gray-900 mb-4">2. Camera Preview</h3>
-            <div className="relative">
+            <div className="relative bg-black rounded-xl overflow-hidden">
               <video 
                 ref={videoRef} 
-                className="w-full max-w-2xl mx-auto rounded-xl shadow-lg bg-black" 
+                className="w-full h-auto max-w-full rounded-xl"
                 autoPlay 
                 muted 
                 playsInline
-                style={{ aspectRatio: '16/9' }}
+                style={{ 
+                  minHeight: '300px',
+                  objectFit: 'cover',
+                  display: 'block'
+                }}
               />
               <div className="absolute inset-0 border-2 border-blue-500/50 rounded-xl pointer-events-none">
                 <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-blue-500"></div>
