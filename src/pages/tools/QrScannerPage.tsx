@@ -227,10 +227,6 @@ const QrScannerPage: React.FC = () => {
               </button>
             )}
           </div>
-          {isProcessing && (
-            <p className="mt-4 text-gray-700">Scanning...</p>
-          )}
-          {error && <p className="text-red-600 mt-4">{error}</p>}
         </div>
         {cameraStarted && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
