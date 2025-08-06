@@ -17,6 +17,7 @@ const QrScannerPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [scanning, setScanning] = useState(false);
+  const [cameraStarted, setCameraStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -82,6 +83,7 @@ const QrScannerPage: React.FC = () => {
         video.srcObject = stream;
         await video.play();
         setScanning(true);
+        setCameraStarted(true);
       }
     } catch (err: any) {
       console.error(err);
@@ -96,6 +98,7 @@ const QrScannerPage: React.FC = () => {
       streamRef.current = null;
     }
     setScanning(false);
+    setCameraStarted(false);
   };
 
   useEffect(() => {
@@ -168,7 +171,7 @@ const QrScannerPage: React.FC = () => {
               <ScanLine className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-3xl font-black text-gray-900 mb-2">QR Scanner</h2>
-            <p className="text-gray-700 text-lg leading-relaxed">Upload an image containing a QR code to decode its contents.</p>
+            <p className="text-gray-700 text-lg leading-relaxed">Upload an image containing a QR code to decode its contents or scan using your camera.</p>
             <div className="flex flex-wrap gap-3 mt-6">
               <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
                 <Shield className="w-4 h-4 mr-2 text-green-600" />
@@ -229,7 +232,7 @@ const QrScannerPage: React.FC = () => {
           )}
           {error && <p className="text-red-600 mt-4">{error}</p>}
         </div>
-        {scanning && (
+        {cameraStarted && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
             <h3 className="text-xl font-bold text-gray-900 mb-4">2. Camera Preview</h3>
             <video ref={videoRef} className="w-full rounded-xl" autoPlay muted playsInline></video>
@@ -237,7 +240,7 @@ const QrScannerPage: React.FC = () => {
         )}
         {result && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">2. Result</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">3. Result</h3>
             <p className="text-gray-700 break-all">{result}</p>
           </div>
         )}
