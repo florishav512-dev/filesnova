@@ -82,7 +82,6 @@ const QrScannerPage: React.FC = () => {
     } catch (err) {
       console.error(err);
       setError('Unable to access camera');
-      // fallback to upload
       setMode('upload');
     }
   };
@@ -160,4 +159,75 @@ const QrScannerPage: React.FC = () => {
             <div className="w-16 h-16 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-xl mr-4">
               <ScanLine className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-3xl font-black text-gray-900">QR Scanner</n
+            <h2 className="text-3xl font-black text-gray-900">QR Scanner</h2>
+          </div>
+
+          {/* Mode selection */}
+          <div className="flex space-x-4 mb-6">
+            <button
+              onClick={() => { setMode('upload'); stopCamera(); setResult(null); setError(null); }}
+              className={`px-4 py-2 rounded-xl font-semibold transition-colors ${mode === 'upload' ? 'bg-blue-600 text-white' : 'bg-white/60 text-gray-700'}`}
+            >
+              Upload Image
+            </button>
+            <button
+              onClick={() => { setMode('camera'); setFile(null); setResult(null); setError(null); startCamera(); }}
+              className={`px-4 py-2 rounded-xl font-semibold transition-colors ${mode === 'camera' ? 'bg-green-600 text-white' : 'bg-white/60 text-gray-700'}`}
+            >
+              Scan QR Code
+            </button>
+          </div>
+
+          {/* Upload mode */}
+          {mode === 'upload' && (
+            <>
+              <UploadZone
+                accept="image/png,image/jpeg"
+                multiple={false}
+                title="Drop your image here"
+                buttonLabel="Choose File"
+                supportedFormats="PNG, JPEG"
+                onFilesSelected={(files) => handleFileChange({ target: { files } } as any)}
+              />
+              <div className="mt-6">
+                <button
+                  onClick={scanImage}
+                  disabled={!file || isProcessing}
+                  className="w-full px-4 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  {isProcessing ? 'Scanning...' : 'Scan Uploaded Image'}
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Camera mode */}
+          {mode === 'camera' && (
+            <div className="space-y-6">
+              <video ref={videoRef} className="w-full rounded-xl" autoPlay muted playsInline />
+              <button
+                onClick={stopCamera}
+                className="w-full px-4 py-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
+              >
+                Stop Camera
+              </button>
+            </div>
+          )}
+
+          <canvas ref={canvasRef} className="hidden" />
+          {error && <p className="text-red-600 mt-4">{error}</p>}
+        </div>
+
+        {/* Result display */}
+        {result && (
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Result</h3>
+            <p className="text-gray-700 break-all">{result}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default QrScannerPage;
