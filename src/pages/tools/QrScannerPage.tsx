@@ -10,13 +10,20 @@ import {
   Star,
 } from 'lucide-react';
 
+/**
+ * QrScannerPage decodes QR codes from uploaded images. It uses the jsQR
+ * library to analyze pixel data from a canvas and extract the embedded
+ * message. Only static image files (PNG/JPEG) are supported.
+ */
 const QrScannerPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // Camera scanning state
   const [scanning, setScanning] = useState(false);
+  const [cameraLoading, setCameraLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -71,24 +78,68 @@ const QrScannerPage: React.FC = () => {
     }
   };
 
+  /**
+   * Start camera scanning by requesting access to the rear camera. Frames
+   * are continuously analyzed with jsQR. When a code is detected the
+   * result is stored and scanning stops automatically. The upload section
+   * remains available.
+   */
   const startCamera = async () => {
     setError(null);
     setResult(null);
+    setCameraLoading(true);
+    
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      // Try rear camera first, fallback to any available camera
+      let stream: MediaStream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            facingMode: 'environment',
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          } 
+        });
+      } catch (err) {
+        // Fallback to any available camera
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: {
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        });
+      }
+
       streamRef.current = stream;
       const video = videoRef.current;
+      
       if (video) {
         video.srcObject = stream;
-        video.setAttribute('playsinline', 'true');
-        video.setAttribute('autoplay', 'true');
-        video.setAttribute('muted', 'true');
-        video.play();
+        
+        // Wait for video metadata to load
+        await new Promise<void>((resolve, reject) => {
+          video.onloadedmetadata = () => {
+            resolve();
+          };
+          video.onerror = reject;
+        });
+        
+        await video.play();
         setScanning(true);
+        setCameraLoading(false);
       }
     } catch (err: any) {
-      console.error(err);
-      setError('Unable to access camera');
+      console.error('Camera access error:', err);
+      setCameraLoading(false);
+      if (err.name === 'NotAllowedError') {
+        setError('Camera permission denied. Please allow camera access and try again.');
+      } else if (err.name === 'NotFoundError') {
+        setError('No camera found on this device.');
+      } else if (err.name === 'NotSupportedError') {
+        setError('Camera not supported in this browser.');
+      } else {
+        setError('Unable to access camera. Please check permissions.');
+      }
     }
   };
 
@@ -99,24 +150,43 @@ const QrScannerPage: React.FC = () => {
       streamRef.current = null;
     }
     setScanning(false);
+    setCameraLoading(false);
+    
+    // Clear video element
+    const video = videoRef.current;
+    if (video) {
+      video.srcObject = null;
+    }
   };
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  // Scanning loop: run when scanning is true
   useEffect(() => {
     let rafId: number;
     const scanFrame = () => {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      if (video && canvas && scanning) {
+      
+      if (video && canvas && scanning && video.readyState >= 2) {
         const width = video.videoWidth;
         const height = video.videoHeight;
+        
         if (width && height) {
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
+          
           if (ctx) {
             ctx.drawImage(video, 0, 0, width, height);
             const imageData = ctx.getImageData(0, 0, width, height);
             const code = jsQR(imageData.data, width, height);
+            
             if (code) {
               setResult(code.data);
               stopCamera();
@@ -125,11 +195,16 @@ const QrScannerPage: React.FC = () => {
           }
         }
         rafId = requestAnimationFrame(scanFrame);
+      } else if (scanning) {
+        // Keep trying if video isn't ready yet
+        rafId = requestAnimationFrame(scanFrame);
       }
     };
+    
     if (scanning) {
       rafId = requestAnimationFrame(scanFrame);
     }
+    
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
     };
@@ -206,17 +281,25 @@ const QrScannerPage: React.FC = () => {
           <div className="mt-6 space-y-4">
             <button
               onClick={scan}
-              disabled={!file || isProcessing || scanning}
+              disabled={!file || isProcessing || scanning || cameraLoading}
               className="w-full px-4 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Scan Uploaded Image
+              {isProcessing ? 'Scanning Image...' : 'Scan Uploaded Image'}
             </button>
-            {!scanning ? (
+            {/* Camera controls */}
+            {!scanning && !cameraLoading ? (
               <button
                 onClick={startCamera}
                 className="w-full px-4 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold rounded-xl hover:shadow-lg transition-all"
               >
                 Scan with Camera
+              </button>
+            ) : cameraLoading ? (
+              <button
+                disabled
+                className="w-full px-4 py-4 bg-gray-400 text-white font-bold rounded-xl cursor-not-allowed"
+              >
+                Starting Camera...
               </button>
             ) : (
               <button
@@ -227,23 +310,49 @@ const QrScannerPage: React.FC = () => {
               </button>
             )}
           </div>
-          {isProcessing && (
-            <p className="mt-4 text-gray-700">Scanning...</p>
-          )}
-          {error && <p className="text-red-600 mt-4">{error}</p>}
+          {error && <p className="text-red-600 mt-4 font-medium">{error}</p>}
         </div>
         {scanning && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
             <h3 className="text-xl font-bold text-gray-900 mb-4">2. Camera Preview</h3>
-            <video ref={videoRef} className="w-full rounded-xl" autoPlay muted playsInline></video>
+            <div className="relative">
+              <video 
+                ref={videoRef} 
+                className="w-full max-w-2xl mx-auto rounded-xl shadow-lg bg-black" 
+                autoPlay 
+                muted 
+                playsInline
+                style={{ aspectRatio: '16/9' }}
+              />
+              <div className="absolute inset-0 border-2 border-blue-500/50 rounded-xl pointer-events-none">
+                <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-blue-500"></div>
+                <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-blue-500"></div>
+                <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-blue-500"></div>
+                <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-blue-500"></div>
+              </div>
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-full text-sm">
+                Point camera at QR code
+              </div>
+            </div>
           </div>
         )}
         {result && (
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">2. Result</h3>
-            <p className="text-gray-700 break-all">{result}</p>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              {scanning || file ? '2. Result' : 'Result'}
+            </h3>
+            <div className="bg-gray-50 p-4 rounded-xl">
+              <p className="text-gray-700 break-all font-mono">{result}</p>
+            </div>
+            <button
+              onClick={() => navigator.clipboard.writeText(result)}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Copy to Clipboard
+            </button>
           </div>
         )}
+        {/* Hidden canvas used for decoding QR codes */}
         <canvas ref={canvasRef} className="hidden" />
       </div>
     </div>
