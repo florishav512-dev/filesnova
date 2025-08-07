@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import UploadZone from '../../components/UploadZone';
 import AdSpace from '../../components/AdSpace';
 import JSZip from 'jszip';
@@ -57,6 +58,16 @@ const CreateZipPage: React.FC = () => {
   };
 
   return (
+<Helmet>
+  <title>Create ZIP – Free, Fast & Secure Online ZIP Creator | FilesNova</title>
+  <meta
+    name="description"
+    content="Create ZIP archives from multiple files in seconds. Free online ZIP creator with unlimited file size, no ads, no signup—fast, secure, and private."
+  />
+  <link rel="canonical" href="https://filesnova.com/tools/create-zip" />
+</Helmet>
+
+
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
