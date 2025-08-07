@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import JSZip from 'jszip';
 import UploadZone from '../../components/UploadZone';
 import AdSpace from '../../components/AdSpace';
@@ -78,6 +79,15 @@ const ExtractImagesPage: React.FC = () => {
   };
 
   return (
+<Helmet>
+  <title>Extract Images from PDF – Free & Fast Online Tool | FilesNova</title>
+  <meta
+    name="description"
+    content="Extract all images from your PDF files in one click. Free, fast, and secure online extractor—no signup, no watermarks. Try FilesNova now!"
+  />
+  <link rel="canonical" href="https://filesnova.com/tools/extract-images" />
+</Helmet>
+
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
