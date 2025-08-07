@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import * as bodyPix from '@tensorflow-models/body-pix';
 import '@tensorflow/tfjs';
 import JSZip from 'jszip';
@@ -16,7 +17,7 @@ import {
 
 /**
  * BackgroundRemoverPage removes a uniform background colour from images. It
- * samples the top‑left pixel to determine the background and makes similar
+ * samples the top-left pixel to determine the background and makes similar
  * pixels transparent. This works best for images with a solid backdrop. All
  * processed images are packaged into a ZIP for download.
  */
@@ -77,7 +78,7 @@ const BackgroundRemoverPage: React.FC = () => {
   /**
    * Remove the background using AI segmentation when available. If the
    * BodyPix model has not loaded or fails to segment, fall back to the
-   * original colour‑sampling algorithm. The subject description is not
+   * original colour-sampling algorithm. The subject description is not
    * currently used but reserved for future improvements.
    */
   const removeBackgroundAI = async (img: HTMLImageElement): Promise<HTMLCanvasElement> => {
@@ -159,119 +160,130 @@ const BackgroundRemoverPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-      </div>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-20 space-x-4">
-            <a href="/" className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
-              <ArrowLeft className="w-6 h-6 text-gray-700" />
-            </a>
-            <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                <Sparkles className="w-7 h-7 text-white animate-pulse" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
-            </div>
-            <div>
-              <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Files Nova
-              </h1>
-              <p className="text-xs text-gray-500 font-medium">Background Remover</p>
-            </div>
-          </div>
+    <>
+      <Helmet>
+        <title>Remove Image Background – AI Powered Tool | FilesNova</title>
+        <meta
+          name="description"
+          content="Automatically remove background from images using AI. Upload JPG or PNG and get transparent background instantly. Free & easy."
+        />
+        <link rel="canonical" href="https://filesnova.com/tools/remove-background" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
-      </header>
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-10">
-        <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8 mb-8 overflow-hidden">
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
-          <div className="relative z-10">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
-              <Eraser className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-3xl font-black text-gray-900 mb-2">Background Remover</h2>
-            <p className="text-gray-700 text-lg leading-relaxed">Remove solid backgrounds from your images and download transparent PNGs.</p>
-            <div className="flex flex-wrap gap-3 mt-6">
-              <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
-                <Shield className="w-4 h-4 mr-2 text-green-600" />
-                <span className="text-sm font-medium">100% Secure</span>
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center h-20 space-x-4">
+              <a href="/" className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
+                <ArrowLeft className="w-6 h-6 text-gray-700" />
+              </a>
+              <div className="relative">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
+                  <Sparkles className="w-7 h-7 text-white animate-pulse" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
               </div>
-              <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
-                <Zap className="w-4 h-4 mr-2 text-yellow-600" />
-                <span className="text-sm font-medium">Lightning Fast</span>
-              </div>
-              <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
-                <Star className="w-4 h-4 mr-2 text-purple-600" />
-                <span className="text-sm font-medium">Premium Quality</span>
+              <div>
+                <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Files Nova
+                </h1>
+                <p className="text-xs text-gray-500 font-medium">Background Remover</p>
               </div>
             </div>
           </div>
-        </div>
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">1. Upload Images</h3>
-          {/* Subject description */}
-          <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2">Describe the subject (optional)</label>
-            <input
-              type="text"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              placeholder="e.g. person, product, pet..."
-              className="w-full p-3 border-2 border-dashed border-gray-300 rounded-2xl focus:border-blue-500 outline-none bg-white/60 backdrop-blur-sm"
+        </header>
+        <div className="relative z-10 max-w-6xl mx-auto px-4 py-10">
+          <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8 mb-8 overflow-hidden">
+            <div className="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
+            <div className="relative z-10">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center mb-6 shadow-xl">
+                <Eraser className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl font-black text-gray-900 mb-2">Background Remover</h2>
+              <p className="text-gray-700 text-lg leading-relaxed">Remove solid backgrounds from your images and download transparent PNGs.</p>
+              <div className="flex flex-wrap gap-3 mt-6">
+                <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
+                  <Shield className="w-4 h-4 mr-2 text-green-600" />
+                  <span className="text-sm font-medium">100% Secure</span>
+                </div>
+                <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
+                  <Zap className="w-4 h-4 mr-2 text-yellow-600" />
+                  <span className="text-sm font-medium">Lightning Fast</span>
+                </div>
+                <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
+                  <Star className="w-4 h-4 mr-2 text-purple-600" />
+                  <span className="text-sm font-medium">Premium Quality</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">1. Upload Images</h3>
+            {/* Subject description */}
+            <div className="mb-6">
+              <label className="block text-gray-700 font-medium mb-2">Describe the subject (optional)</label>
+              <input
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="e.g. person, product, pet..."
+                className="w-full p-3 border-2 border-dashed border-gray-300 rounded-2xl focus:border-blue-500 outline-none bg-white/60 backdrop-blur-sm"
+              />
+            </div>
+            <UploadZone
+              accept="image/*"
+              multiple={true}
+              title="Drop your images here"
+              buttonLabel="Choose Files"
+              supportedFormats="Image files"
+              onFilesSelected={(fs) => {
+                const dt = new DataTransfer();
+                fs.forEach((file) => dt.items.add(file));
+                const list = dt.files;
+                setFiles(list && list.length ? list : null);
+                setDownloadUrl(null);
+                setError(null);
+              }}
             />
+            <button
+              onClick={convert}
+              disabled={!files || files.length === 0 || isProcessing}
+              className="w-full mt-6 px-4 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Remove Backgrounds
+            </button>
+            {isProcessing && (
+              <div className="mt-4 w-full bg-blue-200 rounded-full h-3 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-pulse"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            )}
+            {error && <p className="text-red-600 mt-4">{error}</p>}
           </div>
-          <UploadZone
-            accept="image/*"
-            multiple={true}
-            title="Drop your images here"
-            buttonLabel="Choose Files"
-            supportedFormats="Image files"
-            onFilesSelected={(fs) => {
-              const dt = new DataTransfer();
-              fs.forEach((file) => dt.items.add(file));
-              const list = dt.files;
-              setFiles(list && list.length ? list : null);
-              setDownloadUrl(null);
-              setError(null);
-            }}
-          />
-          <button
-            onClick={convert}
-            disabled={!files || files.length === 0 || isProcessing}
-            className="w-full mt-6 px-4 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Remove Backgrounds
-          </button>
-          {isProcessing && (
-            <div className="mt-4 w-full bg-blue-200 rounded-full h-3 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-pulse"
-                style={{ width: `${progress}%` }}
-              ></div>
+          {downloadUrl && (
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 text-center">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">2. Download</h3>
+              <a
+                href={downloadUrl}
+                download="transparent-images.zip"
+                className="inline-flex items-center justify-center w-full px-4 py-4 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all"
+              >
+                <DownloadIcon className="w-5 h-5 mr-2" /> Download ZIP
+              </a>
             </div>
           )}
-          {error && <p className="text-red-600 mt-4">{error}</p>}
+          {/* Ad space below the conversion area */}
+          <AdSpace />
         </div>
-        {downloadUrl && (
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 mb-8 text-center">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">2. Download</h3>
-            <a
-              href={downloadUrl}
-              download="transparent-images.zip"
-              className="inline-flex items-center justify-center w-full px-4 py-4 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-all"
-            >
-              <DownloadIcon className="w-5 h-5 mr-2" /> Download ZIP
-            </a>
-          </div>
-        )}
-        {/* Ad space below the conversion area */}
-        <AdSpace />
       </div>
-    </div>
+    </>
   );
 };
 
