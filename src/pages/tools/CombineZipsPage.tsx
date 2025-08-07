@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import JSZip from 'jszip';
 import UploadZone from '../../components/UploadZone';
 import {
@@ -72,6 +73,15 @@ const CombineZipsPage: React.FC = () => {
   };
 
   return (
+<Helmet>
+  <title>Combine ZIP Files – Merge Archives Online | FilesNova</title>
+  <meta
+    name="description"
+    content="Effortlessly combine multiple ZIP archives into a single file. Fast, free, and secure online ZIP merger by FilesNova. No signup required."
+  />
+  <link rel="canonical" href="https://filesnova.com/tools/combine-zip" />
+</Helmet>
+    
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
