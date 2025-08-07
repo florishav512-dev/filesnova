@@ -9,7 +9,6 @@ import {
   Shield,
   Zap,
   Star,
-  Clock,
   CheckCircle,
   X,
   Download as DownloadIcon,
@@ -22,10 +21,11 @@ import AdSpace from '../../components/AdSpace';
  */
 const DocxToPdfPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<'ready' | 'completed' | 'converting'>('ready');
+  const [status, setStatus] = useState<'ready' | 'converting' | 'completed'>('ready');
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  // Handle file input selection
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected && selected.name.toLowerCase().endsWith('.docx')) {
@@ -35,6 +35,7 @@ const DocxToPdfPage: React.FC = () => {
     }
   };
 
+  // Allow drag‑and‑drop file selection
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const dropped = e.dataTransfer.files?.[0];
@@ -45,42 +46,54 @@ const DocxToPdfPage: React.FC = () => {
     }
   };
 
+  // Remove the selected file
   const removeFile = () => {
     setFile(null);
     setPdfUrl(null);
     setStatus('ready');
   };
 
+  // Convert the DOCX file to a PDF using mammoth and pdf-lib
   const handleConvert = async () => {
     if (!file) return;
     setStatus('converting');
-    // Read DOCX and extract text using mammoth
-    const arrayBuffer = await file.arrayBuffer();
-    const result = await mammoth.extractRawText({ arrayBuffer });
-    const text = result.value;
-    // Create PDF and write lines
-    const pdfDoc = await PDFDocument.create();
-    let currentPage = pdfDoc.addPage();
-    let { width, height } = currentPage.getSize();
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const fontSize = 12;
-    let y = height - 50;
-    text.split('\n').forEach((line) => {
-      if (y < 50) {
-        currentPage = pdfDoc.addPage();
-        ({ width, height } = currentPage.getSize());
-        y = height - 50;
-      }
-      currentPage.drawText(line, { x: 50, y, size: fontSize, font, color: [0, 0, 0] });
-      y -= fontSize + 4;
-    });
-    const pdfBytes = await pdfDoc.save();
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const url = URL.createObjectURL(blob);
-    setPdfUrl(url);
-    setStatus('completed');
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      const text = result.value;
+      const pdfDoc = await PDFDocument.create();
+      let currentPage = pdfDoc.addPage();
+      let { width, height } = currentPage.getSize();
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const fontSize = 12;
+      let y = height - 50;
+      text.split('\n').forEach((line) => {
+        if (y < 50) {
+          currentPage = pdfDoc.addPage();
+          ({ width, height } = currentPage.getSize());
+          y = height - 50;
+        }
+        currentPage.drawText(line, {
+          x: 50,
+          y,
+          size: fontSize,
+          font,
+          color: [0, 0, 0],
+        });
+        y -= fontSize + 4;
+      });
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      setPdfUrl(url);
+      setStatus('completed');
+    } catch (err) {
+      console.error(err);
+      setStatus('ready');
+    }
   };
 
+  // Format file size nicely
   const formatFileSize = (bytes: number) => {
     if (!bytes) return '';
     const k = 1024;
@@ -90,14 +103,16 @@ const DocxToPdfPage: React.FC = () => {
   };
 
   return (
+    <>
       <Helmet>
-      <title>Convert DOCX to PDF – Fast & Free Online Converter | FilesNova</title>
-      <meta
-        name="description"
-        content="Instantly convert DOCX documents to PDF while preserving formatting. 100% free, no signup, no watermarks—fast, secure, and reliable on FilesNova."
-      />
-      <link rel="canonical" href="https://filesnova.com/tools/docx-to-pdf" />
+        <title>Convert DOCX to PDF – Fast &amp; Free Online Converter | FilesNova</title>
+        <meta
+          name="description"
+          content="Instantly convert DOCX documents to PDF while preserving formatting. 100% free, no signup, no watermarks—fast, secure, and reliable on FilesNova."
+        />
+        <link rel="canonical" href="https://filesnova.com/tools/docx-to-pdf" />
       </Helmet>
+      {/* Outer Container */}
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -138,7 +153,9 @@ const DocxToPdfPage: React.FC = () => {
                 <FileUp className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-3xl font-black text-gray-900 mb-2">DOCX to PDF Converter</h2>
-              <p className="text-gray-700 text-lg leading-relaxed">Convert your Word documents to high-quality PDF files in seconds</p>
+              <p className="text-gray-700 text-lg leading-relaxed">
+                Convert your Word documents to high-quality PDF files in seconds
+              </p>
               <div className="flex flex-wrap gap-3 mt-6">
                 <div className="flex items-center bg-white/60 backdrop-blur-sm px-4 py-2 rounded-xl shadow-sm">
                   <Shield className="w-4 h-4 mr-2 text-green-600" />
@@ -174,7 +191,13 @@ const DocxToPdfPage: React.FC = () => {
                 </button>
                 <p className="text-xs text-gray-500 mt-4">Supported format: DOCX</p>
               </div>
-              <input ref={inputRef} type="file" accept=".docx" className="hidden" onChange={handleFileSelect} />
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".docx"
+                className="hidden"
+                onChange={handleFileSelect}
+              />
             </div>
             {file && (
               <div className="border-t border-gray-200 p-8">
@@ -183,5 +206,62 @@ const DocxToPdfPage: React.FC = () => {
                   <div className="flex items-center space-x-4 flex-1">
                     <div className="w-12 h-12 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
                       <FileUp className="w-6 h-6 text-white" />
-                    ```
-::contentReference[oaicite:0]{index=0}
+                    </div>
+                    <div className="flex-1 overflow-hidden">
+                      <p className="truncate font-medium text-gray-900">{file.name}</p>
+                      <p className="text-sm text-gray-500">{formatFileSize(file.size)}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={removeFile}
+                    className="p-2 rounded-full hover:bg-gray-200 transition-colors"
+                  >
+                    <X className="w-4 h-4 text-gray-600" />
+                  </button>
+                </div>
+                <button
+                  onClick={handleConvert}
+                  disabled={status === 'converting'}
+                  className="mt-4 w-full px-4 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {status === 'converting' ? 'Converting...' : 'Convert to PDF'}
+                </button>
+                {status === 'converting' && (
+                  <div className="mt-4 w-full bg-blue-200 rounded-full h-3 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-pulse"
+                      style={{ width: '100%' }}
+                    ></div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {/* Result Area */}
+          {status === 'completed' && pdfUrl && (
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <CheckCircle className="w-5 h-5 text-green-600 mr-2" /> Conversion Completed
+              </h3>
+              <p className="text-gray-700 mb-4">
+                Your document has been successfully converted. Click the button below to download
+                your PDF.
+              </p>
+              <a
+                href={pdfUrl}
+                download={`${file?.name.replace(/\.docx$/i, '')}.pdf`}
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold rounded-xl hover:shadow-lg transition-all"
+              >
+                <DownloadIcon className="w-5 h-5 mr-2" /> Download PDF
+              </a>
+            </div>
+          )}
+        </div>
+        {/* Footer Ad Space */}
+        <AdSpace />
+      </div>
+    </>
+  );
+};
+
+export default DocxToPdfPage;
