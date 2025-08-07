@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import mammoth from 'mammoth';
 import {
@@ -89,6 +90,15 @@ const DocxToPdfPage: React.FC = () => {
   };
 
   return (
+<Helmet>
+  <title>Convert DOCX to PDF – Fast & Free Online Converter | FilesNova</title>
+  <meta
+    name="description"
+    content="Instantly convert DOCX documents to PDF while preserving formatting. 100% free, no signup, no watermarks—fast, secure, and reliable on FilesNova."
+  />
+  <link rel="canonical" href="https://filesnova.com/tools/docx-to-pdf" />
+</Helmet>
+
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
