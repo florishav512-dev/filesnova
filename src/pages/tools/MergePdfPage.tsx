@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { PDFDocument } from 'pdf-lib';
 import UploadZone from '../../components/UploadZone';
 import {
@@ -65,6 +66,12 @@ const MergePdfPage: React.FC = () => {
   };
 
   return (
+<Helmet>
+  <title>Merge PDF Files – Combine Multiple PDFs | FilesNova</title>
+  <meta name="description" content="Join multiple PDF files into one. Drag and drop to merge PDFs instantly. Free, secure, and no watermarks with FilesNova." />
+  <link rel="canonical" href="https://filesnova.com/tools/merge-pdf" />
+</Helmet>
+
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
