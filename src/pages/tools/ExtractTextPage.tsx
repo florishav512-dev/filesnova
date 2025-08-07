@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import UploadZone from '../../components/UploadZone';
 import AdSpace from '../../components/AdSpace';
@@ -62,6 +63,15 @@ const ExtractTextPage: React.FC = () => {
   };
 
   return (
+<Helmet>
+  <title>Extract Text from PDFs & Images – Free OCR Converter | FilesNova</title>
+  <meta
+    name="description"
+    content="Instantly extract text from PDF documents and images with advanced OCR. 100% free, no signup, no watermarks—fast, accurate, and secure online tool by FilesNova."
+  />
+  <link rel="canonical" href="https://filesnova.com/tools/extract-text" />
+</Helmet>
+
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       {/* Background Pulses */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
