@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import JSZip from 'jszip';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import UploadZone from '../../components/UploadZone';
@@ -109,7 +110,16 @@ const EpubToPdfPage: React.FC = () => {
     setIsProcessing(false);
   };
 
-  return (
+  return (<Helmet>
+  <title>Convert EPUB to PDF – Fast & Free Online Converter | FilesNova</title>
+  <meta
+    name="description"
+    content="Instantly convert EPUB eBooks to PDF while preserving formatting. 100% free, no signup, no watermarks—fast, secure, and reliable on FilesNova."
+  />
+  <link rel="canonical" href="https://filesnova.com/tools/epub-to-pdf" />
+</Helmet>
+
+
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
