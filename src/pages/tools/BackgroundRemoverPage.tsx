@@ -170,7 +170,15 @@ const BackgroundRemoverPage: React.FC = () => {
         />
         <link rel="canonical" href="https://filesnova.com/tools/remove-background" />
       </Helmet>
-<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Backgroun\1 \2emover – Files Nova","url":"https://filesnova.com/tools/remove-background","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Background Remover – Files Nova",
+  "url": "https://filesnova.com/tools/background-remover",
+  "applicationCategory": "FileConverter",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}} />
 
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
