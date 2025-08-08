@@ -63,6 +63,7 @@ const ExtractTextPage: React.FC = () => {
   };
 
   return (
+    <>
 <Helmet>
   <title>Extract Text from PDFs & Images – Free OCR Converter | FilesNova</title>
   <meta
@@ -183,6 +184,7 @@ const ExtractTextPage: React.FC = () => {
         <AdSpace />
       </div>
     </div>
+    </>
   );
 };
 
