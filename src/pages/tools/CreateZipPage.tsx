@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import JsonLd from '../../components/JsonLd';
 import UploadZone from '../../components/UploadZone';
 import AdSpace from '../../components/AdSpace';
 import JSZip from 'jszip';
@@ -67,6 +68,8 @@ const CreateZipPage: React.FC = () => {
   />
   <link rel="canonical" href="https://filesnova.com/tools/create-zip" />
 </Helmet>
+<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Creat\1 \2ip – Files Nova","url":"https://filesnova.com/tools/create-zip","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+
 
 
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
