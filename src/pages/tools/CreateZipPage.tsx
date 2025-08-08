@@ -68,7 +68,15 @@ const CreateZipPage: React.FC = () => {
   />
   <link rel="canonical" href="https://filesnova.com/tools/create-zip" />
 </Helmet>
-<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Creat\1 \2ip – Files Nova","url":"https://filesnova.com/tools/create-zip","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Create ZIP – Files Nova",
+  "url": "https://filesnova.com/tools/create-zip",
+  "applicationCategory": "FileConverter",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}} />
 
 
 
