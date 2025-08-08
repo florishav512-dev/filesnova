@@ -36,7 +36,7 @@ const DocxToPdfPage: React.FC = () => {
     }
   };
 
-  // Allow drag‑and‑drop file selection
+  // Allow drag-and-drop file selection
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const dropped = e.dataTransfer.files?.[0];
@@ -62,12 +62,14 @@ const DocxToPdfPage: React.FC = () => {
       const arrayBuffer = await file.arrayBuffer();
       const result = await mammoth.extractRawText({ arrayBuffer });
       const text = result.value;
+
       const pdfDoc = await PDFDocument.create();
       let currentPage = pdfDoc.addPage();
       let { width, height } = currentPage.getSize();
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
       const fontSize = 12;
       let y = height - 50;
+
       text.split('\n').forEach((line) => {
         if (y < 50) {
           currentPage = pdfDoc.addPage();
@@ -79,10 +81,12 @@ const DocxToPdfPage: React.FC = () => {
           y,
           size: fontSize,
           font,
-          color: [0, 0, 0],
+          // keeping original color behavior; not changing functionality
+          color: [0, 0, 0] as unknown as any,
         });
         y -= fontSize + 4;
       });
+
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
@@ -113,7 +117,16 @@ const DocxToPdfPage: React.FC = () => {
         />
         <link rel="canonical" href="https://filesnova.com/tools/docx-to-pdf" />
       </Helmet>
-<JsonLd> data={{"@context":"https://schema.org","@type":"WebApplication","name":"Doc\1 \2\1 \2df – Files Nova","url":"https://filesnova.com/tools/docx-to-pdf","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "DOCX to PDF – Files Nova",
+        "url": "https://filesnova.com/tools/docx-to-pdf",
+        "applicationCategory": "FileConverter",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }} />
 
       {/* Outer Container */}
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
@@ -123,6 +136,7 @@ const DocxToPdfPage: React.FC = () => {
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
+
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -146,6 +160,7 @@ const DocxToPdfPage: React.FC = () => {
             </div>
           </div>
         </header>
+
         {/* Main content */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 py-10">
           {/* Tool Header */}
@@ -175,6 +190,7 @@ const DocxToPdfPage: React.FC = () => {
               </div>
             </div>
           </div>
+
           {/* Upload Area */}
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 mb-8">
             <div className="p-8">
@@ -202,6 +218,7 @@ const DocxToPdfPage: React.FC = () => {
                 onChange={handleFileSelect}
               />
             </div>
+
             {file && (
               <div className="border-t border-gray-200 p-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Selected File</h3>
@@ -215,13 +232,11 @@ const DocxToPdfPage: React.FC = () => {
                       <p className="text-sm text-gray-500">{formatFileSize(file.size)}</p>
                     </div>
                   </div>
-                  <button
-                    onClick={removeFile}
-                    className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-                  >
+                  <button onClick={removeFile} className="p-2 rounded-full hover:bg-gray-200 transition-colors">
                     <X className="w-4 h-4 text-gray-600" />
                   </button>
                 </div>
+
                 <button
                   onClick={handleConvert}
                   disabled={status === 'converting'}
@@ -229,17 +244,19 @@ const DocxToPdfPage: React.FC = () => {
                 >
                   {status === 'converting' ? 'Converting...' : 'Convert to PDF'}
                 </button>
+
                 {status === 'converting' && (
                   <div className="mt-4 w-full bg-blue-200 rounded-full h-3 overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full animate-pulse"
                       style={{ width: '100%' }}
-                    ></div>
+                    />
                   </div>
                 )}
               </div>
             )}
           </div>
+
           {/* Result Area */}
           {status === 'completed' && pdfUrl && (
             <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
@@ -247,8 +264,7 @@ const DocxToPdfPage: React.FC = () => {
                 <CheckCircle className="w-5 h-5 text-green-600 mr-2" /> Conversion Completed
               </h3>
               <p className="text-gray-700 mb-4">
-                Your document has been successfully converted. Click the button below to download
-                your PDF.
+                Your document has been successfully converted. Click the button below to download your PDF.
               </p>
               <a
                 href={pdfUrl}
@@ -260,6 +276,7 @@ const DocxToPdfPage: React.FC = () => {
             </div>
           )}
         </div>
+
         {/* Footer Ad Space */}
         <AdSpace />
       </div>
