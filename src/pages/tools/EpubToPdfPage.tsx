@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import JsonLd from '../../components/JsonLd';
 import JSZip from 'jszip';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import UploadZone from '../../components/UploadZone';
@@ -120,6 +121,8 @@ const EpubToPdfPage: React.FC = () => {
   />
   <link rel="canonical" href="https://filesnova.com/tools/epub-to-pdf" />
 </Helmet>
+<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Epu\1 \2\1 \2df – Files Nova","url":"https://filesnova.com/tools/epub-to-pdf","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+
 <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
