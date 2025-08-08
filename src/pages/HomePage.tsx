@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AdSpace from '../components/AdSpace';
 import { Link } from 'react-router-dom';
 import {
@@ -11,12 +11,23 @@ import {
   Archive,
   Type,
   ChevronRight,
+  ChevronDown, // NEW
   Gauge,
   Facebook,
-  Twitter,
+  // Twitter,  // REMOVED
   Instagram,
   Linkedin,
 } from 'lucide-react';
+
+// Minimal "X" (Twitter rebrand) SVG icon
+const XLogo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" role="img" {...props} xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M18.244 2H21l-6.56 7.49L22 22h-6.83l-4.77-6.36L4.88 22H2.12l6.99-7.98L2 2h6.83l4.36 5.81L18.24 2Z"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 // Define the tool categories with their tools, gradient colors and routes
 const toolCategories = [
@@ -122,9 +133,26 @@ const features = [
 const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const filteredCategories = selectedCategory === 'all'
-    ? toolCategories
-    : toolCategories.filter((cat) => cat.id === selectedCategory);
+  // ===== All Tools dropdown state =====
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const toolsMenuRef = useRef<HTMLDivElement>(null);
+  const allTools = toolCategories.flatMap((c) => c.tools);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (toolsMenuRef.current && !toolsMenuRef.current.contains(e.target as Node)) {
+        setToolsOpen(false);
+      }
+    }
+    document.addEventListener('click', onDocClick);
+    return () => document.removeEventListener('click', onDocClick);
+  }, []);
+  // ====================================
+
+  const filteredCategories =
+    selectedCategory === 'all'
+      ? toolCategories
+      : toolCategories.filter((cat) => cat.id === selectedCategory);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
@@ -136,7 +164,6 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Header */}
-      {/* The header is fixed to the top of the viewport so it remains visible while scrolling. */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
@@ -154,25 +181,80 @@ const HomePage: React.FC = () => {
                 <p className="text-xs text-gray-500 font-medium">File conversion reimagined</p>
               </div>
             </div>
-            {/* Navigation Links (simplified) */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="#tools" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
-                Tools
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-              <Link to="/help" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
-                Help
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              <Link to="/contact" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
-                Contact
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              <Link to="/privacy-policy" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
-                Privacy
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </nav>
+
+            {/* Right side: nav + All Tools dropdown */}
+            <div className="flex items-center">
+              {/* Navigation Links (desktop) */}
+              <nav className="hidden md:flex items-center space-x-8">
+                <a
+                  href="#tools"
+                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
+                >
+                  Tools
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <Link
+                  to="/help"
+                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
+                >
+                  Help
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+                <Link
+                  to="/contact"
+                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
+                >
+                  Contact
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+                <Link
+                  to="/privacy-policy"
+                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
+                >
+                  Privacy
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </nav>
+
+              {/* All Tools dropdown (always visible; sits at far right) */}
+              <div className="relative ml-2" ref={toolsMenuRef}>
+                <button
+                  onClick={() => setToolsOpen((v) => !v)}
+                  className="flex items-center gap-1 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 bg-white/70 hover:bg-white shadow-sm ring-1 ring-black/5 backdrop-blur transition-all"
+                  aria-haspopup="menu"
+                  aria-expanded={toolsOpen}
+                  aria-label="Open all tools menu"
+                >
+                  All Tools
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform ${toolsOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+
+                {/* Dropdown panel */}
+                <div
+                  className={`absolute right-0 mt-2 w-80 max-h-[60vh] overflow-auto rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 origin-top-right transform transition duration-150 ${
+                    toolsOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+                  }`}
+                  role="menu"
+                >
+                  <div className="p-2">
+                    {allTools.map((t) => (
+                      <Link
+                        key={t.route}
+                        to={t.route}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50"
+                        onClick={() => setToolsOpen(false)}
+                        role="menuitem"
+                      >
+                        <span>{t.name}</span>
+                        <span className="text-gray-400">›</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -191,17 +273,26 @@ const HomePage: React.FC = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            The most powerful file converter on the web. <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">No uploads, no limits, no compromises.</span>
+            The most powerful file converter on the web.{' '}
+            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              No uploads, no limits, no compromises.
+            </span>
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-            <a href="#tools" className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
+            <a
+              href="#tools"
+              className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105"
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center">
                 Start Converting Now
                 <ChevronRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
               </span>
             </a>
-            <a href="#features" className="group border-3 border-gray-300 text-gray-700 px-10 py-5 rounded-2xl font-bold text-lg hover:border-blue-600 hover:text-blue-600 hover:shadow-xl transition-all duration-300 hover:bg-blue-50">
+            <a
+              href="#features"
+              className="group border-3 border-gray-300 text-gray-700 px-10 py-5 rounded-2xl font-bold text-lg hover:border-blue-600 hover:text-blue-600 hover:shadow-xl transition-all duration-300 hover:bg-blue-50"
+            >
               Watch Demo
             </a>
           </div>
@@ -224,9 +315,7 @@ const HomePage: React.FC = () => {
       <section id="features" className="relative z-10 py-20 px-4 bg-white/50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-gray-900 mb-6">
-              Why Choose Files Nova?
-            </h2>
+            <h2 className="text-4xl font-black text-gray-900 mb-6">Why Choose Files Nova?</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Experience the future of file conversion with our cutting-edge technology
             </p>
@@ -236,7 +325,9 @@ const HomePage: React.FC = () => {
               <div key={idx} className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-600/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all opacity-0 group-hover:opacity-100"></div>
                 <div className="relative bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                  <div className={`w-20 h-20 bg-gradient-to-r ${feature.gradient} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+                  <div
+                    className={`w-20 h-20 bg-gradient-to-r ${feature.gradient} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg`}
+                  >
                     <feature.icon className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-gray-900 text-center">{feature.title}</h3>
@@ -252,9 +343,7 @@ const HomePage: React.FC = () => {
       <section id="tools" className="relative z-10 py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-gray-900 mb-6">
-              Powerful Tools at Your Fingertips
-            </h2>
+            <h2 className="text-4xl font-black text-gray-900 mb-6">Powerful Tools at Your Fingertips</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Choose from our comprehensive collection of professional-grade conversion tools
             </p>
@@ -262,7 +351,11 @@ const HomePage: React.FC = () => {
           <div className="flex flex-wrap justify-center gap-4 mb-16">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${selectedCategory === 'all' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl' : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'}`}
+              className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === 'all'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl'
+                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'
+              }`}
             >
               All Tools
             </button>
@@ -270,7 +363,11 @@ const HomePage: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-3 ${selectedCategory === category.id ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl' : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'}`}
+                className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-3 ${
+                  selectedCategory === category.id
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'
+                }`}
               >
                 <category.icon className="w-5 h-5" />
                 {category.name}
@@ -353,9 +450,6 @@ const HomePage: React.FC = () => {
           <div>
             <h4 className="font-bold mb-6 text-lg">Popular Tools</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
-              {/* Make the popular tools links clickable by pointing to their
-                  respective routes. Previously these were spans that did
-                  nothing when clicked. */}
               <li>
                 <Link to="/tools/docx-to-pdf" className="hover:text-white transition-colors">
                   PDF Converter
@@ -431,7 +525,7 @@ const HomePage: React.FC = () => {
             <Facebook className="w-6 h-6" />
           </a>
           <a href="https://twitter.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-            <Twitter className="w-6 h-6" />
+            <XLogo className="w-6 h-6" />
           </a>
           <a href="https://instagram.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
             <Instagram className="w-6 h-6" />
