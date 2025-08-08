@@ -66,6 +66,7 @@ const MergePdfPage: React.FC = () => {
   };
 
   return (
+    <>
 <Helmet>
   <title>Merge PDF Files – Combine Multiple PDFs | FilesNova</title>
   <meta name="description" content="Join multiple PDF files into one. Drag and drop to merge PDFs instantly. Free, secure, and no watermarks with FilesNova." />
@@ -171,6 +172,7 @@ const MergePdfPage: React.FC = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
