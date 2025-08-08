@@ -58,6 +58,7 @@ const CreateZipPage: React.FC = () => {
   };
 
   return (
+    <>
 <Helmet>
   <title>Create ZIP – Free, Fast & Secure Online ZIP Creator | FilesNova</title>
   <meta
@@ -166,6 +167,7 @@ const CreateZipPage: React.FC = () => {
         <AdSpace />
       </div>
     </div>
+    </>
   );
 };
 
