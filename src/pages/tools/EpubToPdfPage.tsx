@@ -111,6 +111,7 @@ const EpubToPdfPage: React.FC = () => {
   };
 
   return (
+    <>
 <Helmet>
   <title>Convert EPUB to PDF – Fast & Free Online Converter | FilesNova</title>
   <meta
@@ -119,7 +120,7 @@ const EpubToPdfPage: React.FC = () => {
   />
   <link rel="canonical" href="https://filesnova.com/tools/epub-to-pdf" />
 </Helmet>
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
+<div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -219,6 +220,7 @@ const EpubToPdfPage: React.FC = () => {
         <AdSpace />
       </div>
     </div>
+    </>
   );
 };
 
