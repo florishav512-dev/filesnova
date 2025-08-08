@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import JsonLd from '../../components/JsonLd';
 import * as bodyPix from '@tensorflow-models/body-pix';
 import '@tensorflow/tfjs';
 import JSZip from 'jszip';
@@ -169,6 +170,8 @@ const BackgroundRemoverPage: React.FC = () => {
         />
         <link rel="canonical" href="https://filesnova.com/tools/remove-background" />
       </Helmet>
+<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Backgroun\1 \2emover – Files Nova","url":"https://filesnova.com/tools/remove-background","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
