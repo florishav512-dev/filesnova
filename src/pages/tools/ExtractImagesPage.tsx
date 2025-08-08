@@ -79,6 +79,7 @@ const ExtractImagesPage: React.FC = () => {
   };
 
   return (
+    <>
 <Helmet>
   <title>Extract Images from PDF – Free & Fast Online Tool | FilesNova</title>
   <meta
@@ -201,6 +202,7 @@ const ExtractImagesPage: React.FC = () => {
         <AdSpace />
       </div>
     </div>
+    </>
   );
 };
 
