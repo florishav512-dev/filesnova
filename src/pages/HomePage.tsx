@@ -11,25 +11,27 @@ import {
   Archive,
   Type,
   ChevronRight,
-  ChevronDown, // NEW
   Gauge,
   Facebook,
-  // Twitter,  // REMOVED
   Instagram,
   Linkedin,
 } from 'lucide-react';
 
-// Minimal "X" (Twitter rebrand) SVG icon
-const XLogo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg viewBox="0 0 24 24" aria-hidden="true" role="img" {...props} xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M18.244 2H21l-6.56 7.49L22 22h-6.83l-4.77-6.36L4.88 22H2.12l6.99-7.98L2 2h6.83l4.36 5.81L18.24 2Z"
-      fill="currentColor"
-    />
+// Inline chevron-down (avoids lucide version issues)
+const ChevronDownIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" width="16" height="16" {...props} xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
-// Define the tool categories with their tools, gradient colors and routes
+// Minimal "X" (Twitter rebrand) icon
+const XLogo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" role="img" {...props} xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.244 2H21l-6.56 7.49L22 22h-6.83l-4.77-6.36L4.88 22H2.12l6.99-7.98L2 2h6.83l4.36 5.81L18.24 2Z" fill="currentColor"/>
+  </svg>
+);
+
+// ===== Tool categories (unchanged) =====
 const toolCategories = [
   {
     id: 'documents',
@@ -110,30 +112,15 @@ const toolCategories = [
 
 // Feature cards data
 const features = [
-  {
-    icon: Shield,
-    title: '100% Private & Secure',
-    desc: 'Files never leave your device. Zero uploads, maximum privacy.',
-    gradient: 'from-blue-500 to-cyan-500',
-  },
-  {
-    icon: Zap,
-    title: 'Lightning Fast Conversion',
-    desc: 'Instant processing powered by your browser. No waiting.',
-    gradient: 'from-yellow-500 to-orange-500',
-  },
-  {
-    icon: Smartphone,
-    title: 'Works Everywhere',
-    desc: 'Perfect experience on desktop, tablet, and mobile devices.',
-    gradient: 'from-green-500 to-emerald-500',
-  },
+  { icon: Shield, title: '100% Private & Secure', desc: 'Files never leave your device. Zero uploads, maximum privacy.', gradient: 'from-blue-500 to-cyan-500' },
+  { icon: Zap, title: 'Lightning Fast Conversion', desc: 'Instant processing powered by your browser. No waiting.', gradient: 'from-yellow-500 to-orange-500' },
+  { icon: Smartphone, title: 'Works Everywhere', desc: 'Perfect experience on desktop, tablet, and mobile devices.', gradient: 'from-green-500 to-emerald-500' },
 ];
 
 const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // ===== All Tools dropdown state =====
+  // All Tools dropdown state
   const [toolsOpen, setToolsOpen] = useState(false);
   const toolsMenuRef = useRef<HTMLDivElement>(null);
   const allTools = toolCategories.flatMap((c) => c.tools);
@@ -147,12 +134,9 @@ const HomePage: React.FC = () => {
     document.addEventListener('click', onDocClick);
     return () => document.removeEventListener('click', onDocClick);
   }, []);
-  // ====================================
 
   const filteredCategories =
-    selectedCategory === 'all'
-      ? toolCategories
-      : toolCategories.filter((cat) => cat.id === selectedCategory);
+    selectedCategory === 'all' ? toolCategories : toolCategories.filter((cat) => cat.id === selectedCategory);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
@@ -186,37 +170,25 @@ const HomePage: React.FC = () => {
             <div className="flex items-center">
               {/* Navigation Links (desktop) */}
               <nav className="hidden md:flex items-center space-x-8">
-                <a
-                  href="#tools"
-                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
-                >
+                <a href="#tools" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
                   Tools
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
-                <Link
-                  to="/help"
-                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
-                >
+                <Link to="/help" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
                   Help
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link
-                  to="/contact"
-                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
-                >
+                <Link to="/contact" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
                   Contact
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link
-                  to="/privacy-policy"
-                  className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group"
-                >
+                <Link to="/privacy-policy" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
                   Privacy
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </nav>
 
-              {/* All Tools dropdown (always visible; sits at far right) */}
+              {/* All Tools dropdown */}
               <div className="relative ml-2" ref={toolsMenuRef}>
                 <button
                   onClick={() => setToolsOpen((v) => !v)}
@@ -226,12 +198,9 @@ const HomePage: React.FC = () => {
                   aria-label="Open all tools menu"
                 >
                   All Tools
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform ${toolsOpen ? 'rotate-180' : ''}`}
-                  />
+                  <ChevronDownIcon className={`h-4 w-4 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Dropdown panel */}
                 <div
                   className={`absolute right-0 mt-2 w-80 max-h-[60vh] overflow-auto rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 origin-top-right transform transition duration-150 ${
                     toolsOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
@@ -273,40 +242,25 @@ const HomePage: React.FC = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-            The most powerful file converter on the web.{' '}
-            <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              No uploads, no limits, no compromises.
-            </span>
+            The most powerful file converter on the web. <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">No uploads, no limits, no compromises.</span>
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-            <a
-              href="#tools"
-              className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105"
-            >
+            <a href="#tools" className="group relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <span className="relative flex items-center">
                 Start Converting Now
                 <ChevronRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
               </span>
             </a>
-            <a
-              href="#features"
-              className="group border-3 border-gray-300 text-gray-700 px-10 py-5 rounded-2xl font-bold text-lg hover:border-blue-600 hover:text-blue-600 hover:shadow-xl transition-all duration-300 hover:bg-blue-50"
-            >
+            <a href="#features" className="group border-3 border-gray-300 text-gray-700 px-10 py-5 rounded-2xl font-bold text-lg hover:border-blue-600 hover:text-blue-600 hover:shadow-xl transition-all duration-300 hover:bg-blue-50">
               Watch Demo
             </a>
           </div>
           {/* Trust indicators */}
           <div className="flex flex-wrap justify-center items-center gap-8 text-gray-500">
-            <div className="flex items-center gap-2">
-              <span className="font-medium">No Registration Required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium">100% Private</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium">Works Offline</span>
-            </div>
+            <div className="flex items-center gap-2"><span className="font-medium">No Registration Required</span></div>
+            <div className="flex items-center gap-2"><span className="font-medium">100% Private</span></div>
+            <div className="flex items-center gap-2"><span className="font-medium">Works Offline</span></div>
           </div>
         </div>
       </section>
@@ -316,18 +270,14 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black text-gray-900 mb-6">Why Choose Files Nova?</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Experience the future of file conversion with our cutting-edge technology
-            </p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">Experience the future of file conversion with our cutting-edge technology</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, idx) => (
               <div key={idx} className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-600/20 rounded-3xl blur-xl group-hover:blur-2xl transition-all opacity-0 group-hover:opacity-100"></div>
                 <div className="relative bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                  <div
-                    className={`w-20 h-20 bg-gradient-to-r ${feature.gradient} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg`}
-                  >
+                  <div className={`w-20 h-20 bg-gradient-to-r ${feature.gradient} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
                     <feature.icon className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-gray-900 text-center">{feature.title}</h3>
@@ -344,18 +294,12 @@ const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black text-gray-900 mb-6">Powerful Tools at Your Fingertips</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Choose from our comprehensive collection of professional-grade conversion tools
-            </p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">Choose from our comprehensive collection of professional-grade conversion tools</p>
           </div>
           <div className="flex flex-wrap justify-center gap-4 mb-16">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${
-                selectedCategory === 'all'
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'
-              }`}
+              className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 ${selectedCategory === 'all' ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl' : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'}`}
             >
               All Tools
             </button>
@@ -363,11 +307,7 @@ const HomePage: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-3 ${
-                  selectedCategory === category.id
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'
-                }`}
+                className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-3 ${selectedCategory === category.id ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl' : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'}`}
               >
                 <category.icon className="w-5 h-5" />
                 {category.name}
@@ -379,14 +319,10 @@ const HomePage: React.FC = () => {
               <React.Fragment key={category.id}>
                 <div className="group">
                   <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-white/20 overflow-hidden">
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${category.bgGradient} opacity-0 group-hover:opacity-100 transition-all duration-700`}
-                    ></div>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${category.bgGradient} opacity-0 group-hover:opacity-100 transition-all duration-700`}></div>
                     <div className="relative z-10">
                       <div className="flex items-center gap-6 mb-8">
-                        <div
-                          className={`w-16 h-16 bg-gradient-to-r ${category.gradient} rounded-2xl flex items-center justify-center shadow-xl`}
-                        >
+                        <div className={`w-16 h-16 bg-gradient-to-r ${category.gradient} rounded-2xl flex items-center justify-center shadow-xl`}>
                           <category.icon className="w-8 h-8 text-white" />
                         </div>
                         <div>
@@ -429,9 +365,7 @@ const HomePage: React.FC = () => {
 
       {/* Footer */}
       <footer className="relative z-10 bg-gray-900 text-white py-12 px-4">
-        {/* Top row: Brand and navigation columns */}
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
-          {/* Brand column */}
           <div>
             <div className="flex items-center space-x-4 mb-6">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
@@ -446,33 +380,17 @@ const HomePage: React.FC = () => {
               The fastest, most secure, and most beautiful way to convert files online. Trusted by millions worldwide.
             </p>
           </div>
-          {/* Popular Tools column */}
+
           <div>
             <h4 className="font-bold mb-6 text-lg">Popular Tools</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
-              <li>
-                <Link to="/tools/docx-to-pdf" className="hover:text-white transition-colors">
-                  PDF Converter
-                </Link>
-              </li>
-              <li>
-                <Link to="/tools/image-resizer" className="hover:text-white transition-colors">
-                  Image Resizer
-                </Link>
-              </li>
-              <li>
-                <Link to="/tools/create-zip" className="hover:text-white transition-colors">
-                  ZIP Creator
-                </Link>
-              </li>
-              <li>
-                <Link to="/tools/qr-generator" className="hover:text-white transition-colors">
-                  QR Generator
-                </Link>
-              </li>
+              <li><Link to="/tools/docx-to-pdf" className="hover:text-white transition-colors">PDF Converter</Link></li>
+              <li><Link to="/tools/image-resizer" className="hover:text-white transition-colors">Image Resizer</Link></li>
+              <li><Link to="/tools/create-zip" className="hover:text-white transition-colors">ZIP Creator</Link></li>
+              <li><Link to="/tools/qr-generator" className="hover:text-white transition-colors">QR Generator</Link></li>
             </ul>
           </div>
-          {/* Support column */}
+
           <div>
             <h4 className="font-bold mb-6 text-lg">Support</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
@@ -482,7 +400,7 @@ const HomePage: React.FC = () => {
               <li><Link to="/tutorials" className="hover:text-white transition-colors">Tutorials</Link></li>
             </ul>
           </div>
-          {/* Legal column */}
+
           <div>
             <h4 className="font-bold mb-6 text-lg">Legal</h4>
             <ul className="space-y-3 text-gray-400 text-sm">
@@ -493,33 +411,20 @@ const HomePage: React.FC = () => {
             </ul>
           </div>
         </div>
-        {/* About section */}
+
         <div className="max-w-5xl mx-auto mt-12 pt-8 border-t border-gray-800">
           <h4 className="text-2xl font-bold mb-4 text-center">About Files Nova – Your Ultimate File Conversion Solution</h4>
           <p className="text-gray-400 text-sm leading-relaxed mb-4">
-            Files Nova is the most comprehensive online file conversion platform that prioritizes your
-            privacy and delivers lightning-fast results. Unlike traditional online converters that
-            require uploading your files to remote servers, Files Nova processes everything locally
-            in your browser using advanced JavaScript libraries including jsPDF, pdf-lib,
-            browser-image-compression, and more.
+            Files Nova is the most comprehensive online file conversion platform that prioritizes your privacy and delivers lightning-fast results. Unlike traditional online converters that require uploading your files to remote servers, Files Nova processes everything locally in your browser using advanced JavaScript libraries including jsPDF, pdf-lib, browser-image-compression, and more.
           </p>
           <p className="text-gray-400 text-sm leading-relaxed mb-4">
-            Our extensive suite of tools covers every major file conversion need: convert images to
-            PDF, merge and split PDF documents, compress images without quality loss, create ZIP
-            archives, resize images with precision, count words and characters, unlock
-            password-protected PDFs, and convert DOCX documents to PDF format. Whether you're a
-            student, professional, or casual user, Files Nova provides the tools you need without
-            compromising your data security.
+            Our extensive suite of tools covers every major file conversion need: convert images to PDF, merge and split PDF documents, compress images without quality loss, create ZIP archives, resize images with precision, count words and characters, unlock password-protected PDFs, and convert DOCX documents to PDF format. Whether you're a student, professional, or casual user, Files Nova provides the tools you need without compromising your data security.
           </p>
           <p className="text-gray-400 text-sm leading-relaxed">
-            Built with modern web technologies and optimized for all devices, Files Nova works
-            seamlessly on desktop computers, tablets, and smartphones. No registration required, no
-            software downloads, and no file size limitations – just fast, secure, and reliable file
-            conversions whenever you need them. Join millions of users who trust Files Nova for
-            their daily file conversion needs.
+            Built with modern web technologies and optimized for all devices, Files Nova works seamlessly on desktop computers, tablets, and smartphones. No registration required, no software downloads, and no file size limitations – just fast, secure, and reliable file conversions whenever you need them. Join millions of users who trust Files Nova for their daily file conversion needs.
           </p>
         </div>
-        {/* Social Media icons */}
+
         <div className="mt-12 flex justify-center space-x-6">
           <a href="https://facebook.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
             <Facebook className="w-6 h-6" />
@@ -534,7 +439,7 @@ const HomePage: React.FC = () => {
             <Linkedin className="w-6 h-6" />
           </a>
         </div>
-        {/* Copyright */}
+
         <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400 text-sm">
           &copy; {new Date().getFullYear()} Files Nova. Made with ❤️ for the world. All rights reserved.
         </div>
