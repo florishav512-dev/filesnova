@@ -73,6 +73,7 @@ const CombineZipsPage: React.FC = () => {
   };
 
   return (
+    <>
 <Helmet>
   <title>Combine ZIP Files – Merge Archives Online | FilesNova</title>
   <meta
@@ -183,6 +184,7 @@ const CombineZipsPage: React.FC = () => {
         <AdSpace />
       </div>
     </div>
+    </>
   );
 };
 
