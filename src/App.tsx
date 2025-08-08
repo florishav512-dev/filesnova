@@ -1,57 +1,57 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 // Remove Sparkles import since global header removed
-import HomePage from './pages/HomePage';
-import TextToPdfPage from './pages/tools/TextToPdfPage';
-import ImageResizerPage from './pages/tools/ImageResizerPage';
-import QrGeneratorPage from './pages/tools/QrGeneratorPage';
-import ComingSoonPage from './pages/tools/ComingSoonPage';
-import ImageToPdfPage from './pages/tools/ImageToPdfPage';
-import JpgToPdfPage from './pages/tools/JpgToPdfPage';
-import PngToPdfPage from './pages/tools/PngToPdfPage';
-import DocxToPdfPage from './pages/tools/DocxToPdfPage';
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const TextToPdfPage = React.lazy(() => import('./pages/tools/TextToPdfPage'));
+const ImageResizerPage = React.lazy(() => import('./pages/tools/ImageResizerPage'));
+const QrGeneratorPage = React.lazy(() => import('./pages/tools/QrGeneratorPage'));
+const ComingSoonPage = React.lazy(() => import('./pages/tools/ComingSoonPage'));
+const ImageToPdfPage = React.lazy(() => import('./pages/tools/ImageToPdfPage'));
+const JpgToPdfPage = React.lazy(() => import('./pages/tools/JpgToPdfPage'));
+const PngToPdfPage = React.lazy(() => import('./pages/tools/PngToPdfPage'));
+const DocxToPdfPage = React.lazy(() => import('./pages/tools/DocxToPdfPage'));
 // Newly added tool pages
-import MarkdownToPdfPage from './pages/tools/MarkdownToPdfPage';
-import RtfToDocxPage from './pages/tools/RtfToDocxPage';
-import HtmlToPdfPage from './pages/tools/HtmlToPdfPage';
-import EpubToPdfPage from './pages/tools/EpubToPdfPage';
-import XlsxToCsvPage from './pages/tools/XlsxToCsvPage';
-import PptxToPdfPage from './pages/tools/PptxToPdfPage';
-import MergePdfPage from './pages/tools/MergePdfPage';
-import SplitPdfPage from './pages/tools/SplitPdfPage';
-import UnlockPdfPage from './pages/tools/UnlockPdfPage';
-import ExtractTextPage from './pages/tools/ExtractTextPage';
-import PdfToJpgPage from './pages/tools/PdfToJpgPage';
-import CompressImagesPage from './pages/tools/CompressImagesPage';
-import WebpConverterPage from './pages/tools/WebpConverterPage';
-import SvgToPngPage from './pages/tools/SvgToPngPage';
-import GifToMp4Page from './pages/tools/GifToMp4Page';
-import BackgroundRemoverPage from './pages/tools/BackgroundRemoverPage';
-import CreateZipPage from './pages/tools/CreateZipPage';
-import ExtractZipPage from './pages/tools/ExtractZipPage';
-import CombineZipsPage from './pages/tools/CombineZipsPage';
-import TarToZipPage from './pages/tools/TarToZipPage';
-import WordCounterPage from './pages/tools/WordCounterPage';
-import CaseConverterPage from './pages/tools/CaseConverterPage';
-import QrScannerPage from './pages/tools/QrScannerPage';
+const MarkdownToPdfPage = React.lazy(() => import('./pages/tools/MarkdownToPdfPage'));
+const RtfToDocxPage = React.lazy(() => import('./pages/tools/RtfToDocxPage'));
+const HtmlToPdfPage = React.lazy(() => import('./pages/tools/HtmlToPdfPage'));
+const EpubToPdfPage = React.lazy(() => import('./pages/tools/EpubToPdfPage'));
+const XlsxToCsvPage = React.lazy(() => import('./pages/tools/XlsxToCsvPage'));
+const PptxToPdfPage = React.lazy(() => import('./pages/tools/PptxToPdfPage'));
+const MergePdfPage = React.lazy(() => import('./pages/tools/MergePdfPage'));
+const SplitPdfPage = React.lazy(() => import('./pages/tools/SplitPdfPage'));
+const UnlockPdfPage = React.lazy(() => import('./pages/tools/UnlockPdfPage'));
+const ExtractTextPage = React.lazy(() => import('./pages/tools/ExtractTextPage'));
+const PdfToJpgPage = React.lazy(() => import('./pages/tools/PdfToJpgPage'));
+const CompressImagesPage = React.lazy(() => import('./pages/tools/CompressImagesPage'));
+const WebpConverterPage = React.lazy(() => import('./pages/tools/WebpConverterPage'));
+const SvgToPngPage = React.lazy(() => import('./pages/tools/SvgToPngPage'));
+const GifToMp4Page = React.lazy(() => import('./pages/tools/GifToMp4Page'));
+const BackgroundRemoverPage = React.lazy(() => import('./pages/tools/BackgroundRemoverPage'));
+const CreateZipPage = React.lazy(() => import('./pages/tools/CreateZipPage'));
+const ExtractZipPage = React.lazy(() => import('./pages/tools/ExtractZipPage'));
+const CombineZipsPage = React.lazy(() => import('./pages/tools/CombineZipsPage'));
+const TarToZipPage = React.lazy(() => import('./pages/tools/TarToZipPage'));
+const WordCounterPage = React.lazy(() => import('./pages/tools/WordCounterPage'));
+const CaseConverterPage = React.lazy(() => import('./pages/tools/CaseConverterPage'));
+const QrScannerPage = React.lazy(() => import('./pages/tools/QrScannerPage'));
 // alias for extract images same as pdf to jpg
-import ExtractImagesPage from './pages/tools/ExtractImagesPage';
+const ExtractImagesPage = React.lazy(() => import('./pages/tools/ExtractImagesPage'));
 // Support pages
-import SupportPage from './pages/SupportPage';
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
-import TermsPage from './pages/TermsPage';
-import HelpPage from './pages/HelpPage';
-import ContactPage from './pages/ContactPage';
-import CookiePolicyPage from './pages/CookiePolicyPage';
-import GDPRPage from './pages/GDPRPage';
-import TutorialsPage from './pages/TutorialsPage';
+const SupportPage = React.lazy(() => import('./pages/SupportPage'));
+const PrivacyPolicyPage = React.lazy(() => import('./pages/PrivacyPolicyPage'));
+const TermsPage = React.lazy(() => import('./pages/TermsPage'));
+const HelpPage = React.lazy(() => import('./pages/HelpPage'));
+const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const CookiePolicyPage = React.lazy(() => import('./pages/CookiePolicyPage'));
+const GDPRPage = React.lazy(() => import('./pages/GDPRPage'));
+const TutorialsPage = React.lazy(() => import('./pages/TutorialsPage'));
 
 const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Render route contents */}
       <main className="flex-1">
-        <Routes>
+        <Suspense fallback={<div />}>\n<Routes>
           <Route path="/" element={<HomePage />} />
           {/* Tools routes */}
           <Route path="/tools/text-to-pdf" element={<TextToPdfPage />} />
@@ -98,7 +98,7 @@ const App: React.FC = () => {
           <Route path="/tutorials" element={<TutorialsPage />} />
           {/* fallback */}
           <Route path="*" element={<HomePage />} />
-        </Routes>
+        </Routes>\n</Suspense>
       </main>
     </div>
   );
