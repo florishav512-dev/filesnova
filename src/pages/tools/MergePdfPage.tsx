@@ -73,8 +73,17 @@ const MergePdfPage: React.FC = () => {
   <meta name="description" content="Join multiple PDF files into one. Drag and drop to merge PDFs instantly. Free, secure, and no watermarks with FilesNova." />
   <link rel="canonical" href="https://filesnova.com/tools/merge-pdf" />
 </Helmet>
-<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Merg\1 \2df – Files Nova","url":"https://filesnova.com/tools/merge-pdf","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
 
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Merge PDF – Files Nova",
+  "url": "https://filesnova.com/tools/merge-pdf",
+  "applicationCategory": "FileConverter",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}} />
 
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
