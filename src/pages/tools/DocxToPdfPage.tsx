@@ -113,7 +113,7 @@ const DocxToPdfPage: React.FC = () => {
         />
         <link rel="canonical" href="https://filesnova.com/tools/docx-to-pdf" />
       </Helmet>
-<JsonLd data={{"@context":"https://schema.org","@type":"WebApplication","name":"Doc\1 \2\1 \2df – Files Nova","url":"https://filesnova.com/tools/docx-to-pdf","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+<JsonLd> data={{"@context":"https://schema.org","@type":"WebApplication","name":"Doc\1 \2\1 \2df – Files Nova","url":"https://filesnova.com/tools/docx-to-pdf","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
 
       {/* Outer Container */}
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
