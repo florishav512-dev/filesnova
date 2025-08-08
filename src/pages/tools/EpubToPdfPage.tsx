@@ -121,7 +121,17 @@ const EpubToPdfPage: React.FC = () => {
   />
   <link rel="canonical" href="https://filesnova.com/tools/epub-to-pdf" />
 </Helmet>
-<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Epu\1 \2\1 \2df – Files Nova","url":"https://filesnova.com/tools/epub-to-pdf","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+</Helmet>
+
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "EPUB to PDF – Files Nova",
+  "url": "https://filesnova.com/tools/epub-to-pdf",
+  "applicationCategory": "FileConverter",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}} />
 
 <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
