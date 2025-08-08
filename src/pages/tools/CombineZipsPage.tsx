@@ -83,7 +83,15 @@ const CombineZipsPage: React.FC = () => {
   />
   <link rel="canonical" href="https://filesnova.com/tools/combine-zip" />
 </Helmet>
-<JsonLd data={"@context":"https://schema.org","@type":"WebApplication","name":"Combin\1 \2ips – Files Nova","url":"https://filesnova.com/tools/combine-zip","applicationCategory":"FileConverter","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}} />
+<JsonLd data={{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Combine ZIPs – Files Nova",
+  "url": "https://filesnova.com/tools/combine-zips",
+  "applicationCategory": "FileConverter",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}} />
 
     
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
