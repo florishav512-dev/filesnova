@@ -412,7 +412,7 @@ const HomePage: React.FC = () => {
               <li><Link to="/gdpr" className="hover:text-white transition-colors">GDPR</Link></li>
             </ul>
           </div>
-        </div>
+        </footer>
 
         <div className="max-w-5xl mx-auto mt-12 pt-8 border-t border-gray-800">
           <h4 className="text-2xl font-bold mb-4 text-center">About Files Nova – Your Ultimate File Conversion Solution</h4>
@@ -445,7 +445,7 @@ const HomePage: React.FC = () => {
         <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400 text-sm">
           &copy; {new Date().getFullYear()} Files Nova. Made with ❤️ for the world. All rights reserved.
         </div>
-      </footer>
+      </div>
     </div>
   );
 };
