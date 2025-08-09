@@ -369,8 +369,9 @@ const HomePage: React.FC = () => {
           <div>
             <div className="flex items-center space-x-4 mb-6">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                <Sparkles className="w-7 h-7 text-white" />
+                <Sparkles className="w-7 h-7 text-white animate-pulse" />
               </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
               <div>
                 <h3 className="text-2xl font-black">Files Nova</h3>
                 <p className="text-gray-400 text-sm">File conversion reimagined</p>
