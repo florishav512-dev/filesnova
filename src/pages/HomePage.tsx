@@ -449,6 +449,7 @@ const HomePage: React.FC = () => {
   </div>
 </footer>
  </div>
-
+);
+};
 
 export default HomePage;
