@@ -363,91 +363,91 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-10 bg-gray-900 text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                <Sparkles className="w-7 h-7 text-white animate-pulse" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
-              </div>
-              <div>
-                <h3 className="text-2xl font-black">Files Nova</h3>
-                <p className="text-gray-400 text-sm">File conversion reimagined</p>
-              </div>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              The fastest, most secure, and most beautiful way to convert files online. Trusted by millions worldwide.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-6 text-lg">Popular Tools</h4>
-            <ul className="space-y-3 text-gray-400 text-sm">
-              <li><Link to="/tools/docx-to-pdf" className="hover:text-white transition-colors">PDF Converter</Link></li>
-              <li><Link to="/tools/image-resizer" className="hover:text-white transition-colors">Image Resizer</Link></li>
-              <li><Link to="/tools/create-zip" className="hover:text-white transition-colors">ZIP Creator</Link></li>
-              <li><Link to="/tools/qr-generator" className="hover:text-white transition-colors">QR Generator</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-6 text-lg">Support</h4>
-            <ul className="space-y-3 text-gray-400 text-sm">
-              <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-              <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-              <li><Link to="/help" className="hover:text-white transition-colors">FAQ</Link></li>
-              <li><Link to="/tutorials" className="hover:text-white transition-colors">Tutorials</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-6 text-lg">Legal</h4>
-            <ul className="space-y-3 text-gray-400 text-sm">
-              <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-              <li><Link to="/gdpr" className="hover:text-white transition-colors">GDPR</Link></li>
-            </ul>
-          </div>
-        </footer>
-
-        <div className="max-w-5xl mx-auto mt-12 pt-8 border-t border-gray-800">
-          <h4 className="text-2xl font-bold mb-4 text-center">About Files Nova – Your Ultimate File Conversion Solution</h4>
-          <p className="text-gray-400 text-sm leading-relaxed mb-4">
-            Files Nova is the most comprehensive online file conversion platform that prioritizes your privacy and delivers lightning-fast results. Unlike traditional online converters that require uploading your files to remote servers, Files Nova processes everything locally in your browser using advanced JavaScript libraries including jsPDF, pdf-lib, browser-image-compression, and more.
-          </p>
-          <p className="text-gray-400 text-sm leading-relaxed mb-4">
-            Our extensive suite of tools covers every major file conversion need: convert images to PDF, merge and split PDF documents, compress images without quality loss, create ZIP archives, resize images with precision, count words and characters, unlock password-protected PDFs, and convert DOCX documents to PDF format. Whether you're a student, professional, or casual user, Files Nova provides the tools you need without compromising your data security.
-          </p>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            Built with modern web technologies and optimized for all devices, Files Nova works seamlessly on desktop computers, tablets, and smartphones. No registration required, no software downloads, and no file size limitations – just fast, secure, and reliable file conversions whenever you need them. Join millions of users who trust Files Nova for their daily file conversion needs.
-          </p>
+     {/* Footer */}
+<footer className="relative z-10 bg-gray-900 text-white py-12 px-4">
+  <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+    {/* Brand column */}
+    <div>
+      <div className="flex items-center space-x-4 mb-6">
+        <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
+          <Sparkles className="w-7 h-7 text-white animate-pulse" />
         </div>
-
-        <div className="mt-12 flex justify-center space-x-6">
-          <a href="https://facebook.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-            <Facebook className="w-6 h-6" />
-          </a>
-          <a href="https://twitter.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-            <XLogo className="w-6 h-6" />
-          </a>
-          <a href="https://instagram.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-            <Instagram className="w-6 h-6" />
-          </a>
-          <a href="https://linkedin.com/company/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
-            <Linkedin className="w-6 h-6" />
-          </a>
-        </div>
-
-        <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400 text-sm">
-          &copy; {new Date().getFullYear()} Files Nova. Made with ❤️ for the world. All rights reserved.
-        </div>
+        <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
       </div>
+      <div>
+        <h3 className="text-2xl font-black">Files Nova</h3>
+        <p className="text-gray-400 text-sm">File conversion reimagined</p>
+      </div>
+      <p className="text-gray-400 text-sm leading-relaxed mb-6">
+        The fastest, most secure, and most beautiful way to convert files online. Trusted by millions worldwide.
+      </p>
     </div>
-  );
-};
+
+    {/* Popular Tools */}
+    <div>
+      <h4 className="font-bold mb-6 text-lg">Popular Tools</h4>
+      <ul className="space-y-3 text-gray-400 text-sm">
+        <li><Link to="/tools/docx-to-pdf" className="hover:text-white transition-colors">PDF Converter</Link></li>
+        <li><Link to="/tools/image-resizer" className="hover:text-white transition-colors">Image Resizer</Link></li>
+        <li><Link to="/tools/create-zip" className="hover:text-white transition-colors">ZIP Creator</Link></li>
+        <li><Link to="/tools/qr-generator" className="hover:text-white transition-colors">QR Generator</Link></li>
+      </ul>
+    </div>
+
+    {/* Support */}
+    <div>
+      <h4 className="font-bold mb-6 text-lg">Support</h4>
+      <ul className="space-y-3 text-gray-400 text-sm">
+        <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+        <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+        <li><Link to="/help" className="hover:text-white transition-colors">FAQ</Link></li>
+        <li><Link to="/tutorials" className="hover:text-white transition-colors">Tutorials</Link></li>
+      </ul>
+    </div>
+
+    {/* Legal */}
+    <div>
+      <h4 className="font-bold mb-6 text-lg">Legal</h4>
+      <ul className="space-y-3 text-gray-400 text-sm">
+        <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+        <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+        <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
+        <li><Link to="/gdpr" className="hover:text-white transition-colors">GDPR</Link></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<div className="max-w-5xl mx-auto mt-12 pt-8 border-t border-gray-800">
+  <h4 className="text-2xl font-bold mb-4 text-center">About Files Nova – Your Ultimate File Conversion Solution</h4>
+  <p className="text-gray-400 text-sm leading-relaxed mb-4">
+    Files Nova is the most comprehensive online file conversion platform that prioritizes your privacy and delivers lightning-fast results. Unlike traditional online converters that require uploading your files to remote servers, Files Nova processes everything locally in your browser using advanced JavaScript libraries including jsPDF, pdf-lib, browser-image-compression, and more.
+  </p>
+  <p className="text-gray-400 text-sm leading-relaxed mb-4">
+    Our extensive suite of tools covers every major file conversion need: convert images to PDF, merge and split PDF documents, compress images without quality loss, create ZIP archives, resize images with precision, count words and characters, unlock password-protected PDFs, and convert DOCX documents to PDF format. Whether you're a student, professional, or casual user, Files Nova provides the tools you need without compromising your data security.
+  </p>
+  <p className="text-gray-400 text-sm leading-relaxed">
+    Built with modern web technologies and optimized for all devices, Files Nova works seamlessly on desktop computers, tablets, and smartphones. No registration required, no software downloads, and no file size limitations – just fast, secure, and reliable file conversions whenever you need them. Join millions of users who trust Files Nova for their daily file conversion needs.
+  </p>
+</div>
+
+<div className="mt-12 flex justify-center space-x-6">
+  <a href="https://facebook.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+    <Facebook className="w-6 h-6" />
+  </a>
+  <a href="https://twitter.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+    <XLogo className="w-6 h-6" />
+  </a>
+  <a href="https://instagram.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+    <Instagram className="w-6 h-6" />
+  </a>
+  <a href="https://linkedin.com/company/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+    <Linkedin className="w-6 h-6" />
+  </a>
+</div>
+
+<div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400 text-sm">
+  &copy; {new Date().getFullYear()} Files Nova. Made with ❤️ for the world. All rights reserved.
+</div>
 
 export default HomePage;
