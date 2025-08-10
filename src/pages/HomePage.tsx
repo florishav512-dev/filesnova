@@ -449,5 +449,8 @@ const HomePage: React.FC = () => {
 <div className="border-t border-gray-800 pt-8 mt-8 text-center text-gray-400 text-sm">
   &copy; {new Date().getFullYear()} Files Nova. Made with ❤️ for the world. All rights reserved.
 </div>
+</div>
+);
+};
 
 export default HomePage;
