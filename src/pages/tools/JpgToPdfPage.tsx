@@ -12,8 +12,11 @@ import {
   CheckCircle,
   Download as DownloadIcon,
 } from 'lucide-react';
+import ToolSeo from "../../components/seo/ToolSeo";
+import { TOOL_SEO_DATA } from "../../components/seo/toolSeoData";
 
 const JpgToPdfPage: React.FC = () => {
+const seo = TOOL_SEO_DATA["/tools/jpg-to-pdf"];
   const [files, setFiles] = useState<{ id: string; file: File; status: 'ready' | 'completed' }[]>([]);
   const [isConverting, setIsConverting] = useState(false);
   const [progress, setProgress] = useState(0);
