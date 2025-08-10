@@ -238,5 +238,5 @@ const seo = TOOL_SEO_DATA["/tools/jpg-to-pdf"];
       </div>
     </div>
   );
-
+};
 export default JpgToPdfPage;
