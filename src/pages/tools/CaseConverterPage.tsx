@@ -12,6 +12,10 @@ import {
 } from 'lucide-react';
 import AdSpace from '../../components/AdSpace';
 
+// ✅ SEO component + data
+import ToolSeo from '../../components/seo/ToolSeo';
+import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
+
 /**
  * CaseConverterPage allows users to convert text between different cases: upper,
  * lower, title and sentence. Results can be copied to the clipboard.
@@ -21,6 +25,9 @@ const CaseConverterPage: React.FC = () => {
   const [output, setOutput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+
+  // ✅ Pick SEO config for this tool
+  const seo = TOOL_SEO_DATA['/tools/case-converter'];
 
   const toTitleCase = (str: string) => {
     return str
@@ -74,6 +81,9 @@ const CaseConverterPage: React.FC = () => {
 
   return (
     <>
+      {/* ✅ Injects Breadcrumb + WebPage + SoftwareApplication + meta */}
+      <ToolSeo {...seo} />
+
       <Helmet>
         <title>Case Converter – Uppercase, Lowercase, Title & Sentence Case | FilesNova</title>
         <meta
@@ -82,15 +92,27 @@ const CaseConverterPage: React.FC = () => {
         />
         <link rel="canonical" href="https://filesnova.com/tools/case-converter" />
       </Helmet>
-<JsonLd data={{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Case Converter – Files Nova",
-  "url": "https://filesnova.com/tools/case-converter",
-  "applicationCategory": "FileConverter",
-  "operatingSystem": "Web",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-}} />
+
+      {/* Keep your existing WebApplication schema */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Case Converter – Files Nova",
+        "url": "https://filesnova.com/tools/case-converter",
+        "applicationCategory": "FileConverter",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }} />
+
+      {/* ✅ Added BreadcrumbList schema */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://filesnova.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Case Converter", "item": "https://filesnova.com/tools/case-converter" }
+        ]
+      }} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
         {/* background blobs */}
@@ -108,7 +130,7 @@ const CaseConverterPage: React.FC = () => {
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </a>
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-centered justify-center shadow-xl">
                   <Sparkles className="w-7 h-7 text-white animate-pulse" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
