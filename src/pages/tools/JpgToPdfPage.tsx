@@ -80,6 +80,8 @@ const seo = TOOL_SEO_DATA["/tools/jpg-to-pdf"];
   };
 
   return (
+<> 
+<ToolSeo {...seo} />
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
