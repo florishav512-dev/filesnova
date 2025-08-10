@@ -446,7 +446,8 @@ const HomePage: React.FC = () => {
         &copy; {new Date().getFullYear()} Files Nova. Made with ❤️ for the world. All rights reserved.
       </div>
     </div>
-  );
-};
+  </div>
+</footer>
+
 
 export default HomePage;
