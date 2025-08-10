@@ -16,6 +16,10 @@ import {
 } from 'lucide-react';
 import AdSpace from '../../components/AdSpace';
 
+// ✅ SEO component + data
+import ToolSeo from '../../components/seo/ToolSeo';
+import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
+
 /**
  * DocxToPdfPage renders the DOCX to PDF converter with a modern design.
  * Users can upload a Word document, convert it to a PDF and download the result.
@@ -25,6 +29,9 @@ const DocxToPdfPage: React.FC = () => {
   const [status, setStatus] = useState<'ready' | 'converting' | 'completed'>('ready');
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // ✅ Pick SEO config for this tool
+  const seo = TOOL_SEO_DATA['/tools/docx-to-pdf'];
 
   // Handle file input selection
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,6 +116,9 @@ const DocxToPdfPage: React.FC = () => {
 
   return (
     <>
+      {/* ✅ Injects Breadcrumb + WebPage + SoftwareApplication + meta */}
+      <ToolSeo {...seo} />
+
       <Helmet>
         <title>Convert DOCX to PDF – Fast &amp; Free Online Converter | FilesNova</title>
         <meta
@@ -118,6 +128,7 @@ const DocxToPdfPage: React.FC = () => {
         <link rel="canonical" href="https://filesnova.com/tools/docx-to-pdf" />
       </Helmet>
 
+      {/* Keep your existing WebApplication schema */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -128,12 +139,22 @@ const DocxToPdfPage: React.FC = () => {
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }} />
 
+      {/* ✅ Added BreadcrumbList schema */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://filesnova.com/" },
+          { "@type": "ListItem", "position": 2, "name": "DOCX to PDF", "item": "https://filesnova.com/tools/docx-to-pdf" }
+        ]
+      }} />
+
       {/* Outer Container */}
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from	pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
 
