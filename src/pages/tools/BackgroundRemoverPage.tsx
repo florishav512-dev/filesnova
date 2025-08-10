@@ -16,6 +16,10 @@ import {
   Download as DownloadIcon,
 } from 'lucide-react';
 
+// ✅ SEO component + data
+import ToolSeo from '../../components/seo/ToolSeo';
+import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
+
 /**
  * BackgroundRemoverPage removes a uniform background colour from images. It
  * samples the top-left pixel to determine the background and makes similar
@@ -29,8 +33,10 @@ const BackgroundRemoverPage: React.FC = () => {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [subject, setSubject] = useState('');
-  // Use any type for the loaded model to avoid type errors if bodyPix types are unavailable
   const [model, setModel] = useState<any>(null);
+
+  // ✅ Pick SEO config for this tool
+  const seo = TOOL_SEO_DATA['/tools/background-remover'];
 
   // Load the BodyPix model once on mount
   useEffect(() => {
@@ -76,12 +82,6 @@ const BackgroundRemoverPage: React.FC = () => {
     ctx.putImageData(imageData, 0, 0);
   };
 
-  /**
-   * Remove the background using AI segmentation when available. If the
-   * BodyPix model has not loaded or fails to segment, fall back to the
-   * original colour-sampling algorithm. The subject description is not
-   * currently used but reserved for future improvements.
-   */
   const removeBackgroundAI = async (img: HTMLImageElement): Promise<HTMLCanvasElement> => {
     const canvas = document.createElement('canvas');
     canvas.width = img.width;
@@ -143,9 +143,10 @@ const BackgroundRemoverPage: React.FC = () => {
           image.onerror = () => reject('Failed to load image');
           image.src = dataUrl;
         });
-        // Use AI segmentation when available
         const processedCanvas = await removeBackgroundAI(img);
-        const blob: Blob = await new Promise((resolve) => processedCanvas.toBlob((b) => resolve(b as Blob), 'image/png'));
+        const blob: Blob = await new Promise((resolve) =>
+          processedCanvas.toBlob((b) => resolve(b as Blob), 'image/png')
+        );
         zip.file(file.name.replace(/\.[^.]+$/, '') + '_transparent.png', blob);
         processed++;
         setProgress(Math.round((processed / total) * 100));
@@ -162,24 +163,40 @@ const BackgroundRemoverPage: React.FC = () => {
 
   return (
     <>
+      {/* ✅ Add per-page SEO (Breadcrumb + WebPage + SoftwareApplication + meta) */}
+      <ToolSeo {...seo} />
+
+      {/* Keep your Helmet meta exactly as-is */}
       <Helmet>
         <title>Remove Image Background – AI Powered Tool | FilesNova</title>
         <meta
           name="description"
           content="Automatically remove background from images using AI. Upload JPG or PNG and get transparent background instantly. Free & easy."
         />
-        <link rel="canonical" href="https://filesnova.com/tools/remove-background" />
+        {/* ✅ Canonical fixed */}
+        <link rel="canonical" href="https://filesnova.com/tools/background-remover" />
       </Helmet>
-<JsonLd data={{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Background Remover – Files Nova",
-  "url": "https://filesnova.com/tools/background-remover",
-  "applicationCategory": "FileConverter",
-  "operatingSystem": "Web",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-}} />
 
+      {/* Keep your existing WebApplication schema */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Background Remover – Files Nova",
+        "url": "https://filesnova.com/tools/background-remover",
+        "applicationCategory": "FileConverter",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }} />
+
+      {/* ✅ Added BreadcrumbList schema */}
+      <JsonLd data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://filesnova.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Background Remover", "item": "https://filesnova.com/tools/background-remover" }
+        ]
+      }} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
