@@ -1,105 +1,123 @@
-import React from "react";
-import { Helmet } from "react-helmet-async";
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+
+type Crumb = { name: string; item: string };
+type Breadcrumb = { '@type': 'BreadcrumbList'; itemListElement: Array<{ '@type': 'ListItem'; position: number; name: string; item: string }> };
 
 type ToolSeoProps = {
-  title: string;                 // e.g., "JPG to PDF – Files Nova"
-  name: string;                  // e.g., "JPG to PDF"
-  slug: string;                  // e.g., "/tools/jpg-to-pdf"
+  /** Full page title */
+  title: string;
+  /** Meta description */
   description: string;
-  keywords?: string[];
-  fromFormats?: string[];        // e.g., ["JPG", "JPEG"]
-  toFormats?: string[];          // e.g., ["PDF"]
-  imageUrl?: string;             // OG image if you want to override
+  /** Absolute canonical URL */
+  canonical: string;
+  /** Optional breadcrumb items (home → section → page) */
+  breadcrumb?: { label: string; url: string }[];
+  /** Optional WebApplication name override (defaults to Files Nova) */
+  appName?: string;
+  /** Optional tool display name for WebApplication schema */
+  toolName?: string;
+  /** Optional applicationCategory (defaults to FileConverter) */
+  applicationCategory?: string;
 };
 
-const SITE = "https://filesnova.com";
+const SITE_NAME = 'Files Nova';
+const SITE_URL = 'https://filesnova.com';
+const LOGO_URL = `${SITE_URL}/logo-512.png`;
 
-const ToolSeo: React.FC<ToolSeoProps> = ({
+const toBreadcrumbLd = (crumbs?: { label: string; url: string }[]): Breadcrumb | null => {
+  if (!crumbs || crumbs.length === 0) return null;
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      name: c.label,
+      item: c.url,
+    })),
+  };
+};
+
+export const ToolSeo: React.FC<ToolSeoProps> = ({
   title,
-  name,
-  slug,
   description,
-  keywords = [],
-  fromFormats = [],
-  toFormats = [],
-  imageUrl = "https://filesnova.com/filesnova-og-image.jpg",
+  canonical,
+  breadcrumb,
+  appName = SITE_NAME,
+  toolName,
+  applicationCategory = 'FileConverter',
 }) => {
-  const url = `${SITE}${slug}`;
-  const kw = keywords.join(", ");
+  const breadcrumbLd = toBreadcrumbLd(
+    breadcrumb ?? [
+      { label: 'Home', url: SITE_URL },
+      { label: 'Tools', url: `${SITE_URL}/tools` },
+      { label: title.replace(/\s+–.*$/, '') || 'Tool', url: canonical },
+    ],
+  );
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      // Breadcrumb
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/" },
-          { "@type": "ListItem", "position": 2, "name": name, "item": url }
-        ]
-      },
-      // WebPage
-      {
-        "@type": "WebPage",
-        "name": title,
-        "url": url,
-        "description": description,
-        "isPartOf": { "@type": "WebSite", "name": "Files Nova", "url": SITE },
-        "inLanguage": "en",
-        ...(kw ? { "keywords": kw } : {}),
-        "primaryImageOfPage": imageUrl
-      },
-      // SoftwareApplication (the tool)
-      {
-        "@type": "SoftwareApplication",
-        "name": name,
-        "operatingSystem": "Web",
-        "applicationCategory": "UtilitiesApplication",
-        "applicationSubCategory": "File Converter",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "url": url,
-        "description": description,
-        ...(fromFormats.length || toFormats.length
-          ? {
-              "featureList": [
-                ...(fromFormats.length ? [`Input: ${fromFormats.join(", ")}`] : []),
-                ...(toFormats.length ? [`Output: ${toFormats.join(", ")}`] : []),
-                "Free, private, runs in-browser"
-              ]
-            }
-          : {})
-      }
-    ]
+  const orgLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: LOGO_URL,
+  };
+
+  const websiteLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: SITE_URL,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${SITE_URL}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  const webAppLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: toolName ?? title.replace(/\s+–.*$/, ''),
+    applicationCategory,
+    operatingSystem: 'Web',
+    url: canonical,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   };
 
   return (
-    <Helmet>
-      {/* Basic meta for the page */}
-      <title>{title}</title>
-      <link rel="canonical" href={url} />
-      <meta name="description" content={description} />
-      {kw && <meta name="keywords" content={kw} />}
+    <>
+      <Helmet>
+        {/* Basic SEO */}
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
 
-      {/* Open Graph / Twitter fallback */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={url} />
-      <meta property="og:image" content={imageUrl} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={imageUrl} />
+        {/* Open Graph */}
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
 
-      {/* JSON-LD */}
-      <script type="application/ld+json">
-        {JSON.stringify(jsonLd)}
-      </script>
-    </Helmet>
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+
+        {/* Site-wide Organization + Website (SearchAction) */}
+        <script type="application/ld+json">{JSON.stringify(orgLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(websiteLd)}</script>
+
+        {/* Breadcrumbs (page-level) */}
+        {breadcrumbLd && (
+          <script type="application/ld+json">{JSON.stringify({ '@context': 'https://schema.org', ...breadcrumbLd })}</script>
+        )}
+
+        {/* Tool-level WebApplication schema */}
+        <script type="application/ld+json">{JSON.stringify(webAppLd)}</script>
+      </Helmet>
+    </>
   );
 };
 
