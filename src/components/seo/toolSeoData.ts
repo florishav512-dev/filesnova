@@ -14,14 +14,14 @@ const HOME_BREADCRUMB: BreadcrumbItem[] = [
   { name: "Tools", url: "https://filesnova.com/tools" },
 ];
 
-// Helper to build a standard breadcrumb for a tool page
+// Build full breadcrumb: Home → Tools → Tool
 const bc = (toolName: string, canonical: string): BreadcrumbItem[] => [
   ...HOME_BREADCRUMB,
   { name: toolName, url: canonical },
 ];
 
 export const TOOL_SEO_DATA: Record<string, ToolSeoEntry> = {
-  // ====== Existing (earlier in project) ======
+  // ===== Existing tools =====
   "/tools/docx-to-pdf": {
     title: "Convert DOCX to PDF – Fast & Free Online Converter | FilesNova",
     name: "DOCX to PDF",
@@ -94,7 +94,6 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoEntry> = {
     breadcrumb: bc("Image Resizer", "https://filesnova.com/tools/image-resizer"),
   },
 
-  // Provide both routes to be safe
   "/tools/image-to-pdf": {
     title: "Images to PDF – Combine JPG & PNG Into a PDF | FilesNova",
     name: "Images to PDF",
@@ -103,6 +102,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoEntry> = {
     canonical: "https://filesnova.com/tools/image-to-pdf",
     breadcrumb: bc("Images to PDF", "https://filesnova.com/tools/image-to-pdf"),
   },
+
   "/tools/images-to-pdf": {
     title: "Images to PDF – Combine JPG & PNG Into a PDF | FilesNova",
     name: "Images to PDF",
@@ -175,7 +175,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoEntry> = {
     breadcrumb: bc("QR Scanner", "https://filesnova.com/tools/qr-scanner"),
   },
 
-  // ====== Newly requested tools ======
+  // ===== Newly requested tools =====
   "/tools/rtf-to-docx": {
     title: "RTF to DOCX – Convert RTF Documents to Word | FilesNova",
     name: "RTF to DOCX",
@@ -274,7 +274,7 @@ export const SITE_SCHEMA = {
     url: "https://filesnova.com",
     logo: "https://filesnova.com/logo.png",
     sameAs: [
-      "https://x.com/filesnova", // update/remove if not applicable
+      "https://x.com/filesnova",
       "https://www.facebook.com/filesnova",
       "https://www.linkedin.com/company/filesnova",
     ],
