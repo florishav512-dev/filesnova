@@ -3,7 +3,7 @@ import jsQR from 'jsqr';
 import UploadZone from '../../components/UploadZone';
 import AdSpace from '../../components/AdSpace';
 import { ToolSeo } from '../../components/seo/ToolSeo';
-import { TOOL_SEO_DATA } from '../../seo/toolSeoData';
+import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
 import {
   ArrowLeft,
   Sparkles,
