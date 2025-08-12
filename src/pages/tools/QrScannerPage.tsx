@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import jsQR from 'jsqr';
 import UploadZone from '../../components/UploadZone';
 import AdSpace from '../../components/AdSpace';
-import { ToolSeo } from '../../components/ToolSeo';
+import { ToolSeo } from '../../components/seo/ToolSeo';
 import { TOOL_SEO_DATA } from '../../seo/toolSeoData';
 import {
   ArrowLeft,
