@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import JsonLd from '../../components/JsonLd';
 import {
@@ -9,15 +9,152 @@ import {
   Zap,
   Star,
   Clipboard as ClipboardIcon,
+  ChevronDown,
+  ExternalLink,
 } from 'lucide-react';
 import AdSpace from '../../components/AdSpace';
 
-// ✅ Safe SEO resolver (replaces ToolSeo + TOOL_SEO_DATA direct access)
+// ✅ Centralized SEO helper
 import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
+/** ---------- Simple catalog used by the header Tools menu ---------- */
+type ToolLink = { name: string; href: string };
+type ToolSection = { title: string; items: ToolLink[] };
+
+const TOOLS_CATALOG: ToolSection[] = [
+  {
+    title: 'Convert to PDF',
+    items: [
+      { name: 'Word to PDF', href: '/tools/docx-to-pdf' },
+      { name: 'Excel to PDF', href: '/tools/xlsx-to-csv' }, // CSV converter available; keep as sample mapping
+      { name: 'PowerPoint to PDF', href: '/tools/pptx-to-pdf' },
+      { name: 'JPG to PDF', href: '/tools/jpg-to-pdf' },
+      { name: 'PNG to PDF', href: '/tools/png-to-pdf' },
+      { name: 'Markdown to PDF', href: '/tools/markdown-to-pdf' },
+      { name: 'Text to PDF', href: '/tools/text-to-pdf' },
+      { name: 'HTML to PDF', href: '/tools/html-to-pdf' },
+      { name: 'Images to PDF', href: '/tools/images-to-pdf' },
+      { name: 'EPUB to PDF', href: '/tools/epub-to-pdf' },
+    ],
+  },
+  {
+    title: 'Convert from / between',
+    items: [
+      { name: 'PDF to JPG', href: '/tools/pdf-to-jpg' },
+      { name: 'SVG to PNG', href: '/tools/svg-to-png' },
+      { name: 'WEBP Converter', href: '/tools/webp-converter' },
+      { name: 'GIF to MP4', href: '/tools/gif-to-mp4' },
+      { name: 'XLSX to CSV', href: '/tools/xlsx-to-csv' },
+      { name: 'RTF to DOCX', href: '/tools/rtf-to-docx' },
+      { name: 'Image to PDF', href: '/tools/image-to-pdf' },
+    ],
+  },
+  {
+    title: 'Merge & Split',
+    items: [
+      { name: 'Merge PDF', href: '/tools/merge-pdf' },
+      { name: 'Split PDF', href: '/tools/split-pdf' },
+      { name: 'Create ZIP', href: '/tools/create-zip' },
+      { name: 'Combine ZIPs', href: '/tools/combine-zips' },
+      { name: 'Extract ZIP', href: '/tools/extract-zip' },
+    ],
+  },
+  {
+    title: 'PDF Tools',
+    items: [
+      { name: 'Extract Images', href: '/tools/extract-images' },
+      { name: 'Extract Text (OCR)', href: '/tools/extract-text' },
+      { name: 'Unlock PDF', href: '/tools/unlock-pdf' },
+    ],
+  },
+  {
+    title: 'Images & QR',
+    items: [
+      { name: 'Compress Images', href: '/tools/compress-image' },
+      { name: 'Image Resizer', href: '/tools/image-resizer' },
+      { name: 'Background Remover', href: '/tools/background-remover' },
+      { name: 'QR Generator', href: '/tools/qr-generator' },
+      { name: 'QR Scanner', href: '/tools/qr-scanner' },
+    ],
+  },
+  {
+    title: 'Text Utilities',
+    items: [
+      { name: 'Case Converter', href: '/tools/case-converter' },
+      { name: 'Word Counter', href: '/tools/word-counter' },
+    ],
+  },
+];
+
+/** Small, purely-client dropdown; no layout shift */
+function ToolsMenu() {
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (!panelRef.current) return;
+      if (open && !panelRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDocClick);
+    document.addEventListener('keydown', onEsc);
+    return () => {
+      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('keydown', onEsc);
+    };
+  }, [open]);
+
+  return (
+    <div className="ml-auto relative" ref={panelRef}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        className="inline-flex items-center px-3 py-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
+      >
+        Tools <ChevronDown className="w-4 h-4 ml-2" />
+      </button>
+
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 mt-2 w-[900px] max-w-[95vw] z-[60] bg-white/95 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-2xl p-5"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {TOOLS_CATALOG.map((sec) => (
+              <div key={sec.title}>
+                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                  {sec.title}
+                </h4>
+                <ul className="space-y-2">
+                  {sec.items.map((item) => (
+                    <li key={item.href}>
+                      <a
+                        href={item.href}
+                        className="group flex items-center justify-between rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors"
+                      >
+                        <span className="text-sm text-gray-800 group-hover:text-gray-900">
+                          {item.name}
+                        </span>
+                        <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /**
- * CaseConverterPage allows users to convert text between different cases: upper,
- * lower, title and sentence. Results can be copied to the clipboard.
+ * CaseConverterPage allows users to convert text between different cases.
  */
 const CaseConverterPage: React.FC = () => {
   const [input, setInput] = useState('');
@@ -25,77 +162,50 @@ const CaseConverterPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // ✅ Centralized SEO (no undefined crashes)
+  // ✅ Centralized SEO (no undefined crash)
   const seo = getToolSeoByPath('/tools/case-converter');
 
   // --- Utilities ---
   const SMALL_WORDS = new Set([
     'a','an','and','as','at','but','by','en','for','if','in','of','on','or','the','to','v','v.','via','vs','vs.',
   ]);
-
   const isAllCapsWord = (w: string) => w.length > 1 && w === w.toUpperCase() && /[A-Z]/.test(w);
   const capitalize = (w: string) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : w);
 
-  // Title Case with small-words rule, hyphen/colon aware, acronym preserve
   const toTitleCase = (str: string) => {
     if (!str) return str;
     return str
-      .split(/(\s+)/) // keep spaces
+      .split(/(\s+)/)
       .map((token, idx, arr) => {
         if (/\s+/.test(token)) return token;
-
-        // handle colon-boundary (capitalize next word)
         const prev = arr[idx - 1] ?? '';
         const isFirst = !arr.slice(0, idx).some(t => !/\s+/.test(t));
         const isLast = !arr.slice(idx + 1).some(t => !/\s+/.test(t));
-
-        // split hyphenated words
-        const parts = token.split(/(-)/); // keep hyphens
-        const mapped = parts.map((p, i) => {
+        const parts = token.split(/(-)/);
+        const mapped = parts.map((p) => {
           if (p === '-') return p;
-
-          // preserve ALL-CAPS acronyms
           if (isAllCapsWord(p)) return p;
-
           const lower = p.toLowerCase();
-          const shouldLower =
-            !isFirst &&
-            !isLast &&
-            SMALL_WORDS.has(lower) &&
-            !(prev && prev.trim().endsWith(':')); // after colon, capitalize
-
-          if (shouldLower) return lower;
-          return capitalize(lower);
+          const shouldLower = !isFirst && !isLast && SMALL_WORDS.has(lower) && !(prev && prev.trim().endsWith(':'));
+          return shouldLower ? lower : capitalize(lower);
         });
-
-        // ensure first and last words are capitalized even if small-word
         if (isFirst && mapped[0] && mapped[0] !== '-') {
-          const lower = mapped[0].toString().toLowerCase();
-          if (SMALL_WORDS.has(lower) && !isAllCapsWord(mapped[0].toString())) {
-            mapped[0] = capitalize(lower);
-          }
+          const l = mapped[0].toString().toLowerCase();
+          if (SMALL_WORDS.has(l)) mapped[0] = capitalize(l);
         }
         if (isLast && mapped[mapped.length - 1] && mapped[mapped.length - 1] !== '-') {
-          const lw = mapped[mapped.length - 1].toString();
-          if (SMALL_WORDS.has(lw.toLowerCase()) && !isAllCapsWord(lw)) {
-            mapped[mapped.length - 1] = capitalize(lw.toLowerCase());
-          }
+          const l = mapped[mapped.length - 1].toString().toLowerCase();
+          if (SMALL_WORDS.has(l)) mapped[mapped.length - 1] = capitalize(l);
         }
-
         return mapped.join('');
       })
       .join('');
   };
 
-  // Sentence case: lowercase first, then capitalize after start or .!? plus closing quotes/brackets
   const toSentenceCase = (str: string) => {
     if (!str) return str;
     const lower = str.toLowerCase();
-
-    // Capitalize first alpha
     const firstCap = lower.replace(/^[\s"'\(\[\{]*[a-z]/, (m) => m.toUpperCase());
-
-    // Capitalize after sentence-ending punctuation
     return firstCap.replace(/([\.!?]\s*["'\)\]\}]*\s*)([a-z])/g, (_, sep, ch) => sep + ch.toUpperCase());
   };
 
@@ -142,7 +252,6 @@ const CaseConverterPage: React.FC = () => {
         <title>{seo.title}</title>
         <meta name="description" content={seo.description} />
         <link rel="canonical" href={seo.canonical} />
-        {/* OG/Twitter */}
         <meta property="og:title" content={seo.title} />
         <meta property="og:description" content={seo.description} />
         <meta property="og:url" content={seo.canonical} />
@@ -184,18 +293,23 @@ const CaseConverterPage: React.FC = () => {
               <a href="/" className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </a>
+
               <div className="relative">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
                   <Sparkles className="w-7 h-7 text-white animate-pulse" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
               </div>
+
               <div>
                 <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Files Nova
                 </h1>
                 <p className="text-xs text-gray-500 font-medium">Case Converter</p>
               </div>
+
+              {/* 🔥 New: Tools dropdown (aligned to right, zero layout glitch) */}
+              <ToolsMenu />
             </div>
           </div>
         </header>
