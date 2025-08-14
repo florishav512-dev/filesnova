@@ -1,9 +1,9 @@
+// src/pages/tools/CaseConverterPage.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import JsonLd from '../../components/JsonLd';
 import {
-  ArrowLeft,
   Sparkles,
   Text as TextIcon,
   Shield,
@@ -26,7 +26,7 @@ import AdSpace from '../../components/AdSpace';
 import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
 /** ---------- Catalog for header Tools menu ---------- */
-type ToolLink = { name: string; href: string; icon?: React.ComponentType<any> };
+type ToolLink = { name: string; href: string; icon?: React.ElementType };
 type ToolSection = { title: string; items: ToolLink[] };
 
 const TOOLS_CATALOG: ToolSection[] = [
@@ -93,23 +93,26 @@ const TOOLS_CATALOG: ToolSection[] = [
   },
 ];
 
-/** Dropdown menu pinned to right edge (no clipping), with icons */
+/** Dropdown menu (outside click safe, uses Link) */
 function ToolsMenu() {
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const onDocClick = (e: MouseEvent) => {
+    const onDocMouseDown = (e: MouseEvent) => {
       if (!open) return;
-      const target = e.target as Node;
-      if (btnRef.current && btnRef.current.contains(target)) return;
-      setOpen(false);
+      const t = e.target as Node;
+      if (btnRef.current?.contains(t)) return;         // clicked the button
+      if (panelRef.current?.contains(t)) return;       // clicked inside panel -> do NOT close yet
+      setOpen(false);                                   // clicked outside -> close
     };
     const onEsc = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
-    document.addEventListener('mousedown', onDocClick);
+
+    document.addEventListener('mousedown', onDocMouseDown);
     document.addEventListener('keydown', onEsc);
     return () => {
-      document.removeEventListener('mousedown', onDocClick);
+      document.removeEventListener('mousedown', onDocMouseDown);
       document.removeEventListener('keydown', onEsc);
     };
   }, [open]);
@@ -121,13 +124,14 @@ function ToolsMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="ml-auto inline-flex items-center px-3 py-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
+        className="inline-flex items-center px-3 py-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
       >
         Tools <ChevronDown className="w-4 h-4 ml-2" />
       </button>
 
       {open && (
         <div
+          ref={panelRef}
           role="menu"
           className="fixed right-4 top-20 w-[1000px] max-w-[96vw] max-h-[75vh] overflow-auto z-[100] bg-white/95 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-2xl p-5"
         >
@@ -181,53 +185,46 @@ const CaseConverterPage: React.FC = () => {
   const isAllCapsWord = (w: string) => w.length > 1 && w === w.toUpperCase() && /[A-Z]/.test(w);
   const capitalize = (w: string) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : w);
 
-  const toTitleCase = (str: string) => {
-    if (!str) return str;
-    return str
-      .split(/(\s+)/)
-      .map((token, idx, arr) => {
-        if (/\s+/.test(token)) return token;
-        const prev = arr[idx - 1] ?? '';
-        const isFirst = !arr.slice(0, idx).some(t => !/\s+/.test(t));
-        const isLast = !arr.slice(idx + 1).some(t => !/\s+/.test(t));
-        const parts = token.split(/(-)/);
-        const mapped = parts.map((p) => {
-          if (p === '-') return p;
-          if (isAllCapsWord(p)) return p;
-          const lower = p.toLowerCase();
-          const shouldLower = !isFirst && !isLast && SMALL_WORDS.has(lower) && !(prev && prev.trim().endsWith(':'));
-          return shouldLower ? lower : capitalize(lower);
-        });
-        if (isFirst && mapped[0] && mapped[0] !== '-') {
-          const l = mapped[0].toString().toLowerCase();
-          if (SMALL_WORDS.has(l)) mapped[0] = capitalize(l);
-        }
-        if (isLast && mapped[mapped.length - 1] && mapped[mapped.length - 1] !== '-') {
-          const l = mapped[mapped.length - 1].toString().toLowerCase();
-          if (SMALL_WORDS.has(l)) mapped[mapped.length - 1] = capitalize(l);
-        }
-        return mapped.join('');
-      })
-      .join('');
-  };
+  const toTitleCase = (str: string) =>
+    !str ? str :
+    str.split(/(\s+)/).map((token, idx, arr) => {
+      if (/\s+/.test(token)) return token;
+      const prev = arr[idx - 1] ?? '';
+      const isFirst = !arr.slice(0, idx).some(t => !/\s+/.test(t));
+      const isLast  = !arr.slice(idx + 1).some(t => !/\s+/.test(t));
+      const parts = token.split(/(-)/);
+      const mapped = parts.map((p) => {
+        if (p === '-') return p;
+        if (isAllCapsWord(p)) return p;
+        const lower = p.toLowerCase();
+        const shouldLower = !isFirst && !isLast && SMALL_WORDS.has(lower) && !(prev && prev.trim().endsWith(':'));
+        return shouldLower ? lower : capitalize(lower);
+      });
+      if (isFirst && mapped[0] && mapped[0] !== '-') {
+        const l = mapped[0].toString().toLowerCase();
+        if (SMALL_WORDS.has(l)) mapped[0] = capitalize(l);
+      }
+      if (isLast && mapped[mapped.length - 1] && mapped[mapped.length - 1] !== '-') {
+        const l = mapped[mapped.length - 1].toString().toLowerCase();
+        if (SMALL_WORDS.has(l)) mapped[mapped.length - 1] = capitalize(l);
+      }
+      return mapped.join('');
+    }).join('');
 
-  const toSentenceCase = (str: string) => {
-    if (!str) return str;
-    const lower = str.toLowerCase();
-    const firstCap = lower.replace(/^[\s"'\(\[\{]*[a-z]/, (m) => m.toUpperCase());
-    return firstCap.replace(/([\.!?]\s*["'\)\]\}]*\s*)([a-z])/g, (_, sep, ch) => sep + ch.toUpperCase());
-  };
+  const toSentenceCase = (str: string) =>
+    !str ? str :
+    str.toLowerCase()
+       .replace(/^[\s"'(\[\{]*[a-z]/, m => m.toUpperCase())
+       .replace(/([\.!?]\s*["')\]\}]*\s*)([a-z])/g, (_, sep, ch) => sep + ch.toUpperCase());
 
   const convert = (mode: 'upper' | 'lower' | 'title' | 'sentence') => {
     try {
       setError(null);
-      let out = '';
-      switch (mode) {
-        case 'upper': out = input.toUpperCase(); break;
-        case 'lower': out = input.toLowerCase(); break;
-        case 'title': out = toTitleCase(input); break;
-        case 'sentence': out = toSentenceCase(input); break;
-      }
+      const out =
+        mode === 'upper'    ? input.toUpperCase() :
+        mode === 'lower'    ? input.toLowerCase() :
+        mode === 'title'    ? toTitleCase(input) :
+                              toSentenceCase(input);
       setOutput(out);
       setCopied(false);
     } catch (e: any) {
@@ -235,12 +232,7 @@ const CaseConverterPage: React.FC = () => {
     }
   };
 
-  const clearAll = () => {
-    setInput('');
-    setOutput('');
-    setError(null);
-    setCopied(false);
-  };
+  const clearAll = () => { setInput(''); setOutput(''); setError(null); setCopied(false); };
 
   const copyOutput = async () => {
     try {
@@ -285,21 +277,17 @@ const CaseConverterPage: React.FC = () => {
       }} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
-        {/* bg blobs */}
+        {/* background blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
 
-        {/* header */}
+        {/* header (back arrow removed, Tools pinned right) */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center h-20 gap-4">
-              <a href="/" className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
-                <ArrowLeft className="w-6 h-6 text-gray-700" />
-              </a>
-
               <div className="relative">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
                   <Sparkles className="w-7 h-7 text-white animate-pulse" />
@@ -314,8 +302,10 @@ const CaseConverterPage: React.FC = () => {
                 <p className="text-xs text-gray-500 font-medium">Case Converter</p>
               </div>
 
-              {/* ➜ Rightmost Tools dropdown */}
-              <ToolsMenu />
+              {/* spacer pushes Tools to extreme right */}
+              <div className="ml-auto">
+                <ToolsMenu />
+              </div>
             </div>
           </div>
         </header>
@@ -387,7 +377,6 @@ const CaseConverterPage: React.FC = () => {
                 >
                   Sentence case
                 </button>
-                {/* 🔥 New: Clear */}
                 <button
                   onClick={clearAll}
                   className="px-4 py-3 bg-white text-gray-700 font-bold rounded-xl border border-gray-300 hover:bg-gray-50 transition-all"
