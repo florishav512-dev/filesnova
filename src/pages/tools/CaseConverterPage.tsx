@@ -11,94 +11,101 @@ import {
   Clipboard as ClipboardIcon,
   ChevronDown,
   ExternalLink,
+  FileText,
+  Image as ImageIcon,
+  Archive,
+  QrCode,
+  Layers,
+  Scissors,
+  LockOpen,
+  Wrench,
+  Type as TypeIcon,
 } from 'lucide-react';
 import AdSpace from '../../components/AdSpace';
-
-// ✅ Centralized SEO helper
 import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
-/** ---------- Simple catalog used by the header Tools menu ---------- */
-type ToolLink = { name: string; href: string };
+/** ---------- Catalog for header Tools menu ---------- */
+type ToolLink = { name: string; href: string; icon?: React.ElementType };
 type ToolSection = { title: string; items: ToolLink[] };
 
 const TOOLS_CATALOG: ToolSection[] = [
   {
     title: 'Convert to PDF',
     items: [
-      { name: 'Word to PDF', href: '/tools/docx-to-pdf' },
-      { name: 'Excel to PDF', href: '/tools/xlsx-to-csv' }, // CSV converter available; keep as sample mapping
-      { name: 'PowerPoint to PDF', href: '/tools/pptx-to-pdf' },
-      { name: 'JPG to PDF', href: '/tools/jpg-to-pdf' },
-      { name: 'PNG to PDF', href: '/tools/png-to-pdf' },
-      { name: 'Markdown to PDF', href: '/tools/markdown-to-pdf' },
-      { name: 'Text to PDF', href: '/tools/text-to-pdf' },
-      { name: 'HTML to PDF', href: '/tools/html-to-pdf' },
-      { name: 'Images to PDF', href: '/tools/images-to-pdf' },
-      { name: 'EPUB to PDF', href: '/tools/epub-to-pdf' },
+      { name: 'Word to PDF', href: '/tools/docx-to-pdf', icon: FileText },
+      { name: 'PowerPoint to PDF', href: '/tools/pptx-to-pdf', icon: FileText },
+      { name: 'JPG to PDF', href: '/tools/jpg-to-pdf', icon: ImageIcon },
+      { name: 'PNG to PDF', href: '/tools/png-to-pdf', icon: ImageIcon },
+      { name: 'Images to PDF', href: '/tools/images-to-pdf', icon: ImageIcon },
+      { name: 'Markdown to PDF', href: '/tools/markdown-to-pdf', icon: FileText },
+      { name: 'Text to PDF', href: '/tools/text-to-pdf', icon: FileText },
+      { name: 'HTML to PDF', href: '/tools/html-to-pdf', icon: FileText },
+      { name: 'EPUB to PDF', href: '/tools/epub-to-pdf', icon: FileText },
     ],
   },
   {
     title: 'Convert from / between',
     items: [
-      { name: 'PDF to JPG', href: '/tools/pdf-to-jpg' },
-      { name: 'SVG to PNG', href: '/tools/svg-to-png' },
-      { name: 'WEBP Converter', href: '/tools/webp-converter' },
-      { name: 'GIF to MP4', href: '/tools/gif-to-mp4' },
-      { name: 'XLSX to CSV', href: '/tools/xlsx-to-csv' },
-      { name: 'RTF to DOCX', href: '/tools/rtf-to-docx' },
-      { name: 'Image to PDF', href: '/tools/image-to-pdf' },
+      { name: 'PDF to JPG', href: '/tools/pdf-to-jpg', icon: ImageIcon },
+      { name: 'SVG to PNG', href: '/tools/svg-to-png', icon: ImageIcon },
+      { name: 'WEBP Converter', href: '/tools/webp-converter', icon: ImageIcon },
+      { name: 'GIF to MP4', href: '/tools/gif-to-mp4', icon: ImageIcon },
+      { name: 'XLSX to CSV', href: '/tools/xlsx-to-csv', icon: FileText },
+      { name: 'RTF to DOCX', href: '/tools/rtf-to-docx', icon: FileText },
+      { name: 'Image to PDF', href: '/tools/image-to-pdf', icon: ImageIcon },
     ],
   },
   {
     title: 'Merge & Split',
     items: [
-      { name: 'Merge PDF', href: '/tools/merge-pdf' },
-      { name: 'Split PDF', href: '/tools/split-pdf' },
-      { name: 'Create ZIP', href: '/tools/create-zip' },
-      { name: 'Combine ZIPs', href: '/tools/combine-zips' },
-      { name: 'Extract ZIP', href: '/tools/extract-zip' },
+      { name: 'Merge PDF', href: '/tools/merge-pdf', icon: Layers },
+      { name: 'Split PDF', href: '/tools/split-pdf', icon: Scissors },
+      { name: 'Create ZIP', href: '/tools/create-zip', icon: Archive },
+      { name: 'Combine ZIPs', href: '/tools/combine-zips', icon: Archive },
+      { name: 'Extract ZIP', href: '/tools/extract-zip', icon: Archive },
     ],
   },
   {
     title: 'PDF Tools',
     items: [
-      { name: 'Extract Images', href: '/tools/extract-images' },
-      { name: 'Extract Text (OCR)', href: '/tools/extract-text' },
-      { name: 'Unlock PDF', href: '/tools/unlock-pdf' },
+      { name: 'Extract Images', href: '/tools/extract-images', icon: ImageIcon },
+      { name: 'Extract Text (OCR)', href: '/tools/extract-text', icon: FileText },
+      { name: 'Unlock PDF', href: '/tools/unlock-pdf', icon: LockOpen },
     ],
   },
   {
     title: 'Images & QR',
     items: [
-      { name: 'Compress Images', href: '/tools/compress-image' },
-      { name: 'Image Resizer', href: '/tools/image-resizer' },
-      { name: 'Background Remover', href: '/tools/background-remover' },
-      { name: 'QR Generator', href: '/tools/qr-generator' },
-      { name: 'QR Scanner', href: '/tools/qr-scanner' },
+      { name: 'Compress Images', href: '/tools/compress-image', icon: ImageIcon },
+      { name: 'Image Resizer', href: '/tools/image-resizer', icon: ImageIcon },
+      { name: 'Background Remover', href: '/tools/background-remover', icon: Wrench },
+      { name: 'QR Generator', href: '/tools/qr-generator', icon: QrCode },
+      { name: 'QR Scanner', href: '/tools/qr-scanner', icon: QrCode },
     ],
   },
   {
     title: 'Text Utilities',
     items: [
-      { name: 'Case Converter', href: '/tools/case-converter' },
-      { name: 'Word Counter', href: '/tools/word-counter' },
+      { name: 'Case Converter', href: '/tools/case-converter', icon: TypeIcon },
+      { name: 'Word Counter', href: '/tools/word-counter', icon: FileText },
     ],
   },
 ];
 
-/** Small, purely-client dropdown; no layout shift */
+/** Dropdown menu pinned to right edge (no clipping), with icons */
 function ToolsMenu() {
   const [open, setOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement | null>(null);
+  const btnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const onDocClick = (e: MouseEvent) => {
-      if (!panelRef.current) return;
-      if (open && !panelRef.current.contains(e.target as Node)) setOpen(false);
+      if (!open) return;
+      const target = e.target as Node;
+      if (btnRef.current && btnRef.current.contains(target)) return;
+      // close if click outside panel (panel is fixed, so just close on any click not on button)
+      setOpen(false);
     };
-    const onEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
+    const onEsc = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
     document.addEventListener('mousedown', onDocClick);
     document.addEventListener('keydown', onEsc);
     return () => {
@@ -108,12 +115,13 @@ function ToolsMenu() {
   }, [open]);
 
   return (
-    <div className="ml-auto relative" ref={panelRef}>
+    <>
       <button
+        ref={btnRef}
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="inline-flex items-center px-3 py-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
+        className="ml-auto inline-flex items-center px-3 py-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
       >
         Tools <ChevronDown className="w-4 h-4 ml-2" />
       </button>
@@ -121,7 +129,7 @@ function ToolsMenu() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-[900px] max-w-[95vw] z-[60] bg-white/95 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-2xl p-5"
+          className="fixed right-4 top-20 w-[1000px] max-w-[96vw] max-h-[75vh] overflow-auto z-[100] bg-white/95 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-2xl p-5"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {TOOLS_CATALOG.map((sec) => (
@@ -130,42 +138,42 @@ function ToolsMenu() {
                   {sec.title}
                 </h4>
                 <ul className="space-y-2">
-                  {sec.items.map((item) => (
-                    <li key={item.href}>
-                      <a
-                        href={item.href}
-                        className="group flex items-center justify-between rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors"
-                      >
-                        <span className="text-sm text-gray-800 group-hover:text-gray-900">
-                          {item.name}
-                        </span>
-                        <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </a>
-                    </li>
-                  ))}
+                  {sec.items.map((item) => {
+                    const Icon = item.icon ?? FileText;
+                    return (
+                      <li key={item.href}>
+                        <a
+                          href={item.href}
+                          className="group flex items-center justify-between rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors"
+                        >
+                          <span className="flex items-center gap-2 text-sm text-gray-800 group-hover:text-gray-900">
+                            <Icon className="w-4 h-4 text-gray-500 group-hover:text-gray-700" />
+                            {item.name}
+                          </span>
+                          <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ))}
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
-/**
- * CaseConverterPage allows users to convert text between different cases.
- */
+/** -------- Page -------- */
 const CaseConverterPage: React.FC = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // ✅ Centralized SEO (no undefined crash)
   const seo = getToolSeoByPath('/tools/case-converter');
 
-  // --- Utilities ---
   const SMALL_WORDS = new Set([
     'a','an','and','as','at','but','by','en','for','if','in','of','on','or','the','to','v','v.','via','vs','vs.',
   ]);
@@ -214,24 +222,23 @@ const CaseConverterPage: React.FC = () => {
       setError(null);
       let out = '';
       switch (mode) {
-        case 'upper':
-          out = input.toUpperCase();
-          break;
-        case 'lower':
-          out = input.toLowerCase();
-          break;
-        case 'title':
-          out = toTitleCase(input);
-          break;
-        case 'sentence':
-          out = toSentenceCase(input);
-          break;
+        case 'upper': out = input.toUpperCase(); break;
+        case 'lower': out = input.toLowerCase(); break;
+        case 'title': out = toTitleCase(input); break;
+        case 'sentence': out = toSentenceCase(input); break;
       }
       setOutput(out);
       setCopied(false);
     } catch (e: any) {
       setError(e?.message || 'Failed to convert text.');
     }
+  };
+
+  const clearAll = () => {
+    setInput('');
+    setOutput('');
+    setError(null);
+    setCopied(false);
   };
 
   const copyOutput = async () => {
@@ -247,7 +254,6 @@ const CaseConverterPage: React.FC = () => {
 
   return (
     <>
-      {/* ✅ Helmet via centralized SEO */}
       <Helmet>
         <title>{seo.title}</title>
         <meta name="description" content={seo.description} />
@@ -259,7 +265,6 @@ const CaseConverterPage: React.FC = () => {
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
-      {/* Structured Data */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -279,7 +284,7 @@ const CaseConverterPage: React.FC = () => {
       }} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
-        {/* background blobs */}
+        {/* bg blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -289,7 +294,7 @@ const CaseConverterPage: React.FC = () => {
         {/* header */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-20 space-x-4">
+            <div className="flex items-center h-20 gap-4">
               <a href="/" className="p-3 rounded-xl hover:bg-gray-100 transition-colors">
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </a>
@@ -308,7 +313,7 @@ const CaseConverterPage: React.FC = () => {
                 <p className="text-xs text-gray-500 font-medium">Case Converter</p>
               </div>
 
-              {/* 🔥 New: Tools dropdown (aligned to right, zero layout glitch) */}
+              {/* ➜ Rightmost Tools dropdown */}
               <ToolsMenu />
             </div>
           </div>
@@ -352,7 +357,7 @@ const CaseConverterPage: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-3">
                 <button
                   onClick={() => convert('upper')}
                   disabled={!input}
@@ -381,6 +386,13 @@ const CaseConverterPage: React.FC = () => {
                 >
                   Sentence case
                 </button>
+                {/* 🔥 New: Clear */}
+                <button
+                  onClick={clearAll}
+                  className="px-4 py-3 bg-white text-gray-700 font-bold rounded-xl border border-gray-300 hover:bg-gray-50 transition-all"
+                >
+                  Clear
+                </button>
               </div>
               {error && <p className="text-red-600 mt-4">{error}</p>}
             </div>
@@ -403,7 +415,6 @@ const CaseConverterPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Ad space below */}
           <div className="mt-8">
             <AdSpace />
           </div>
