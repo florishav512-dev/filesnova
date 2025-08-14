@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import JsonLd from '../../components/JsonLd';
 import {
   ArrowLeft,
@@ -102,7 +103,6 @@ function ToolsMenu() {
       if (!open) return;
       const target = e.target as Node;
       if (btnRef.current && btnRef.current.contains(target)) return;
-      // close if click outside panel (panel is fixed, so just close on any click not on button)
       setOpen(false);
     };
     const onEsc = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
@@ -142,8 +142,9 @@ function ToolsMenu() {
                     const Icon = item.icon ?? FileText;
                     return (
                       <li key={item.href}>
-                        <a
-                          href={item.href}
+                        <Link
+                          to={item.href}
+                          onClick={() => setOpen(false)}
                           className="group flex items-center justify-between rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors"
                         >
                           <span className="flex items-center gap-2 text-sm text-gray-800 group-hover:text-gray-900">
@@ -151,7 +152,7 @@ function ToolsMenu() {
                             {item.name}
                           </span>
                           <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </a>
+                        </Link>
                       </li>
                     );
                   })}
