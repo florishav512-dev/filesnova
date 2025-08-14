@@ -16,9 +16,8 @@ import {
   Download as DownloadIcon,
 } from 'lucide-react';
 
-// ✅ SEO component + data
-import ToolSeo from '../../components/seo/ToolSeo';
-import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
+// ✅ Safe SEO resolver
+import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
 /**
  * BackgroundRemoverPage removes a uniform background colour from images. It
@@ -35,8 +34,8 @@ const BackgroundRemoverPage: React.FC = () => {
   const [subject, setSubject] = useState('');
   const [model, setModel] = useState<any>(null);
 
-  // ✅ Pick SEO config for this tool
-  const seo = TOOL_SEO_DATA['/tools/background-remover'];
+  // ✅ Safe, centralized SEO (no undefined crashes)
+  const seo = getToolSeoByPath('/tools/background-remover');
 
   // Load the BodyPix model once on mount
   useEffect(() => {
@@ -163,21 +162,21 @@ const BackgroundRemoverPage: React.FC = () => {
 
   return (
     <>
-      {/* ✅ Add per-page SEO (Breadcrumb + WebPage + SoftwareApplication + meta) */}
-      <ToolSeo {...seo} />
-
-      {/* Keep your Helmet meta exactly as-is */}
+      {/* ✅ Single, safe Helmet block driven by centralized SEO data */}
       <Helmet>
-        <title>Remove Image Background – AI Powered Tool | FilesNova</title>
-        <meta
-          name="description"
-          content="Automatically remove background from images using AI. Upload JPG or PNG and get transparent background instantly. Free & easy."
-        />
-        {/* ✅ Canonical fixed */}
-        <link rel="canonical" href="https://filesnova.com/tools/background-remover" />
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <link rel="canonical" href={seo.canonical} />
+
+        {/* Open Graph / Twitter */}
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
+        <meta property="og:url" content={seo.canonical} />
+        <meta property="og:image" content="https://filesnova.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
-      {/* Keep your existing WebApplication schema */}
+      {/* Keep your structured data (updated URLs consistent with canonical) */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -188,7 +187,6 @@ const BackgroundRemoverPage: React.FC = () => {
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }} />
 
-      {/* ✅ Added BreadcrumbList schema */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -201,7 +199,7 @@ const BackgroundRemoverPage: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from	pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
