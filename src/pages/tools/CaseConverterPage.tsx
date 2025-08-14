@@ -12,9 +12,8 @@ import {
 } from 'lucide-react';
 import AdSpace from '../../components/AdSpace';
 
-// ✅ SEO component + data
-import ToolSeo from '../../components/seo/ToolSeo';
-import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
+// ✅ Safe SEO resolver (replaces ToolSeo + TOOL_SEO_DATA direct access)
+import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
 /**
  * CaseConverterPage allows users to convert text between different cases: upper,
@@ -26,22 +25,78 @@ const CaseConverterPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // ✅ Pick SEO config for this tool
-  const seo = TOOL_SEO_DATA['/tools/case-converter'];
+  // ✅ Centralized SEO (no undefined crashes)
+  const seo = getToolSeoByPath('/tools/case-converter');
 
+  // --- Utilities ---
+  const SMALL_WORDS = new Set([
+    'a','an','and','as','at','but','by','en','for','if','in','of','on','or','the','to','v','v.','via','vs','vs.',
+  ]);
+
+  const isAllCapsWord = (w: string) => w.length > 1 && w === w.toUpperCase() && /[A-Z]/.test(w);
+  const capitalize = (w: string) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : w);
+
+  // Title Case with small-words rule, hyphen/colon aware, acronym preserve
   const toTitleCase = (str: string) => {
+    if (!str) return str;
     return str
-      .toLowerCase()
-      .split(/\s+/)
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
+      .split(/(\s+)/) // keep spaces
+      .map((token, idx, arr) => {
+        if (/\s+/.test(token)) return token;
+
+        // handle colon-boundary (capitalize next word)
+        const prev = arr[idx - 1] ?? '';
+        const isFirst = !arr.slice(0, idx).some(t => !/\s+/.test(t));
+        const isLast = !arr.slice(idx + 1).some(t => !/\s+/.test(t));
+
+        // split hyphenated words
+        const parts = token.split(/(-)/); // keep hyphens
+        const mapped = parts.map((p, i) => {
+          if (p === '-') return p;
+
+          // preserve ALL-CAPS acronyms
+          if (isAllCapsWord(p)) return p;
+
+          const lower = p.toLowerCase();
+          const shouldLower =
+            !isFirst &&
+            !isLast &&
+            SMALL_WORDS.has(lower) &&
+            !(prev && prev.trim().endsWith(':')); // after colon, capitalize
+
+          if (shouldLower) return lower;
+          return capitalize(lower);
+        });
+
+        // ensure first and last words are capitalized even if small-word
+        if (isFirst && mapped[0] && mapped[0] !== '-') {
+          const lower = mapped[0].toString().toLowerCase();
+          if (SMALL_WORDS.has(lower) && !isAllCapsWord(mapped[0].toString())) {
+            mapped[0] = capitalize(lower);
+          }
+        }
+        if (isLast && mapped[mapped.length - 1] && mapped[mapped.length - 1] !== '-') {
+          const lw = mapped[mapped.length - 1].toString();
+          if (SMALL_WORDS.has(lw.toLowerCase()) && !isAllCapsWord(lw)) {
+            mapped[mapped.length - 1] = capitalize(lw.toLowerCase());
+          }
+        }
+
+        return mapped.join('');
+      })
+      .join('');
   };
 
+  // Sentence case: lowercase first, then capitalize after start or .!? plus closing quotes/brackets
   const toSentenceCase = (str: string) => {
-    // Split by sentence-like boundaries and capitalize the first alpha char
-    return str
-      .toLowerCase()
-      .replace(/(^\s*[a-z])|([\.!?]\s*[a-z])/g, (s) => s.toUpperCase());
+    if (!str) return str;
+    const lower = str.toLowerCase();
+
+    // Capitalize first alpha
+    const firstCap = lower.replace(/^[\s"'\(\[\{]*[a-z]/, (m) => m.toUpperCase());
+
+    // Capitalize after sentence-ending punctuation
+    return firstCap.replace(/([\.!?]\s*["'\)\]\}]*\s*)([a-z])/g, (_, sep, ch) => sep + ch.toUpperCase());
   };
 
   const convert = (mode: 'upper' | 'lower' | 'title' | 'sentence') => {
@@ -71,29 +126,31 @@ const CaseConverterPage: React.FC = () => {
 
   const copyOutput = async () => {
     try {
+      if (!navigator?.clipboard) throw new Error('Clipboard API not available');
       await navigator.clipboard.writeText(output);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
-    } catch {
-      setError('Unable to copy to clipboard.');
+    } catch (e: any) {
+      setError(e?.message || 'Unable to copy to clipboard.');
     }
   };
 
   return (
     <>
-      {/* ✅ Injects Breadcrumb + WebPage + SoftwareApplication + meta */}
-      <ToolSeo {...seo} />
-
+      {/* ✅ Helmet via centralized SEO */}
       <Helmet>
-        <title>Case Converter – Uppercase, Lowercase, Title & Sentence Case | FilesNova</title>
-        <meta
-          name="description"
-          content="Convert text to uppercase, lowercase, title case, or sentence case instantly. Free, fast, and secure online case converter."
-        />
-        <link rel="canonical" href="https://filesnova.com/tools/case-converter" />
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <link rel="canonical" href={seo.canonical} />
+        {/* OG/Twitter */}
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
+        <meta property="og:url" content={seo.canonical} />
+        <meta property="og:image" content="https://filesnova.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
-      {/* Keep your existing WebApplication schema */}
+      {/* Structured Data */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -103,8 +160,6 @@ const CaseConverterPage: React.FC = () => {
         "operatingSystem": "Web",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }} />
-
-      {/* ✅ Added BreadcrumbList schema */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -130,7 +185,7 @@ const CaseConverterPage: React.FC = () => {
                 <ArrowLeft className="w-6 h-6 text-gray-700" />
               </a>
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-centered justify-center shadow-xl">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
                   <Sparkles className="w-7 h-7 text-white animate-pulse" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
