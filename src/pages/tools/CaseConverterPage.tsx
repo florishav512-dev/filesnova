@@ -17,7 +17,7 @@ import {
   QrCode,
   Layers,
   Scissors,
-  LockOpen,
+  Unlock,
   Wrench,
   Type as TypeIcon,
 } from 'lucide-react';
@@ -70,7 +70,7 @@ const TOOLS_CATALOG: ToolSection[] = [
     items: [
       { name: 'Extract Images', href: '/tools/extract-images', icon: ImageIcon },
       { name: 'Extract Text (OCR)', href: '/tools/extract-text', icon: FileText },
-      { name: 'Unlock PDF', href: '/tools/unlock-pdf', icon: LockOpen },
+      { name: 'Unlock PDF', href: '/tools/unlock-pdf', icon: unlock },
     ],
   },
   {
