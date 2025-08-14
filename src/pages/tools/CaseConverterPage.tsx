@@ -25,7 +25,7 @@ import AdSpace from '../../components/AdSpace';
 import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
 /** ---------- Catalog for header Tools menu ---------- */
-type ToolLink = { name: string; href: string; icon?: React.ElementType };
+type ToolLink = { name: string; href: string; icon?: React.ComponentType<any> };
 type ToolSection = { title: string; items: ToolLink[] };
 
 const TOOLS_CATALOG: ToolSection[] = [
@@ -70,7 +70,7 @@ const TOOLS_CATALOG: ToolSection[] = [
     items: [
       { name: 'Extract Images', href: '/tools/extract-images', icon: ImageIcon },
       { name: 'Extract Text (OCR)', href: '/tools/extract-text', icon: FileText },
-      { name: 'Unlock PDF', href: '/tools/unlock-pdf', icon: unlock },
+      { name: 'Unlock PDF', href: '/tools/unlock-pdf', icon: Unlock },
     ],
   },
   {
