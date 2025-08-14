@@ -1,3 +1,5 @@
+// CreateZipPage.tsx
+
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import JsonLd from '../../components/JsonLd';
@@ -14,9 +16,8 @@ import {
   Download as DownloadIcon,
 } from 'lucide-react';
 
-// ✅ SEO component + data
-import ToolSeo from '../../components/seo/ToolSeo';
-import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
+// ✅ Safe SEO resolver (replaces ToolSeo + TOOL_SEO_DATA)
+import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 
 /**
  * CreateZipPage bundles selected files into a single ZIP archive. All
@@ -30,8 +31,8 @@ const CreateZipPage: React.FC = () => {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // ✅ Pick SEO config for this tool
-  const seo = TOOL_SEO_DATA['/tools/create-zip'];
+  // ✅ Centralized SEO (no undefined crashes)
+  const seo = getToolSeoByPath('/tools/create-zip');
 
   // When files are selected via the upload zone, reset any previous
   // download URL and errors then store the selected files.
@@ -66,19 +67,21 @@ const CreateZipPage: React.FC = () => {
 
   return (
     <>
-      {/* ✅ Injects Breadcrumb + WebPage + SoftwareApplication + meta */}
-      <ToolSeo {...seo} />
-
+      {/* ✅ Single, safe Helmet block driven by centralized SEO data */}
       <Helmet>
-        <title>Create ZIP – Free, Fast & Secure Online ZIP Creator | FilesNova</title>
-        <meta
-          name="description"
-          content="Create ZIP archives from multiple files in seconds. Free online ZIP creator with unlimited file size, no ads, no signup—fast, secure, and private."
-        />
-        <link rel="canonical" href="https://filesnova.com/tools/create-zip" />
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description} />
+        <link rel="canonical" href={seo.canonical} />
+
+        {/* Open Graph / Twitter */}
+        <meta property="og:title" content={seo.title} />
+        <meta property="og:description" content={seo.description} />
+        <meta property="og:url" content={seo.canonical} />
+        <meta property="og:image" content="https://filesnova.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
-      {/* Keep your existing WebApplication schema */}
+      {/* Structured data (kept as-is, with consistent URL) */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -89,7 +92,6 @@ const CreateZipPage: React.FC = () => {
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       }} />
 
-      {/* ✅ Added BreadcrumbList schema */}
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
