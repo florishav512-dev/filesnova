@@ -17,21 +17,16 @@ import {
 } from 'lucide-react';
 
 // -----------------------------
-// QPDF WASM loader (kept)
+// QPDF WASM loader
 // -----------------------------
-type QpdfModule = { FS: any; callMain: (argv: string[]) => number };
-let _qpdf: QpdfModule | null = null;
+type QpdfModule = Awaited<ReturnType<typeof import('@jspawn/qpdf-wasm').init>>;
+let _qpdfPromise: Promise<QpdfModule> | null = null;
 
 async function getQpdf(): Promise<QpdfModule> {
-  if (_qpdf) return _qpdf;
-
-  const wasmUrl = '/qpdf.wasm';
-  const raw: any = await import('@jspawn/qpdf-wasm');
-  const init = (raw?.default ?? raw) as (opts?: { locateFile?: (p: string) => string }) => Promise<QpdfModule>;
-  _qpdf = await init({
-    locateFile: () => wasmUrl,
-  });
-  return _qpdf!;
+  if (!_qpdfPromise) {
+    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => qpdf.init());
+  }
+  return _qpdfPromise;
 }
 
 // -----------------------------
@@ -106,22 +101,23 @@ const UnlockPdfPage: React.FC = () => {
   // ---- helpers ----
   const runQpdf = async (args: string[], inBytes: Uint8Array): Promise<Uint8Array> => {
     const qpdf = await getQpdf();
-    const FS = qpdf.FS;
+    const inName = 'input.pdf';
+    const outName = 'output.pdf';
 
-    const inName = 'in.pdf';
-    const outName = 'out.pdf';
+    const result = await qpdf.run(
+      [...args, inName, outName],
+      { [inName]: inBytes }
+    );
 
-    try { FS.unlink(inName); } catch {}
-    try { FS.unlink(outName); } catch {}
-
-    FS.writeFile(inName, inBytes);
-
-    const argv = [...args, '--', inName, outName];
-    const code = qpdf.callMain(argv);
-    if (code !== 0) {
-      throw new Error('qpdf failed to process the file.');
+    if (result.exitCode !== 0) {
+      console.error('qpdf stderr:', result.stderr);
+      throw new Error(result.stderr || 'qpdf failed to process the file.');
     }
-    const out = FS.readFile(outName);
+
+    const out = result.files[outName];
+    if (!out) {
+      throw new Error('qpdf did not produce an output file.');
+    }
     return out;
   };
 
