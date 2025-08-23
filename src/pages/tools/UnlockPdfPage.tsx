@@ -24,7 +24,17 @@ let _qpdfPromise: Promise<QpdfModule> | null = null;
 
 async function getQpdf(): Promise<QpdfModule> {
   if (!_qpdfPromise) {
-    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => qpdf.default());
+    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => {
+      const wasmUrl = '/qpdf.wasm';
+      return qpdf.default({
+        locateFile: (path: string) => {
+          if (path.endsWith('.wasm')) {
+            return wasmUrl;
+          }
+          return path;
+        },
+      });
+    });
   }
   return _qpdfPromise;
 }
