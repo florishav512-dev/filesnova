@@ -24,7 +24,7 @@ let _qpdfPromise: Promise<QpdfModule> | null = null;
 
 async function getQpdf(): Promise<QpdfModule> {
   if (!_qpdfPromise) {
-    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => qpdf.init());
+    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => qpdf.default());
   }
   return _qpdfPromise;
 }
