@@ -26,7 +26,7 @@ async function getQpdf(): Promise<QpdfModule> {
   if (_qpdf) return _qpdf;
 
   const wasmUrl = '/qpdf.wasm';
-  const raw: any = await import('qpdf-wasm');
+  const raw: any = await import('@jspawn/qpdf-wasm');
   const init = (raw?.default ?? raw) as (opts?: { locateFile?: (p: string) => string }) => Promise<QpdfModule>;
   _qpdf = await init({
     locateFile: () => wasmUrl,

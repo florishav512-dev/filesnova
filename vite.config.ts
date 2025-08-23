@@ -20,4 +20,9 @@ export default defineConfig({
     format: 'es',
   },
   assetsInclude: ['**/*.wasm'],
+  build: {
+    rollupOptions: {
+      external: ['qpdf-wasm'],
+    },
+  },
 });
