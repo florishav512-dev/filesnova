@@ -13,6 +13,6 @@
     Cross-Origin-Resource-Policy = "same-origin"
 
 [[headers]]
-  for = "/*.wasm"
+  for = "/qpdf/qpdf.wasm"
     [headers.values]
     Content-Type = "application/wasm"

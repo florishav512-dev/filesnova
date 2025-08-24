@@ -25,16 +25,9 @@ let _qpdfPromise: Promise<QpdfModule> | null = null;
 
 async function getQpdf(): Promise<QpdfModule> {
   if (!_qpdfPromise) {
-    _qpdfPromise = import('@jspawn/qpdf-wasm').then((qpdf) => {
-      // IMPORTANT: your repo stores wasm at /public/qpdf/qpdf.wasm
-      const wasmUrl = '/qpdf/qpdf.wasm';
+    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => {
       return qpdf.default({
-        locateFile: (path: string) => {
-          if (path.endsWith('.wasm')) {
-            return wasmUrl;
-          }
-          return path;
-        },
+        locateFile: (f) => `/qpdf/${f}`,
       });
     });
   }
