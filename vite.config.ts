@@ -22,7 +22,7 @@ export default defineConfig({
   assetsInclude: ['**/*.wasm'],
   build: {
     rollupOptions: {
-      external: ['qpdf-wasm', 'react-router-dom'],
+      external: ['qpdf-wasm'],
     },
   },
 });
