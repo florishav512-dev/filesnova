@@ -19,14 +19,15 @@ import {
 // -----------------------------
 // QPDF WASM loader
 // -----------------------------
-// CHANGED: use the package's default export type (not .init)
+// use the package's default export type (not .init)
 type QpdfModule = Awaited<ReturnType<typeof import('@jspawn/qpdf-wasm').default>>;
 let _qpdfPromise: Promise<QpdfModule> | null = null;
 
 async function getQpdf(): Promise<QpdfModule> {
   if (!_qpdfPromise) {
-    _qpdfPromise = import('@jspawn/qpdf-wasm').then(qpdf => {
-      const wasmUrl = '/qpdf.wasm';
+    _qpdfPromise = import('@jspawn/qpdf-wasm').then((qpdf) => {
+      // IMPORTANT: your repo stores wasm at /public/qpdf/qpdf.wasm
+      const wasmUrl = '/qpdf/qpdf.wasm';
       return qpdf.default({
         locateFile: (path: string) => {
           if (path.endsWith('.wasm')) {
@@ -115,10 +116,7 @@ const UnlockPdfPage: React.FC = () => {
     const inName = 'input.pdf';
     const outName = 'output.pdf';
 
-    const result = await qpdf.run(
-      [...args, inName, outName],
-      { [inName]: inBytes }
-    );
+    const result = await qpdf.run([...args, inName, outName], { [inName]: inBytes });
 
     if (result.exitCode !== 0) {
       console.error('qpdf stderr:', result.stderr);
@@ -171,12 +169,7 @@ const UnlockPdfPage: React.FC = () => {
 
     try {
       const buf = new Uint8Array(await file.arrayBuffer());
-      const args: string[] = [
-        '--encrypt',
-        userPassword.trim(),
-        ownerPassword.trim(),
-        String(keyBits),
-      ];
+      const args: string[] = ['--encrypt', userPassword.trim(), ownerPassword.trim(), String(keyBits)];
       if (allowCsv) args.push(`--allow=${allowCsv}`);
       if (keyBits === 256) args.push('--use-aes=y');
 
