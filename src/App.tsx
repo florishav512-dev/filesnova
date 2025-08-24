@@ -34,6 +34,7 @@ const TarToZipPage = React.lazy(() => import('./pages/tools/TarToZipPage'));
 const WordCounterPage = React.lazy(() => import('./pages/tools/WordCounterPage'));
 const CaseConverterPage = React.lazy(() => import('./pages/tools/CaseConverterPage'));
 const QrScannerPage = React.lazy(() => import('./pages/tools/QrScannerPage'));
+const LockPdfPage = React.lazy(() => import('./pages/tools/LockPdfPage'));
 // alias for extract images same as pdf to jpg
 const ExtractImagesPage = React.lazy(() => import('./pages/tools/ExtractImagesPage'));
 // Support pages
@@ -86,6 +87,7 @@ const App: React.FC = () => {
         <Route path="/tools/word-counter" element={<WordCounterPage />} />
         <Route path="/tools/case-converter" element={<CaseConverterPage />} />
         <Route path="/tools/qr-scanner" element={<QrScannerPage />} />
+        <Route path="/tools/lock-pdf" element={<LockPdfPage />} />
           <Route path="/coming-soon" element={<ComingSoonPage />} />
           {/* Support and legal pages */}
           <Route path="/support" element={<SupportPage />} />
