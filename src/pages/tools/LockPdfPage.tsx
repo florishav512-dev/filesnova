@@ -1,8 +1,8 @@
+import type { QpdfModule } from '@jspawn/qpdf-wasm';
 import React, { useState, useRef } from 'react';
 import PageLayout from '../../components/PageLayout';
-import UploadZone from '../../components/UploadZone';
 import { ToolSeo } from '../../components/seo/ToolSeo';
-import type { QpdfModule } from '@jspawn/qpdf-wasm';
+import UploadZone from '../../components/UploadZone';
 
 let qpdfPromise: Promise<QpdfModule> | null = null;
 function getQpdf(): Promise<QpdfModule> {
