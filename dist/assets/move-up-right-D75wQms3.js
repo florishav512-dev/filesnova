@@ -1,0 +1,1 @@
+import{c as t}from"./sparkles-CBasR0l-.js";const o=t("MoveDownRight",[["path",{d:"M19 13V19H13",key:"10vkzq"}],["path",{d:"M5 5L19 19",key:"5zm2fv"}]]),a=t("MoveUpRight",[["path",{d:"M13 5H19V11",key:"1n1gyv"}],["path",{d:"M19 5L5 19",key:"72u4yj"}]]);export{a as M,o as a};
