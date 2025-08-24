@@ -1,18 +1,28 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import PageLayout from '../../components/PageLayout';
 import UploadZone from '../../components/UploadZone';
 import { ToolSeo } from '../../components/seo/ToolSeo';
 
-// Define the QPDF module interface
-declare global {
-  interface Window {
-    createModule: () => Promise<any>;
+// -----------------------------
+// QPDF WASM loader (no createModule)
+// -----------------------------
+type QpdfModule = Awaited<ReturnType<typeof import('@jspawn/qpdf-wasm').default>>;
+let qpdfPromise: Promise<QpdfModule> | null = null;
+
+async function getQpdf(): Promise<QpdfModule> {
+  if (!qpdfPromise) {
+    qpdfPromise = import('@jspawn/qpdf-wasm').then(mod =>
+      mod.default({
+        locateFile: (path: string) =>
+          path.endsWith('.wasm') ? '/qpdf/qpdf.wasm' : path,
+      })
+    );
   }
+  return qpdfPromise;
 }
 
 const LockPdfPage: React.FC = () => {
-  const [qpdfModule, setQpdfModule] = useState<any>(null);
+  const [qpdfReady, setQpdfReady] = useState(false);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [isLocking, setIsLocking] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,20 +37,14 @@ const LockPdfPage: React.FC = () => {
   const allowCopyRef = useRef<HTMLInputElement>(null);
   const allowAnnotationsRef = useRef<HTMLInputElement>(null);
 
-
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '/qpdf/qpdf.js';
-    script.onload = () => {
-      window.createModule().then((module: any) => {
-        setQpdfModule(module);
+    // Initialize qpdf-wasm once
+    getQpdf()
+      .then(() => setQpdfReady(true))
+      .catch((e) => {
+        console.error(e);
+        setError('Failed to load PDF engine.');
       });
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
   }, []);
 
   const handleFileSelect = (file: File) => {
@@ -49,8 +53,12 @@ const LockPdfPage: React.FC = () => {
   };
 
   const handleLockPdf = async () => {
-    if (!pdfFile || !qpdfModule) {
-      setError('Please select a PDF file and wait for the module to load.');
+    if (!pdfFile) {
+      setError('Please select a PDF file.');
+      return;
+    }
+    if (!qpdfReady) {
+      setError('PDF engine is still loading. Try again in a moment.');
       return;
     }
 
@@ -61,29 +69,51 @@ const LockPdfPage: React.FC = () => {
       const pdfData = new Uint8Array(await pdfFile.arrayBuffer());
       const userPassword = userPasswordRef.current?.value || '';
       const ownerPassword = ownerPasswordRef.current?.value || '';
-      const keyLength = keyLengthRef.current?.value === '256' ? 256 : 128;
+      const keyBits = (keyLengthRef.current?.value === '256' ? 256 : 128) as 128 | 256;
 
       if (!userPassword && !ownerPassword) {
         setError('You must provide at least a user or an owner password.');
         setIsLocking(false);
         return;
       }
-      
-      const permissions = {
-        print: allowPrintRef.current?.checked ? 'y' : 'n',
-        modify: allowModifyRef.current?.checked ? 'y' : 'n',
-        copy: allowCopyRef.current?.checked ? 'y' : 'n',
-        annot: allowAnnotationsRef.current?.checked ? 'y' : 'n',
-      };
 
-      const outputPdfData = qpdfModule.encrypt(pdfData, {
-        userPassword,
-        ownerPassword,
-        keyLength,
-        permissions,
+      // Map your checkboxes to qpdf --allow CSV
+      // (qpdf permissions are additive; copying text/images == extract)
+      const allows: string[] = [];
+      if (allowPrintRef.current?.checked) allows.push('print');
+      if (allowModifyRef.current?.checked) allows.push('modify');
+      if (allowCopyRef.current?.checked) allows.push('extract');
+      if (allowAnnotationsRef.current?.checked) allows.push('annotate');
+      const allowCsv = allows.join(',');
+
+      const inName = 'in.pdf';
+      const outName = 'out.pdf';
+
+      const qpdf = await getQpdf();
+      const args: string[] = [
+        '--encrypt',
+        userPassword,             // user password ('' allowed)
+        ownerPassword,            // owner password (recommended set)
+        String(keyBits),          // 128 or 256
+      ];
+
+      if (allowCsv) args.push(`--allow=${allowCsv}`);
+      if (keyBits === 256) args.push('--use-aes=y');
+
+      // run qpdf: qpdf --encrypt ... -- in.pdf out.pdf
+      const result = await qpdf.run([...args, '--', inName, outName], {
+        [inName]: pdfData,
       });
 
-      const blob = new Blob([outputPdfData], { type: 'application/pdf' });
+      if (result.exitCode !== 0) {
+        console.error('qpdf stderr:', result.stderr);
+        throw new Error(result.stderr || 'qpdf failed to encrypt the file.');
+      }
+
+      const out = result.files[outName];
+      if (!out) throw new Error('qpdf did not produce an output file.');
+
+      const blob = new Blob([out], { type: 'application/pdf' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = `locked_${pdfFile.name}`;
@@ -110,7 +140,7 @@ const LockPdfPage: React.FC = () => {
         <p className="text-lg mt-2">Encrypt and protect your PDF files with a password.</p>
       </div>
 
-      {!qpdfModule ? (
+      {!qpdfReady ? (
         <div className="text-center my-8">
           <p>Loading PDF processing module...</p>
         </div>
@@ -121,7 +151,7 @@ const LockPdfPage: React.FC = () => {
           {pdfFile && (
             <div className="mt-8 p-6 border rounded-lg">
               <h2 className="text-2xl font-semibold mb-4">Encryption Options</h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="userPassword">User Password (for opening)</label>
@@ -144,10 +174,10 @@ const LockPdfPage: React.FC = () => {
               <div className="mt-4">
                 <h3 className="text-xl font-semibold">Permissions</h3>
                 <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div><input type="checkbox" id="allowPrint" ref={allowPrintRef} defaultChecked/> <label htmlFor="allowPrint">Allow Printing</label></div>
-                    <div><input type="checkbox" id="allowModify" ref={allowModifyRef} /> <label htmlFor="allowModify">Allow Modify</label></div>
-                    <div><input type="checkbox" id="allowCopy" ref={allowCopyRef} /> <label htmlFor="allowCopy">Allow Copying</label></div>
-                    <div><input type="checkbox" id="allowAnnotations" ref={allowAnnotationsRef} /> <label htmlFor="allowAnnotations">Allow Annotations</label></div>
+                  <div><input type="checkbox" id="allowPrint" ref={allowPrintRef} defaultChecked /> <label htmlFor="allowPrint">Allow Printing</label></div>
+                  <div><input type="checkbox" id="allowModify" ref={allowModifyRef} /> <label htmlFor="allowModify">Allow Modify</label></div>
+                  <div><input type="checkbox" id="allowCopy" ref={allowCopyRef} /> <label htmlFor="allowCopy">Allow Copying</label></div>
+                  <div><input type="checkbox" id="allowAnnotations" ref={allowAnnotationsRef} /> <label htmlFor="allowAnnotations">Allow Annotations</label></div>
                 </div>
               </div>
 
