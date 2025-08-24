@@ -19,7 +19,8 @@ import {
 // -----------------------------
 // QPDF WASM loader
 // -----------------------------
-type QpdfModule = Awaited<ReturnType<typeof import('@jspawn/qpdf-wasm').init>>;
+// CHANGED: use the package's default export type (not .init)
+type QpdfModule = Awaited<ReturnType<typeof import('@jspawn/qpdf-wasm').default>>;
 let _qpdfPromise: Promise<QpdfModule> | null = null;
 
 async function getQpdf(): Promise<QpdfModule> {
