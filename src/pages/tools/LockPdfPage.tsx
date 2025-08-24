@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { PageLayout } from '../../components/PageLayout';
-import { UploadZone } from '../../components/UploadZone';
+import PageLayout from '../../components/PageLayout';
+import UploadZone from '../../components/UploadZone';
 import { ToolSeo } from '../../components/seo/ToolSeo';
 
 // Define the QPDF module interface
