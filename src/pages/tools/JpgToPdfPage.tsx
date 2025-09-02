@@ -24,6 +24,9 @@ import ToolSeo from '../../components/seo/ToolSeo';
 import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
 import ToolsMenu from '../../components/ToolsMenu';
 
+// ✅ your logo
+import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+
 type FileItem = { id: string; file: File; status: 'ready' | 'completed' };
 
 type PageSizeKey = 'Auto' | 'A4' | 'Letter';
@@ -33,28 +36,26 @@ type FitMode = 'fit' | 'fill' | 'stretch';
 type OrderMode = 'manual' | 'name' | 'size';
 
 const PAGE_SIZES: Record<Exclude<PageSizeKey, 'Auto'>, { w: number; h: number }> = {
-  A4: { w: 595.28, h: 841.89 },     // exact A4 points
+  A4: { w: 595.28, h: 841.89 },
   Letter: { w: 612, h: 792 },
 };
 
 const marginValue = (m: MarginPreset) => (m === 'compact' ? 24 : m === 'wide' ? 72 : 48);
 
-// --- EXIF helpers (minimal JPEG EXIF parse for Orientation + Resolution) ---
+// --- EXIF helpers ---
 type ExifInfo = { orientation?: number; xRes?: number; yRes?: number; resUnit?: number };
 const readExif = (buf: ArrayBuffer): ExifInfo => {
-  // Tiny parser: reads APP1 EXIF TIFF IFD0 entries we care about.
   try {
     const dv = new DataView(buf);
-    // JPEG starts with 0xFFD8
     if (dv.getUint16(0) !== 0xffd8) return {};
     let offset = 2;
     while (offset + 4 <= dv.byteLength) {
       const marker = dv.getUint16(offset);
       offset += 2;
-      if (marker === 0xffe1) { // APP1
-        const size = dv.getUint16(offset); offset += 2;
+      if (marker === 0xffe1) {
+        const size = dv.getUint16(offset);
+        offset += 2;
         if (offset + size - 2 > dv.byteLength) break;
-        // Check "Exif\0\0"
         if (
           dv.getUint8(offset) === 0x45 && dv.getUint8(offset + 1) === 0x78 &&
           dv.getUint8(offset + 2) === 0x69 && dv.getUint8(offset + 3) === 0x66 &&
@@ -62,16 +63,14 @@ const readExif = (buf: ArrayBuffer): ExifInfo => {
         ) {
           const tiff = offset + 6;
           const little = dv.getUint16(tiff) === 0x4949;
-          const get16 = (p: number) => little ? dv.getUint16(p, true) : dv.getUint16(p, false);
-          const get32 = (p: number) => little ? dv.getUint32(p, true) : dv.getUint32(p, false);
-
+          const get16 = (p: number) => (little ? dv.getUint16(p, true) : dv.getUint16(p, false));
+          const get32 = (p: number) => (little ? dv.getUint32(p, true) : dv.getUint32(p, false));
           const ifd0 = tiff + get32(tiff + 4);
           const count = get16(ifd0);
           let orientation: number | undefined;
           let xRes: number | undefined;
           let yRes: number | undefined;
           let resUnit: number | undefined;
-
           for (let i = 0; i < count; i++) {
             const entry = ifd0 + 2 + i * 12;
             const tag = get16(entry);
@@ -79,57 +78,47 @@ const readExif = (buf: ArrayBuffer): ExifInfo => {
             const num = get32(entry + 4);
             const valOff = entry + 8;
             const valuePtr = (type === 3 && num === 1) || (type === 1 && num <= 4) ? valOff : tiff + get32(valOff);
-
-            if (tag === 0x0112) { // Orientation
-              orientation = get16(valuePtr);
-            } else if (tag === 0x011a) { // XResolution (RATIONAL)
+            if (tag === 0x0112) orientation = get16(valuePtr);
+            else if (tag === 0x011a) {
               const nume = get32(valuePtr);
               const deno = get32(valuePtr + 4) || 1;
               xRes = nume / deno;
-            } else if (tag === 0x011b) { // YResolution
+            } else if (tag === 0x011b) {
               const nume = get32(valuePtr);
               const deno = get32(valuePtr + 4) || 1;
               yRes = nume / deno;
-            } else if (tag === 0x0128) { // ResolutionUnit (2 = inch, 3 = cm)
-              resUnit = get16(valuePtr);
-            }
+            } else if (tag === 0x0128) resUnit = get16(valuePtr);
           }
           return { orientation, xRes, yRes, resUnit };
         }
         offset += size - 2;
-      } else if ((marker & 0xff00) !== 0xff00) {
-        break; // not a marker; bail
-      } else if (marker === 0xffda /* SOS */ || marker === 0xffd9 /* EOI */) {
-        break;
-      } else {
-        const size = dv.getUint16(offset); offset += 2 + size - 2;
+      } else if ((marker & 0xff00) !== 0xff00) break;
+      else if (marker === 0xffda || marker === 0xffd9) break;
+      else {
+        const size = dv.getUint16(offset);
+        offset += 2 + size - 2;
       }
     }
-  } catch { /* ignore */ }
+  } catch {}
   return {};
 };
 
-// Canvas draw with EXIF orientation fix
 const drawOriented = (img: HTMLImageElement | ImageBitmap, orientation?: number) => {
   const w = 'width' in img ? (img as any).width : (img as HTMLImageElement).naturalWidth;
   const h = 'height' in img ? (img as any).height : (img as HTMLImageElement).naturalHeight;
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d')!;
-  // default
   canvas.width = w; canvas.height = h;
-
-  // Orientation transforms 2..8
   switch (orientation) {
-    case 2: canvas.width = w; canvas.height = h; ctx.translate(w, 0); ctx.scale(-1, 1); break;                 // flip X
-    case 3: canvas.width = w; canvas.height = h; ctx.translate(w, h); ctx.rotate(Math.PI); break;               // 180
-    case 4: canvas.width = w; canvas.height = h; ctx.translate(0, h); ctx.scale(1, -1); break;                  // flip Y
-    case 5: canvas.width = h; canvas.height = w; ctx.rotate(0.5 * Math.PI); ctx.scale(1, -1); break;            // 90 CW + flip Y
-    case 6: canvas.width = h; canvas.height = w; ctx.rotate(0.5 * Math.PI); ctx.translate(0, -h); break;        // 90 CW
-    case 7: canvas.width = h; canvas.height = w; ctx.rotate(0.5 * Math.PI); ctx.translate(w, -h); ctx.scale(-1, 1); break; // 90 CW + flip X
-    case 8: canvas.width = h; canvas.height = w; ctx.rotate(-0.5 * Math.PI); ctx.translate(-w, 0); break;       // 90 CCW
-    default: /* do nothing */ ;
+    case 2: canvas.width = w; canvas.height = h; ctx.translate(w, 0); ctx.scale(-1, 1); break;
+    case 3: canvas.width = w; canvas.height = h; ctx.translate(w, h); ctx.rotate(Math.PI); break;
+    case 4: canvas.width = w; canvas.height = h; ctx.translate(0, h); ctx.scale(1, -1); break;
+    case 5: canvas.width = h; canvas.height = w; ctx.rotate(0.5 * Math.PI); ctx.scale(1, -1); break;
+    case 6: canvas.width = h; canvas.height = w; ctx.rotate(0.5 * Math.PI); ctx.translate(0, -h); break;
+    case 7: canvas.width = h; canvas.height = w; ctx.rotate(0.5 * Math.PI); ctx.translate(w, -h); ctx.scale(-1, 1); break;
+    case 8: canvas.width = h; canvas.height = w; ctx.rotate(-0.5 * Math.PI); ctx.translate(-w, 0); break;
+    default: ;
   }
-  // draw
   // @ts-ignore
   ctx.drawImage(img as any, 0, 0);
   return canvas;
@@ -145,16 +134,15 @@ const JpgToPdfPage: React.FC = () => {
   const revokeUrlRef = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Advanced, persisted options
   const [orderMode, setOrderMode] = useState<OrderMode>('manual');
   const [pageSizeKey, setPageSizeKey] = useState<PageSizeKey>('Auto');
   const [orientation, setOrientation] = useState<Orientation>('portrait');
   const [marginPreset, setMarginPreset] = useState<MarginPreset>('normal');
   const [fitMode, setFitMode] = useState<FitMode>('fit');
-  const [jpegQuality, setJpegQuality] = useState<number>(85); // 10..100
+  const [jpegQuality, setJpegQuality] = useState<number>(85);
   const [pageBg, setPageBg] = useState<string>('#ffffff');
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  const [compressPng, setCompressPng] = useState<boolean>(false); // new: option to recompress PNG as JPEG
+  const [compressPng, setCompressPng] = useState<boolean>(false);
   const [stepNote, setStepNote] = useState<string>('');
 
   useEffect(() => () => {
@@ -164,7 +152,6 @@ const JpgToPdfPage: React.FC = () => {
     }
   }, []);
 
-  // Load & Save user prefs
   useEffect(() => {
     try {
       const raw = localStorage.getItem('fn_jpg2pdf_settings');
@@ -184,15 +171,11 @@ const JpgToPdfPage: React.FC = () => {
     try {
       localStorage.setItem(
         'fn_jpg2pdf_settings',
-        JSON.stringify({
-          orderMode, pageSizeKey, orientation, marginPreset, fitMode,
-          jpegQuality, pageBg, compressPng,
-        })
+        JSON.stringify({ orderMode, pageSizeKey, orientation, marginPreset, fitMode, jpegQuality, pageBg, compressPng })
       );
     } catch {}
   }, [orderMode, pageSizeKey, orientation, marginPreset, fitMode, jpegQuality, pageBg, compressPng]);
 
-  // Ordering helpers
   const orderedFiles = useMemo(() => {
     if (orderMode === 'manual') return files;
     const copy = [...files];
@@ -213,8 +196,7 @@ const JpgToPdfPage: React.FC = () => {
     });
   };
 
-  // Upload/Drop
-  const acceptTypes = "image/jpeg,image/jpg,image/png";
+  const acceptTypes = 'image/jpeg,image/jpg,image/png';
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files;
     if (!selected) return;
@@ -237,7 +219,6 @@ const JpgToPdfPage: React.FC = () => {
   };
   const removeFile = (id: string) => setFiles((prev) => prev.filter((f) => f.id !== id));
 
-  // Utils
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -251,11 +232,8 @@ const JpgToPdfPage: React.FC = () => {
     const bigint = parseInt(full, 16);
     return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
   };
-
-  // Convert pixels → PDF points using EXIF DPI (fallback 72)
   const pxToPt = (px: number, dpi: number | undefined) => (px / (dpi || 72)) * 72;
 
-  // Core: Images -> PDF
   const handleConvert = async () => {
     if (orderedFiles.length === 0) return;
     setIsConverting(true);
@@ -275,20 +253,17 @@ const JpgToPdfPage: React.FC = () => {
         const f = item.file;
         setStepNote(`Loading ${f.name}…`);
 
-        // Read first chunk for EXIF & density
         let exif: ExifInfo = {};
         if (/image\/jpeg/i.test(f.type)) {
           const head = await f.slice(0, 128 * 1024).arrayBuffer();
           exif = readExif(head);
         }
 
-        // Load image efficiently
         const tmpUrl = URL.createObjectURL(f);
-        // Use ImageBitmap when available for faster decode; fallback to HTMLImageElement
         let canvas: HTMLCanvasElement;
         try {
           const bitmap = await (window.createImageBitmap
-            ? window.createImageBitmap(await fetch(tmpUrl).then(r => r.blob()))
+            ? window.createImageBitmap(await fetch(tmpUrl).then((r) => r.blob()))
             : null);
           if (bitmap) {
             canvas = drawOriented(bitmap, exif.orientation);
@@ -307,12 +282,10 @@ const JpgToPdfPage: React.FC = () => {
         const srcW = canvas.width;
         const srcH = canvas.height;
 
-        // Decide page size
         let pageW: number, pageH: number;
         if (pageSizeKey === 'Auto') {
-          // Use physical size if EXIF DPI present (2=inches, 3=cm)
-          const unit = exif.resUnit; // 2=in, 3=cm; others treated as pixels per inch
-          const xDpi = exif.xRes && unit === 3 ? exif.xRes * 2.54 : exif.xRes; // convert px/cm -> px/in
+          const unit = exif.resUnit;
+          const xDpi = exif.xRes && unit === 3 ? exif.xRes * 2.54 : exif.xRes;
           const yDpi = exif.yRes && unit === 3 ? exif.yRes * 2.54 : exif.yRes;
           pageW = Math.max(1, pxToPt(srcW, xDpi));
           pageH = Math.max(1, pxToPt(srcH, yDpi));
@@ -327,15 +300,12 @@ const JpgToPdfPage: React.FC = () => {
         const contentW = Math.max(1, pageW - margin * 2);
         const contentH = Math.max(1, pageH - margin * 2);
 
-        // Embed image
         let imageRef;
         if (/image\/png/i.test(f.type) && !compressPng) {
-          // Keep PNG lossless
           const blob = await new Promise<Blob>((resolve) => canvas.toBlob((b) => resolve(b!), 'image/png'));
           const arr = await blob.arrayBuffer();
           imageRef = await pdfDoc.embedPng(arr);
         } else {
-          // JPEG re-encode for size control (also converts PNG to JPEG when compressPng=true)
           const jpegBlob: Blob = await new Promise((resolve) =>
             canvas.toBlob(resolve, 'image/jpeg', Math.min(1, Math.max(0.1, jpegQuality / 100)))
           );
@@ -343,7 +313,6 @@ const JpgToPdfPage: React.FC = () => {
           imageRef = await pdfDoc.embedJpg(arr);
         }
 
-        // Compute drawing rect
         const dims = imageRef.scale(1);
         let drawW = contentW;
         let drawH = contentH;
@@ -355,14 +324,13 @@ const JpgToPdfPage: React.FC = () => {
           const scale = Math.max(contentW / dims.width, contentH / dims.height);
           drawW = Math.max(1, Math.round(dims.width * scale));
           drawH = Math.max(1, Math.round(dims.height * scale));
-        } // else 'stretch' uses full contentW/H
+        }
 
         const x = margin + (contentW - drawW) / 2;
         const y = margin + (contentH - drawH) / 2;
 
         const page = pdfDoc.addPage([pageW, pageH]);
 
-        // Page background (visible margins)
         const bg = hexToRgb(pageBg);
         page.drawRectangle({
           x: 0, y: 0, width: pageW, height: pageH,
@@ -404,7 +372,7 @@ const JpgToPdfPage: React.FC = () => {
         <link rel="canonical" href="https://filesnova.com/tools/jpg-to-pdf" />
       </Helmet>
 
-      {/* WebApplication schema */}
+      {/* Schemas */}
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
@@ -414,7 +382,6 @@ const JpgToPdfPage: React.FC = () => {
         operatingSystem: 'Web',
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       }} />
-      {/* Breadcrumb */}
       <JsonLd data={{
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
@@ -425,22 +392,25 @@ const JpgToPdfPage: React.FC = () => {
       }} />
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden pt-24">
-        {/* Background Pulses */}
+        {/* BG */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-pink-400/20 to-orange-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
 
-        {/* Header */}
+        {/* Header (PNG logo) */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-20 gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                  <Sparkles className="w-7 h-7 text-white animate-pulse" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+            <div className="flex items-center h-20 gap-">
+              <div className="relative shrink-0">
+                <img
+                  src={FileNovaIcon}
+                  alt="Files Nova"
+                  className="w-16 h-16 md:w-20 md:h-20 object-contain"
+
+                 draggable={false}
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -448,7 +418,6 @@ const JpgToPdfPage: React.FC = () => {
                 </h1>
                 <p className="text-xs text-gray-500 font-medium">JPG to PDF Converter</p>
               </div>
-
               <div className="ml-auto">
                 <ToolsMenu />
               </div>
@@ -456,7 +425,7 @@ const JpgToPdfPage: React.FC = () => {
           </div>
         </header>
 
-        {/* Main content */}
+        {/* Main */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 py-10">
           {/* Tool Header */}
           <div className="relative bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl p-8 mb-8 overflow-hidden">
@@ -665,7 +634,9 @@ const JpgToPdfPage: React.FC = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-gray-900 truncate">{item.file.name}</p>
-                          <p className="text-sm text-gray-500">{formatFileSize(item.file.size)} · {(item.file.type || '').replace('image/','').toUpperCase()}</p>
+                          <p className="text-sm text-gray-500">
+                            {formatFileSize(item.file.size)} · {(item.file.type || '').replace('image/','').toUpperCase()}
+                          </p>
                         </div>
                       </div>
 
@@ -707,7 +678,7 @@ const JpgToPdfPage: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Conversion Progress */}
+                {/* Progress */}
                 {isConverting && (
                   <div className="mt-8 p-6 bg-blue-50 rounded-2xl">
                     <div className="flex items-center justify-between mb-4">
@@ -724,7 +695,7 @@ const JpgToPdfPage: React.FC = () => {
                   </div>
                 )}
 
-                {/* Action Buttons */}
+                {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
                   <button
                     onClick={handleConvert}

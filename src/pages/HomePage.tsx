@@ -40,6 +40,10 @@ import {
   X as CloseIcon,
 } from 'lucide-react';
 
+// ✅ NEW: use your uploaded PNG as the brand icon
+// Place your PNG at: src/assets/filesnova-icon.png
+import FileNovaIcon from '../assets/FILESNOVANEWICON.png';
+
 // Inline chevron-down
 const ChevronDownIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg viewBox="0 0 24 24" width="16" height="16" {...props} xmlns="http://www.w3.org/2000/svg">
@@ -430,23 +434,30 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* Header (made more translucent) */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/60 backdrop-blur-xl shadow-lg border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                  <Sparkles className="w-7 h-7 text-white animate-pulse" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
-              </div>
-              <div>
-                <h1 className="text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  Files Nova
-                </h1>
-                <p className="text-xs text-gray-500 font-medium">File conversion reimagined</p>
-              </div>
-            </div>
+      {/* Header (Files Nova branding with PNG logo) */}
+<header className="fixed top-0 left-0 right-0 z-50 bg-white/60 backdrop-blur-xl shadow-lg border-b border-white/20">
+  <div className="max-w-7xl mx-auto px-4m:px-6 lg:px-8">
+    <div className="flex justify-between items-center h-20">
+      {/* Brand logo + name */}
+      <div className="flex items-center space-x">
+        <div className="relative shrink-0">
+          <img
+  src={FileNovaIcon}
+  alt="Files Nova"
+  className="w-20 h-20 md:w-24 md:h-24 object-contain"
+  draggable={false}
+/>
+
+        </div>
+        <div>
+          <h1 className="text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Files Nova
+          </h1>
+          <p className="text-xs text-gray-500 font-medium">
+            File conversion reimagined
+          </p>
+        </div>
+      </div>
 
             {/* Right: nav + All Tools */}
             <div className="flex items-center">
@@ -829,16 +840,19 @@ const HomePage: React.FC = () => {
 
       {/* Footer */}
       <footer className="relative z-10 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="grid gap-10 md:grid-cols-4">
-            <div>
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                    <Sparkles className="w-7 h-7 text-white animate-pulse" />
-                  </div>
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></span>
-                </div>
+  <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="grid gap-10 md:grid-cols-4">
+      {/* Brand logo + text */}
+      <div>
+        <div className="flex items-center space-x-2 mb-6">
+          <div className="relative shrink-0">
+            <img
+              src={FileNovaIcon}
+              alt="Files Nova"
+              className="w-20 h-20 md:w-24 md:h-24 object-contain"
+              draggable={false}
+            />
+          </div>
                 <div>
                   <h3 className="text-2xl font-black">Files Nova</h3>
                   <p className="text-gray-400 text-sm">File conversion reimagined</p>

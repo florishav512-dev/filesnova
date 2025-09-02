@@ -15,6 +15,7 @@ import {
   Eye,
   Hash as TocIcon,
 } from 'lucide-react';
+import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
 
 // ✅ SEO
 import ToolSeo from '../../components/seo/ToolSeo';
@@ -677,12 +678,15 @@ const MarkdownToPdfPage: React.FC = () => {
         {/* Header (brand left, Tools on right; no back arrow) */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-20 gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                  <Sparkles className="w-7 h-7 text-white animate-pulse" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+            <div className="flex items-center h-20 gap-">
+              <div className="relative shrink-0">
+                <img
+                  src={FileNovaIcon}
+                  alt="Files Nova"
+                  className="w-16 h-16 md:w-20 md:h-20 object-contain"
+
+                 draggable={false}
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -690,7 +694,6 @@ const MarkdownToPdfPage: React.FC = () => {
                 </h1>
                 <p className="text-xs text-gray-500 font-medium">Markdown to PDF</p>
               </div>
-
               <div className="ml-auto">
                 <ToolsMenu />
               </div>

@@ -25,6 +25,7 @@ import AdSpace from '../../components/AdSpace';
 import ToolSeo from '../../components/seo/ToolSeo';
 import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
 import ToolsMenu from '../../components/ToolsMenu';
+import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
 
 type PageSizeKey = 'A4' | 'Letter';
 type FontFamilyKey = 'Helvetica' | 'TimesRoman' | 'Courier';
@@ -419,21 +420,23 @@ const DocxToPdfPage: React.FC = () => {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-400/10 to-blue-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
 
-        {/* header */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-20 gap-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl">
-                  <Sparkles className="w-7 h-7 text-white animate-pulse" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-bounce"></div>
+            <div className="flex items-center h-20 gap-">
+              <div className="relative shrink-0">
+                <img
+                  src={FileNovaIcon}
+                  alt="Files Nova"
+                  className="w-16 h-16 md:w-20 md:h-20 object-contain"
+
+                 draggable={false}
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                   Files Nova
                 </h1>
-                <p className="text-xs text-gray-500 font-medium">DOCX to PDF</p>
+                <p className="text-xs text-gray-500 font-medium">DOCX to PDF Converter</p>
               </div>
               <div className="ml-auto">
                 <ToolsMenu />
@@ -441,7 +444,6 @@ const DocxToPdfPage: React.FC = () => {
             </div>
           </div>
         </header>
-
         {/* main */}
         <div className="relative z-10 max-w-6xl mx-auto px-4 py-10">
           {/* hero */}
