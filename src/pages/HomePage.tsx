@@ -41,9 +41,6 @@ import {
   Twitter,
   Heart,
 } from 'lucide-react';
-
-// ✅ NEW: use your uploaded PNG as the brand icon
-// Place your PNG at: src/assets/filesnova-icon.png
 import FileNovaIcon from '../assets/FILESNOVANEWICON.png';
 
 // Inline chevron-down
@@ -263,15 +260,17 @@ const features = [
   { icon: Smartphone, title: 'Works Everywhere', desc: 'Perfect experience on desktop, tablet, and mobile devices.', gradient: 'from-green-500 to-emerald-500' },
 ];
 
+
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
     { 
-      name: 'Twitter', 
-      url: 'https://twitter.com/filesnovaapp', 
-      icon: Twitter,
-      hoverColor: 'hover:text-blue-400'
+      name: 'X', 
+      url: 'https://x.com/filesnovaapp', 
+      icon: XLogo,
+      hoverColor: 'hover:text-gray-100'
     },
     { 
       name: 'Facebook', 
@@ -657,7 +656,7 @@ const HomePage: React.FC = () => {
       {/* Header (made more translucent) */}
       {/* Header (Files Nova branding with PNG logo) */}
 <header className="fixed top-0 left-0 right-0 z-50 bg-white/60 backdrop-blur-xl shadow-lg border-b border-white/20">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="max-w-7xl mx-auto px-4">
     <div className="flex items-center h-20 gap-3">
       {/* Brand logo + name */}
       <div className="flex items-center gap- flex-1 min-w-0">
@@ -666,7 +665,7 @@ const HomePage: React.FC = () => {
           <img
   src={FileNovaIcon}
   alt="Files Nova"
-  className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
+  className="w-20 h-20 object-contain"
   draggable={false}
 />
 
@@ -674,11 +673,11 @@ const HomePage: React.FC = () => {
         <div>
           <h1
   className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent
-             leading-none whitespace-nowrap text-[clamp(22px,6vw,32px)]"
+             leading-none whitespace-nowrap text-3xl"
 >
   Files Nova
 </h1>
-<p className="text-gray-500 font-medium leading-tight whitespace-nowrap text-[clamp(10px,3.2vw,12px)]">
+<p className="text-gray-500 font-medium leading-tight whitespace-nowrap text-xs">
   File conversion reimagined
 </p>
 
@@ -686,21 +685,18 @@ const HomePage: React.FC = () => {
       </div>
 
             {/* Right: nav + All Tools */}
-            <div className="flex items-center">
-              <nav className="hidden md:flex items-center space-x-8">
-                <a href="#tools" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
-                  Tools
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <Link to="/help" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
+            <div className="flex items-center flex-nowrap">
+              <nav className="flex items-center space-x-8">
+                
+                <Link to="/help" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group hidden md:block">
                   Help
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link to="/contact" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
+                <Link to="/contact" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group hidden md:block">
                   Contact
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link to="/privacy-policy" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group">
+                <Link to="/privacy-policy" className="relative text-gray-700 hover:text-blue-600 transition-all duration-300 font-medium group hidden md:block">
                   Privacy
                   <span className="absolute -bottom-1 left-0 w-0.5 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
@@ -710,13 +706,13 @@ const HomePage: React.FC = () => {
                 <button
                   onClick={() => setToolsOpen((v) => !v)}
                   className={`fn-anim-btn flex items-center gap-2 rounded-2xl
-px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm
+px-3 py-2 text-sm
 shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0
 whitespace-nowrap flex-shrink-0`}
 
                   aria-haspopup="menu" aria-expanded={toolsOpen} aria-label="Open all tools menu"
                 >
-                  All Tools
+                  Tools
                   <ChevronDownIcon className={`h-4 w-4 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
                 </button>
 
