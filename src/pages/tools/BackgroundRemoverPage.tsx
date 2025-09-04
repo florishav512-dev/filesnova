@@ -420,8 +420,10 @@ const BackgroundRemoverPage: React.FC = () => {
                   src={FileNovaIcon}
                   alt="Files Nova"
                   className="w-16 h-16 md:w-20 md:h-20 object-contain"
-
-                 draggable={false}
+                  draggable={false}
+                  loading="lazy"
+                  width="96"
+                  height="96"
                 />
               </div>
               <div>

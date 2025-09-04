@@ -326,8 +326,10 @@ const ImageResizerPage: React.FC = () => {
                   src={FileNovaIcon}
                   alt="Files Nova"
                   className="w-16 h-16 md:w-20 md:h-20 object-contain"
-
-                 draggable={false}
+                  draggable={false}
+                  loading="lazy"
+                  width="96"
+                  height="96"
                 />
               </div>
               <div>
@@ -553,12 +555,12 @@ const ImageResizerPage: React.FC = () => {
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <h4 className="font-semibold mb-2">Original Image ({naturalW}×{naturalH})</h4>
-                  <img src={originalUrl} alt="Original" className="max-w-full rounded-xl" />
+                  <img src={originalUrl} alt="Original" className="max-w-full rounded-xl" loading="lazy" />
                 </div>
                 {resizedUrl && (
                   <div>
                     <h4 className="font-semibold mb-2">Resized Image</h4>
-                    <img src={resizedUrl} alt="Resized" className="max-w-full rounded-xl" />
+                    <img src={resizedUrl} alt="Resized" className="max-w-full rounded-xl" loading="lazy" />
                   </div>
                 )}
               </div>

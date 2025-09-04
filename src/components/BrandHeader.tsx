@@ -30,6 +30,9 @@ const BrandHeader: React.FC<Props> = ({ showToolsMenu = true, subtitle, logoSize
               alt="Files Nova"
               className={`${sizeMap[logoSize]} object-contain`}
               draggable={false}
+              loading="lazy"
+              width="96"
+              height="96"
             />
           </div>
           <div className="leading-tight">

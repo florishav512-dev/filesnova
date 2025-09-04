@@ -1,0 +1,1 @@
+import{j as e}from"./index-DZ9cnodX.js";const s=()=>e.jsx("div",{className:"bg-white/80 backdrop-blur-xl rounded-3xl border-2 border-dashed border-gray-300 p-8 my-8 flex justify-center items-center",children:e.jsx("p",{className:"text-gray-500 text-sm",children:"Your Ad Could Be Here"})});export{s as A};

@@ -325,7 +325,7 @@ const Footer = () => {
           {/* Brand Section - Enhanced */}
           <div className="lg:col-span-1 space-y-6">
             <div className="flex items-start gap-2">
-              <img src={FileNovaIcon} alt="Files Nova" className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain" />
+              <img src={FileNovaIcon} alt="Files Nova" className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain" loading="lazy" width="96" height="96" />
               <div className="min-w-0">
                 <h3 className="font-extrabold text-2xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent leading-none">
                   Files Nova
@@ -667,6 +667,9 @@ const HomePage: React.FC = () => {
   alt="Files Nova"
   className="w-20 h-20 object-contain"
   draggable={false}
+  loading="lazy"
+  width="96"
+  height="96"
 />
 
         </div>
