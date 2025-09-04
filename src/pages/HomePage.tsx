@@ -38,6 +38,8 @@ import {
   ImageUp,
   QrCode,
   X as CloseIcon,
+  Twitter,
+  Heart,
 } from 'lucide-react';
 
 // ✅ NEW: use your uploaded PNG as the brand icon
@@ -261,6 +263,225 @@ const features = [
   { icon: Smartphone, title: 'Works Everywhere', desc: 'Perfect experience on desktop, tablet, and mobile devices.', gradient: 'from-green-500 to-emerald-500' },
 ];
 
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
+  const socialLinks = [
+    { 
+      name: 'Twitter', 
+      url: 'https://twitter.com/filesnovaapp', 
+      icon: Twitter,
+      hoverColor: 'hover:text-blue-400'
+    },
+    { 
+      name: 'Facebook', 
+      url: 'https://www.facebook.com/filesnovaapp', 
+      icon: Facebook,
+      hoverColor: 'hover:text-blue-500'
+    },
+    { 
+      name: 'Instagram', 
+      url: 'https://www.instagram.com/filesnovaapp', 
+      icon: Instagram,
+      hoverColor: 'hover:text-pink-400'
+    },
+    { 
+      name: 'LinkedIn', 
+      url: 'https://www.linkedin.com/company/filesnovaapp', 
+      icon: Linkedin,
+      hoverColor: 'hover:text-blue-600'
+    }
+  ];
+
+  const popularTools = [
+    { name: 'PDF Converter', path: '/tools/docx-to-pdf', icon: FileText },
+    { name: 'Image Resizer', path: '/tools/image-resizer', icon: ImageIcon },
+    { name: 'ZIP Creator', path: '/tools/create-zip', icon: Archive },
+    { name: 'QR Generator', path: '/tools/qr-generator', icon: QrCode }
+  ];
+
+  const supportLinks = [
+    { name: 'Help Center', path: '/help' },
+    { name: 'Contact Us', path: '/contact' },
+    { name: 'FAQ', path: '/help' },
+    { name: 'Tutorials', path: '/tutorials' }
+  ];
+
+  const legalLinks = [
+    { name: 'Privacy Policy', path: '/privacy-policy' },
+    { name: 'Terms of Service', path: '/terms' },
+    { name: 'Cookie Policy', path: '/cookie-policy' },
+    { name: 'GDPR', path: '/gdpr' }
+  ];
+
+  return (
+    <footer className="relative z-10 bg-gradient-to-b from-gray-900 to-black text-white">
+      {/* Decorative top border */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Main content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          
+          {/* Brand Section - Enhanced */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="flex items-start gap-2">
+              <img src={FileNovaIcon} alt="Files Nova" className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain" />
+              <div className="min-w-0">
+                <h3 className="font-extrabold text-2xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent leading-none">
+                  Files Nova
+                </h3>
+                <p className="text-gray-400 text-sm font-medium mt-1">
+                  File conversion reimagined
+                </p>
+              </div>
+            </div>
+            
+            <p className="text-gray-300 text-sm leading-relaxed max-w-xs">
+              The fastest and most secure way to convert files in your browser. 
+              <span className="block mt-2 text-xs text-gray-400">
+                Trusted by millions worldwide.
+              </span>
+            </p>
+
+            {/* Social Media Icons */}
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social) => {
+                const IconComponent = social.icon;
+                return (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-2 bg-gray-800 hover:bg-gray-700 ${social.hoverColor} rounded-lg transition-all duration-300 transform hover:scale-110 hover:shadow-lg`}
+                    aria-label={social.name}
+                  >
+                    <IconComponent className="w-5 h-5" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Popular Tools - Enhanced */}
+          <div className="space-y-6">
+            <h4 className="text-white font-bold text-lg relative">
+              Popular Tools
+              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+            </h4>
+            <ul className="space-y-4">
+              {popularTools.map((tool, index) => {
+                const IconComponent = tool.icon;
+                return (
+                  <li key={index} className="group">
+                    <Link 
+                      to={tool.path} 
+                      className="flex items-center gap-3 text-gray-300 hover:text-white transition-all duration-200 group-hover:translate-x-1"
+                    >
+                      <IconComponent className="w-4 h-4 text-blue-400 group-hover:text-blue-300" />
+                      <span className="text-sm font-medium">{tool.name}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Support Section - Enhanced */}
+          <div className="space-y-6">
+            <h4 className="text-white font-bold text-lg relative">
+              Support
+              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-green-500 to-teal-500 rounded-full"></div>
+            </h4>
+            <ul className="space-y-4">
+              {supportLinks.map((link, index) => (
+                <li key={index} className="group">
+                  <Link 
+                    to={link.path} 
+                    className="text-gray-300 hover:text-white text-sm font-medium transition-all duration-200 group-hover:translate-x-1 inline-block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal Section - Enhanced */}
+          <div className="space-y-6">
+            <h4 className="text-white font-bold text-lg relative">
+              Legal
+              <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-orange-500 to-red-500 rounded-full"></div>
+            </h4>
+            <ul className="space-y-4">
+              {legalLinks.map((link, index) => (
+                <li key={index} className="group">
+                  <Link 
+                    to={link.path} 
+                    className="text-gray-300 hover:text-white text-sm font-medium transition-all duration-200 group-hover:translate-x-1 inline-block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Divider with gradient */}
+        <div className="mt-16 mb-8">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
+        </div>
+
+        {/* Bottom Section - Enhanced */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+          
+          {/* Copyright */}
+          <div className="text-center lg:text-left">
+            <p className="text-gray-400 text-sm font-medium">
+              &copy; {currentYear} Files Nova. Made with{' '}
+              <Heart className="inline w-4 h-4 text-red-500 mx-1 animate-pulse" />{' '}
+              for the world.
+            </p>
+            <p className="text-gray-500 text-xs mt-1">
+              All rights reserved. Empowering productivity globally.
+            </p>
+          </div>
+
+          {/* Social Links Text Version (Mobile Fallback) */}
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm lg:hidden">
+            {socialLinks.map((social) => (
+              <a
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`text-gray-300 ${social.hoverColor} transition-colors duration-200 font-medium`}
+              >
+                {social.name}
+              </a>
+            ))}
+          </div>
+
+          {/* Additional Info for Desktop */}
+          <div className="hidden lg:block text-right">
+            <p className="text-gray-400 text-xs">
+              Secure • Fast • Reliable
+            </p>
+            <p className="text-gray-500 text-xs mt-1">
+              Processing files since 2020
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom gradient border */}
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-30"></div>
+    </footer>
+  );
+}
+
 const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -437,25 +658,30 @@ const HomePage: React.FC = () => {
       {/* Header (Files Nova branding with PNG logo) */}
 <header className="fixed top-0 left-0 right-0 z-50 bg-white/60 backdrop-blur-xl shadow-lg border-b border-white/20">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="flex justify-between items-center h-20">
+    <div className="flex items-center h-20 gap-3">
       {/* Brand logo + name */}
-      <div className="flex items-center space-x">
+      <div className="flex items-center gap- flex-1 min-w-0">
         <div className="relative shrink-0">
+          
           <img
   src={FileNovaIcon}
   alt="Files Nova"
-  className="w-20 h-20 md:w-24 md:h-24 object-contain"
+  className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain"
   draggable={false}
 />
 
         </div>
         <div>
-          <h1 className="text-3xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Files Nova
-          </h1>
-          <p className="text-xs text-gray-500 font-medium">
-            File conversion reimagined
-          </p>
+          <h1
+  className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent
+             leading-none whitespace-nowrap text-[clamp(22px,6vw,32px)]"
+>
+  Files Nova
+</h1>
+<p className="text-gray-500 font-medium leading-tight whitespace-nowrap text-[clamp(10px,3.2vw,12px)]">
+  File conversion reimagined
+</p>
+
         </div>
       </div>
 
@@ -483,8 +709,11 @@ const HomePage: React.FC = () => {
               <div className="relative ml-2" ref={toolsMenuRef}>
                 <button
                   onClick={() => setToolsOpen((v) => !v)}
-                  className={`fn-anim-btn flex items-center gap-2 rounded-2xl px-4 py-2 text-white text-sm font-semibold
-                             shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0`}
+                  className={`fn-anim-btn flex items-center gap-2 rounded-2xl
+px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm
+shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0
+whitespace-nowrap flex-shrink-0`}
+
                   aria-haspopup="menu" aria-expanded={toolsOpen} aria-label="Open all tools menu"
                 >
                   All Tools
@@ -498,7 +727,7 @@ const HomePage: React.FC = () => {
                               ${toolsOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                   role="menu"
                 >
-                  <div className="p-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="p-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-">
                     {allToolsGrouped.map((group) => {
                       const style = menuGroupStyles[group.title] ?? menuGroupStyles['CONVERT TO PDF'];
                       return (
@@ -661,7 +890,7 @@ const HomePage: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`group px-8 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-3 ${selectedCategory === category.id ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl' : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'}`}
+                className={`group px-5 py-4 rounded-2xl font-bold transition-all duration-300 transform hover:scale-100 flex items-center gap-3 ${selectedCategory === category.id ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl' : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg border border-gray-200'}`}
               >
                 <category.icon className="w-5 h-5" />
                 {category.name}
@@ -838,84 +1067,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="relative z-10 bg-gray-900 text-white">
-  <div className="max-w-7xl mx-auto px-4 py-12">
-    <div className="grid gap-10 md:grid-cols-4">
-      {/* Brand logo + text */}
-      <div>
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="relative shrink-0">
-            <img
-              src={FileNovaIcon}
-              alt="Files Nova"
-              className="w-20 h-20 md:w-24 md:h-24 object-contain"
-              draggable={false}
-            />
-          </div>
-                <div>
-                  <h3 className="text-2xl font-black">Files Nova</h3>
-                  <p className="text-gray-400 text-sm">File conversion reimagined</p>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                The fastest, most secure, and most beautiful way to convert files online. Trusted by millions worldwide.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-lg">Popular Tools</h4>
-              <ul className="space-y-3 text-gray-400 text-sm">
-                <li><Link to="/tools/docx-to-pdf" className="hover:text-white transition-colors">PDF Converter</Link></li>
-                <li><Link to="/tools/image-resizer" className="hover:text-white transition-colors">Image Resizer</Link></li>
-                <li><Link to="/tools/create-zip" className="hover:text-white transition-colors">ZIP Creator</Link></li>
-                <li><Link to="/tools/qr-generator" className="hover:text-white transition-colors">QR Generator</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-lg">Support</h4>
-              <ul className="space-y-3 text-gray-400 text-sm">
-                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-                <li><Link to="/help" className="hover:text-white transition-colors">FAQ</Link></li>
-                <li><Link to="/tutorials" className="hover:text-white transition-colors">Tutorials</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-6 text-lg">Legal</h4>
-              <ul className="space-y-3 text-gray-400 text-sm">
-                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                <li><Link to="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</Link></li>
-                <li><Link to="/gdpr" className="hover:text-white transition-colors">GDPR</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex justify-center md:justify-start gap-6">
-              <a href="https://facebook.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
-                <Facebook className="w-6 h-6" />
-              </a>
-              <a href="https://twitter.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="X (Twitter)">
-                <XLogo className="w-6 h-6" />
-              </a>
-              <a href="https://instagram.com/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
-                <Instagram className="w-6 h-6" />
-              </a>
-              <a href="https://linkedin.com/company/filesnovaapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-6 h-6" />
-              </a>
-            </div>
-
-            <div className="text-center md:text-right text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} Files Nova. Made with ❤ for the world. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
