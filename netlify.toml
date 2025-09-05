@@ -5,14 +5,21 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Global headers for all routes
 [[headers]]
   for = "/*"
-    [headers.values]
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Cross-Origin-Opener-Policy = "same-origin"
     Cross-Origin-Embedder-Policy = "require-corp"
     Cross-Origin-Resource-Policy = "same-origin"
 
+# Special handling for PDF WebAssembly
 [[headers]]
   for = "/qpdf/qpdf.wasm"
-    [headers.values]
+  [headers.values]
     Content-Type = "application/wasm"
