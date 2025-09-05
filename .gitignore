@@ -1,2 +1,33 @@
-node_modules
-.vscode/
+# Node / tooling
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.parcel-cache/
+.cache/
+dist/
+build/
+coverage/
+.eslintcache
+
+# Local env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.crt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Netlify
+.netlify/
+
+# Misc
+*.log
