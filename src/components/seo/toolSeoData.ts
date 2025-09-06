@@ -121,14 +121,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoEntry> = {
     breadcrumb: bc('Image Resizer', 'https://filesnova.com/tools/image-resizer'),
   },
 
-  '/tools/image-to-pdf': {
-    title: 'Images to PDF – Combine JPG & PNG Into a PDF | FilesNova',
-    name: 'Images to PDF',
-    description:
-      'Combine multiple images (JPG, PNG, etc.) into a single PDF. Free, fast, and secure.',
-    canonical: 'https://filesnova.com/tools/image-to-pdf',
-    breadcrumb: bc('Images to PDF', 'https://filesnova.com/tools/image-to-pdf'),
-  },
+  
 
   '/tools/images-to-pdf': {
     title: 'Images to PDF – Combine JPG & PNG Into a PDF | FilesNova',
@@ -285,14 +278,7 @@ export const TOOL_SEO_DATA: Record<string, ToolSeoEntry> = {
   },
 
   // ===== New entries for your erroring pages =====
-  '/tools/jpg-to-pdf': {
-    title: 'JPG to PDF – Convert Images to PDF | FilesNova',
-    name: 'JPG to PDF',
-    description:
-      'Convert one or many JPG images into a single PDF. Free, fast, and fully private in your browser.',
-    canonical: 'https://filesnova.com/tools/jpg-to-pdf',
-    breadcrumb: bc('JPG to PDF', 'https://filesnova.com/tools/jpg-to-pdf'),
-  },
+  
 
   '/tools/compress-images': {
     title: 'Compress Images – Reduce Image Size Online | FilesNova',

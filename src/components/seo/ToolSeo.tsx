@@ -12,7 +12,7 @@ type ToolSeoProps = {
   /** Absolute canonical URL */
   canonical: string;
   /** Optional breadcrumb items (home → section → page) */
-  breadcrumb?: { label: string; url: string }[];
+  breadcrumb?: { name: string; url: string }[];
   /** Optional WebApplication name override (defaults to Files Nova) */
   appName?: string;
   /** Optional tool display name for WebApplication schema */
@@ -25,14 +25,14 @@ const SITE_NAME = 'Files Nova';
 const SITE_URL = 'https://filesnova.com';
 const LOGO_URL = `${SITE_URL}/logo-512.png`;
 
-const toBreadcrumbLd = (crumbs?: { label: string; url: string }[]): Breadcrumb | null => {
+const toBreadcrumbLd = (crumbs?: { name: string; url: string }[]): Breadcrumb | null => {
   if (!crumbs || crumbs.length === 0) return null;
   return {
     '@type': 'BreadcrumbList',
     itemListElement: crumbs.map((c, idx) => ({
       '@type': 'ListItem',
       position: idx + 1,
-      name: c.label,
+      name: c.name,
       item: c.url,
     })),
   };
@@ -49,9 +49,9 @@ export const ToolSeo: React.FC<ToolSeoProps> = ({
 }) => {
   const breadcrumbLd = toBreadcrumbLd(
     breadcrumb ?? [
-      { label: 'Home', url: SITE_URL },
-      { label: 'Tools', url: `${SITE_URL}/tools` },
-      { label: title.replace(/\s+–.*$/, '') || 'Tool', url: canonical },
+      { name: 'Home', url: SITE_URL },
+      { name: 'Tools', url: `${SITE_URL}/tools` },
+      { name: title.replace(/\s+–.*$/, '') || 'Tool', url: canonical },
     ],
   );
 
