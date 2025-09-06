@@ -39,7 +39,7 @@ const toBreadcrumbLd = (crumbs?: { name: string; url: string }[]): Breadcrumb | 
 };
 
 export const ToolSeo: React.FC<ToolSeoProps> = ({
-  title,
+  title = '',
   description,
   canonical,
   breadcrumb,
@@ -51,7 +51,7 @@ export const ToolSeo: React.FC<ToolSeoProps> = ({
     breadcrumb ?? [
       { name: 'Home', url: SITE_URL },
       { name: 'Tools', url: `${SITE_URL}/tools` },
-      { name: title.replace(/\s+–.*$/, '') || 'Tool', url: canonical },
+      { name: (title || '').replace(/\s+–.*$/, '') || 'Tool', url: canonical },
     ],
   );
 
@@ -78,7 +78,7 @@ export const ToolSeo: React.FC<ToolSeoProps> = ({
   const webAppLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: toolName ?? title.replace(/\s+–.*$/, ''),
+    name: toolName ?? (title || '').replace(/\s+–.*$/, ''),
     applicationCategory,
     operatingSystem: 'Web',
     url: canonical,
