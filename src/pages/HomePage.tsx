@@ -662,15 +662,19 @@ const HomePage: React.FC = () => {
       <div className="flex items-center gap- flex-1 min-w-0">
         <div className="relative shrink-0">
           
-          <img
-  src={FileNovaIcon}
-  alt="Files Nova"
-  className="w-20 h-20 object-contain"
-  draggable={false}
-  loading="lazy"
-  width="96"
-  height="96"
-/>
+          <picture>
+  <source srcSet={FileNovaIcon} type="image/webp" />
+  <source srcSet={FileNovaIcon} type="image/png" />
+  <img
+    src={FileNovaIcon}
+    alt="Files Nova"
+    className="w-20 h-20 object-contain"
+    draggable={false}
+    loading="lazy"
+    width="96"
+    height="96"
+  />
+</picture>
 
         </div>
         <div>

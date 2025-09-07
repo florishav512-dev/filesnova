@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import FullPageLoader from './components/FullPageLoader';
 // Remove Sparkles import since global header removed
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const TextToPdfPage = React.lazy(() => import('./pages/tools/TextToPdfPage'));
@@ -52,7 +53,7 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       {/* Render route contents */}
       <main className="flex-1">
-        <Suspense fallback={<div />}>\n<Routes>
+        <Suspense fallback={<FullPageLoader />}>\n<Routes>
           <Route path="/" element={<HomePage />} />
           {/* Tools routes */}
           <Route path="/tools/text-to-pdf" element={<TextToPdfPage />} />

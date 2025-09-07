@@ -389,15 +389,19 @@ const EpubToPdfPage: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center h-20 gap-">
               <div className="relative shrink-0">
-                <img
-                  src={FileNovaIcon}
-                  alt="Files Nova"
-                  className="w-16 h-16 md:w-20 md:h-20 object-contain"
-                  draggable={false}
-                  loading="lazy"
-                  width="96"
-                  height="96"
-                />
+                <picture>
+                  <source srcSet={FileNovaIconWebp} type="image/webp" />
+                  <source srcSet={FileNovaIcon} type="image/png" />
+                  <img
+                    src={FileNovaIcon}
+                    alt="Files Nova"
+                    className="w-16 h-16 md:w-20 md:h-20 object-contain"
+                    draggable={false}
+                    loading="lazy"
+                    width="96"
+                    height="96"
+                  />
+                </picture>
               </div>
               <div>
                 <h1 className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -629,6 +633,13 @@ const EpubToPdfPage: React.FC = () => {
 
           <AdSpace />
         </div>
+      </div>
+    </>
+  );
+};
+
+export default EpubToPdfPage;
+v>
       </div>
     </>
   );
