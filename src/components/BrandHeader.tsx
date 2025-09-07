@@ -25,19 +25,15 @@ const BrandHeader: React.FC<Props> = ({ showToolsMenu = true, subtitle, logoSize
         <div className="flex items-center h-20 gap- sm:gap-">
           {/* Brand */}
           <div className="relative shrink-0">
-            <picture>
-              <source srcSet={FileNovaIcon} type="image/webp" />
-              <source srcSet={FileNovaIcon} type="image/png" />
-              <img
-                src={FileNovaIcon}
-                alt="Files Nova"
-                className={`${sizeMap[logoSize]} object-contain`}
-                draggable={false}
-                loading="lazy"
-                width="96"
-                height="96"
-              />
-            </picture>
+            <img
+              src={FileNovaIcon}
+              alt="Files Nova"
+              className={`${sizeMap[logoSize]} object-contain`}
+              draggable={false}
+              loading="lazy"
+              width="96"
+              height="96"
+            />
           </div>
           <div className="leading-tight">
             <Link to="/" className="no-underline">

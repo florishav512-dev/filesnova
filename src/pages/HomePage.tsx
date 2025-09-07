@@ -42,6 +42,7 @@ import {
   Heart,
 } from 'lucide-react';
 import FileNovaIcon from '../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../assets/FILESNOVANEWICON.webp';
 
 // Inline chevron-down
 const ChevronDownIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -662,19 +663,15 @@ const HomePage: React.FC = () => {
       <div className="flex items-center gap- flex-1 min-w-0">
         <div className="relative shrink-0">
           
-          <picture>
-  <source srcSet={FileNovaIcon} type="image/webp" />
-  <source srcSet={FileNovaIcon} type="image/png" />
-  <img
-    src={FileNovaIcon}
-    alt="Files Nova"
-    className="w-20 h-20 object-contain"
-    draggable={false}
-    loading="lazy"
-    width="96"
-    height="96"
-  />
-</picture>
+          <img
+  src={FileNovaIcon}
+  alt="Files Nova"
+  className="w-20 h-20 object-contain"
+  draggable={false}
+  loading="lazy"
+  width="96"
+  height="96"
+/>
 
         </div>
         <div>
