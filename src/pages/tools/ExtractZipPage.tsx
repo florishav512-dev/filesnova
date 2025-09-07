@@ -385,11 +385,6 @@ const ExtractZipPage: React.FC = () => {
   );
 };
 
-export default ExtractZipPage;
->
-      </div>
-    </>
-  );
-};
+
 
 export default ExtractZipPage;

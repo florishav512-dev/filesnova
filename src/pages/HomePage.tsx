@@ -42,7 +42,7 @@ import {
   Heart,
 } from 'lucide-react';
 import FileNovaIcon from '../assets/FILESNOVANEWICON.png';
-import FileNovaIconWebp from '../assets/FILESNOVANEWICON.webp';
+
 
 // Inline chevron-down
 const ChevronDownIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (

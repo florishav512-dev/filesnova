@@ -1,1 +1,0 @@
-import{j as e}from"./index-DZ9cnodX.js";const t=()=>e.jsxs("div",{className:"max-w-xl mx-auto text-center py-12",children:[e.jsx("h2",{className:"text-2xl font-semibold mb-4",children:"Coming Soon"}),e.jsx("p",{className:"text-gray-600",children:"This tool is under construction and will be available in a future release."})]});export{t as default};

@@ -13,6 +13,7 @@ import {
   Download as DownloadIcon,
 } from 'lucide-react';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.png'; // Temporarily use PNG until WebP is generated
 
 // ✅ SEO imports
 import ToolSeo from '../../components/seo/ToolSeo';
@@ -301,7 +302,8 @@ const HtmlToPdfPage: React.FC = () => {
       await print();
 
       const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const buffer = Buffer.from(pdfBytes);
+      const blob = new Blob([buffer], { type: 'application/pdf' });
       setDownloadUrl(URL.createObjectURL(blob));
       setProgress(100);
     } catch (err: any) {
@@ -594,13 +596,6 @@ const HtmlToPdfPage: React.FC = () => {
           {/* Ad space below the conversion area */}
           <AdSpace />
         </div>
-      </div>
-    </>
-  );
-};
-
-export default HtmlToPdfPage;
-v>
       </div>
     </>
   );

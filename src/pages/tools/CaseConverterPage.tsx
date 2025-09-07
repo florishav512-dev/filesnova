@@ -623,10 +623,6 @@ const CaseConverterPage: React.FC = () => {
   );
 };
 
-export default CaseConverterPage;
-     </div>
-    </>
-  );
-};
+
 
 export default CaseConverterPage;

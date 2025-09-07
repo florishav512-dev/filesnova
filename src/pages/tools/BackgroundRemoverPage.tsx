@@ -571,10 +571,6 @@ const BackgroundRemoverPage: React.FC = () => {
   );
 };
 
-export default BackgroundRemoverPage;
- </div>
-    </>
-  );
-};
+
 
 export default BackgroundRemoverPage;

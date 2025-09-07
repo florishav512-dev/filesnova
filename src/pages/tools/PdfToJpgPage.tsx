@@ -215,7 +215,7 @@ const PdfToJpgPage: React.FC = () => {
 
   return (
     <>
-      {/* ✅ Centralized SEO */}
+      {/* SEO */}
       <ToolSeo {...seo} />
 
       {/* ✅ Page-specific Helmet */}
@@ -471,13 +471,6 @@ const PdfToJpgPage: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
-    </>
-  );
-};
-
-export default PdfToJpgPage;
-iv>
       </div>
     </>
   );
