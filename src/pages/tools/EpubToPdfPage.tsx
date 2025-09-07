@@ -21,6 +21,7 @@ import {
 import ToolSeo from '../../components/seo/ToolSeo';
 import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.png'; // Temporarily use PNG until WebP is generated
 
 // ✅ shared Tools menu (animated gradient)
 import ToolsMenu from '../../components/ToolsMenu';
@@ -134,10 +135,13 @@ const EpubToPdfPage: React.FC = () => {
       chapters = order
         .map((id) => manifest[id])
         .filter(Boolean)
-        .filter((m) => /html/i.test(m.type) || /\.x?html$/i.test(m.href));
+        .filter((m) => /html/i.test(m.type) || /\.x?html$/i.test(m.href))
+        .map(m => ({ path: m.href, type: m.type }));
     } else {
       // Rare epubs with no spine fallback
-      chapters = Object.values(manifest).filter((m) => /html/i.test(m.type) || /\.x?html$/i.test(m.href));
+      chapters = Object.values(manifest)
+        .filter((m) => /html/i.test(m.type) || /\.x?html$/i.test(m.href))
+        .map(m => ({ path: m.href, type: m.type }));
     }
 
     return { title, chapters, opfPath };
@@ -326,7 +330,8 @@ const EpubToPdfPage: React.FC = () => {
       }
 
       const bytes = await pdf.save();
-      const blob = new Blob([bytes], { type: 'application/pdf' });
+      const buffer = Buffer.from(bytes);
+      const blob = new Blob([buffer], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       setDownloadObjectUrl(url);
       setProgress(100);
@@ -390,7 +395,6 @@ const EpubToPdfPage: React.FC = () => {
             <div className="flex items-center h-20 gap-">
               <div className="relative shrink-0">
                 <picture>
-                  <source srcSet={FileNovaIconWebp} type="image/webp" />
                   <source srcSet={FileNovaIcon} type="image/png" />
                   <img
                     src={FileNovaIcon}
@@ -633,13 +637,6 @@ const EpubToPdfPage: React.FC = () => {
 
           <AdSpace />
         </div>
-      </div>
-    </>
-  );
-};
-
-export default EpubToPdfPage;
-v>
       </div>
     </>
   );
