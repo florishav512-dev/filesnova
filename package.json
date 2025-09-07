@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "cross-env ROLLUP_USE_NODE_JS=true vite build",
+    "convert:webp": "node scripts/convert-to-webp.js",
     "preview": "vite preview"
   },
   "dependencies": {
