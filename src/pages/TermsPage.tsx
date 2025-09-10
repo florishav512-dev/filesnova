@@ -113,8 +113,8 @@ const TermsPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900">9. Contact</h2>
               <p className="mt-2 text-gray-700">
                 For questions about these Terms, please contact us at{' '}
-                <a href="mailto:filesnova24@zohomail.in" className="text-blue-600 hover:underline">
-                  filesnova24@zohomail.in
+                <a href="mailto:filesnova@zohomail.in" className="text-blue-600 hover:underline">
+                  filesnova@zohomail.in
                 </a>. You may also review our{' '}
                 <Link to="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</Link> and{' '}
                 <Link to="/cookie-policy" className="text-blue-600 hover:underline">Cookie Policy</Link>.

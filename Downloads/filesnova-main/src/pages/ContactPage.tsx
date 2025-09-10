@@ -21,10 +21,10 @@ const ContactPage: React.FC = () => {
         <div>
           <h4 className="font-semibold text-gray-800">General Inquiries &amp; Support</h4>
           <a
-            href="mailto:filesnova24@zohomail.in"
+            href="mailto:filesnova@zohomail.in"
             className="text-blue-600 hover:underline break-all"
           >
-            filesnova24@zohomail.in
+            filesnova@zohomail.in
           </a>
         </div>
       </div>

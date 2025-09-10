@@ -151,8 +151,8 @@ const CookiePolicyPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900">8. Contact</h2>
               <p className="mt-2 text-gray-700">
                 Questions about this Cookie Policy? Reach us at{' '}
-                <a className="text-blue-600 hover:underline" href="mailto:filesnova24@zohomail.in">
-                  filesnova24@zohomail.in
+                <a className="text-blue-600 hover:underline" href="mailto:filesnova@zohomail.in">
+                  filesnova@zohomail.in
                 </a>. You can also review our{' '}
                 <Link to="/privacy-policy" className="text-blue-600 hover:underline">
                   Privacy Policy

@@ -78,8 +78,8 @@ const GDPRPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900">4. How to Contact Us</h2>
               <p className="mt-2 text-gray-700">
                 If you have any GDPR-related inquiries, or wish to exercise your rights, please contact us at{' '}
-                <a className="text-blue-600 hover:underline" href="mailto:filesnova24@zohomail.in">
-                  filesnova24@zohomail.in
+                <a className="text-blue-600 hover:underline" href="mailto:filesnova@zohomail.in">
+                  filesnova@zohomail.in
                 </a>. We will respond promptly in accordance with GDPR requirements.
               </p>
             </div>

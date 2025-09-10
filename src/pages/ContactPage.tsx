@@ -16,7 +16,7 @@ import BrandHeader from '../components/BrandHeader';
 
 const ContactPage: React.FC = () => {
   const [copied, setCopied] = useState(false);
-  const supportEmail = 'filesnova24@zohomail.in';
+  const supportEmail = 'filesnova@zohomail.in';
   const mailto = `mailto:${supportEmail}?subject=${encodeURIComponent('Support request from Files Nova')}`;
 
   const copyEmail = async () => {

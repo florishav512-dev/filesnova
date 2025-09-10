@@ -62,7 +62,7 @@ const PrivacyPolicyPage: React.FC = () => {
                 </li>
                 <li>
                   <strong>Support communications:</strong> if you email us at
-                  {' '}<a className="text-blue-600 hover:underline" href="mailto:filesnova24@zohomail.in">filesnova24@zohomail.in</a>,
+                  {' '}<a className="text-blue-600 hover:underline" href="mailto:filesnova@zohomail.in">filesnova@zohomail.in</a>,
                   we’ll process the information you include (e.g., your email address and message) to respond.
                 </li>
                 <li>
@@ -116,8 +116,8 @@ const PrivacyPolicyPage: React.FC = () => {
               </p>
               <p className="mt-2 text-gray-700">
                 To exercise rights or ask questions, contact us at{' '}
-                <a className="text-blue-600 hover:underline" href="mailto:filesnova24@zohomail.in">
-                  filesnova24@zohomail.in
+                <a className="text-blue-600 hover:underline" href="mailto:filesnova@zohomail.in">
+                  filesnova@zohomail.in
                 </a>. We’ll respond in accordance with applicable law.
               </p>
             </div>
@@ -174,8 +174,8 @@ const PrivacyPolicyPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900">12. Contact Us</h2>
               <p className="mt-2 text-gray-700">
                 Questions or privacy requests? Email us at{' '}
-                <a className="text-blue-600 hover:underline" href="mailto:filesnova24@zohomail.in">
-                  filesnova24@zohomail.in
+                <a className="text-blue-600 hover:underline" href="mailto:filesnova@zohomail.in">
+                  filesnova@zohomail.in
                 </a>. Also see our{' '}
                 <Link to="/gdpr" className="text-blue-600 hover:underline">GDPR</Link>{' '}
                 and{' '}

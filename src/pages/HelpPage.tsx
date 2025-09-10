@@ -61,7 +61,7 @@ const FAQ = [
   },
   {
     q: 'How do I get help?',
-    a: 'Email filesnova24@zohomail.in with steps, screenshots, and sample files if possible. We usually reply quickly.'
+    a: 'Email filesnova@zohomail.in with steps, screenshots, and sample files if possible. We usually reply quickly.'
   }
 ];
 
