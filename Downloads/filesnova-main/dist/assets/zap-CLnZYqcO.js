@@ -1,1 +1,0 @@
-import{c as e}from"./sparkles-BYkU2oC6.js";const s=e("Shield",[["path",{d:"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",key:"3xmgem"}]]),a=e("Zap",[["polygon",{points:"13 2 3 14 12 14 11 22 21 10 12 10 13 2",key:"45s27k"}]]);export{s as S,a as Z};
