@@ -269,7 +269,7 @@ const Footer = () => {
   const socialLinks = [
     { 
       name: 'X', 
-      url: 'https://x.com/filesnovaapp', 
+      url: 'https://x.com/files_nova', 
       icon: XLogo,
       hoverColor: 'hover:text-gray-100'
     },
@@ -538,7 +538,7 @@ const HomePage: React.FC = () => {
         url: 'https://filesnova.com/',
         logo: 'https://filesnova.com/favicon.png',
         sameAs: [
-          'https://twitter.com/filesnovaapp',
+          'https://x.com/files_nova',
           'https://www.facebook.com/filesnovaapp',
           'https://www.instagram.com/filesnovaapp',
           'https://www.linkedin.com/company/filesnovaapp',

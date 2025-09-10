@@ -379,8 +379,8 @@ export const SITE_SCHEMA = {
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     sameAs: [
-      'https://x.com/filesnova',
-      'https://www.facebook.com/filesnova',
+      'https://x.com/files_nova',
+      'https://www.facebook.com/filesnovaapp',
       'https://www.linkedin.com/company/filesnova',
     ],
   },
