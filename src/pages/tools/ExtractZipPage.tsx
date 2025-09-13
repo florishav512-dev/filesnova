@@ -14,6 +14,7 @@ import {
   Star,
 } from 'lucide-react';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.webp';
 
 // ✅ SEO component + data
 import ToolSeo from '../../components/seo/ToolSeo';

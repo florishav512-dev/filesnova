@@ -18,6 +18,7 @@ import ToolSeo from '../../components/seo/ToolSeo';
 import { TOOL_SEO_DATA } from '../../components/seo/toolSeoData';
 import ToolsMenu from '../../components/ToolsMenu';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.webp';
 
 // ---- dynamic import shim for @ffmpeg/ffmpeg (avoids Rollup named-export validation) ----
 type FfmpegNS = typeof import('@ffmpeg/ffmpeg');

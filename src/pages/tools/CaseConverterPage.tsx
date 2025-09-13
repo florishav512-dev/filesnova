@@ -22,6 +22,7 @@ import AdSpace from '../../components/AdSpace';
 import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 import ToolsMenu from '../../components/ToolsMenu';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.webp';
 
 type Mode =
   | 'upper' | 'lower' | 'title' | 'sentence'

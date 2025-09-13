@@ -18,6 +18,7 @@ import {
 import ToolsMenu from '../../components/ToolsMenu';
 import { getToolSeoByPath } from '../../components/seo/toolSeoData';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.webp';
 
 type SegmenterType = {
   segmentPeople: (input: CanvasImageSource) => Promise<any[]>;

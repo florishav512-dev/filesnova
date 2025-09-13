@@ -13,6 +13,7 @@ import {
   Clock,
 } from 'lucide-react';
 import FileNovaIcon from '../../assets/FILESNOVANEWICON.png';
+import FileNovaIconWebp from '../../assets/FILESNOVANEWICON.webp';
 
 // ✅ SEO imports
 import { Helmet } from 'react-helmet-async';
