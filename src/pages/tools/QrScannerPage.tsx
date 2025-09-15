@@ -257,17 +257,16 @@ const QrScannerPage: React.FC = () => {
   // Unmount cleanup
   useEffect(() => () => stopCamera(), []);
 
-  // When device changes, restart camera if in camera mode
+  // When mode or device changes, restart camera if in camera mode
   useEffect(() => {
-    if (mode === 'camera') startCamera();
+    if (mode === 'camera') {
+      loadDevices();
+      startCamera();
+    } else {
+      stopCamera();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deviceId, inversion, scanFps]);
-
-  // Load devices on first user interaction with camera
-  useEffect(() => {
-    if (mode === 'camera') loadDevices();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, deviceId, inversion, scanFps]);
 
   // ---------- UI ----------
   return (
@@ -364,7 +363,6 @@ const QrScannerPage: React.FC = () => {
                   setMode('camera');
                   setFile(null);
                   resetState();
-                  startCamera();
                 }}
                 className={`px-4 py-2 rounded-xl font-semibold transition-colors ${
                   mode === 'camera' ? 'bg-green-600 text-white' : 'bg-white/60 text-gray-700'
