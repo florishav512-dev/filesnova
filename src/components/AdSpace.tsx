@@ -10,7 +10,7 @@ import React from 'react';
 const AdSpace: React.FC = () => {
   return (
     <div className="bg-white/80 backdrop-blur-xl rounded-3xl border-2 border-dashed border-gray-300 p-8 my-8 flex justify-center items-center">
-      <p className="text-gray-500 text-sm">Your Ad Could Be Here</p>
+      <p className="text-gray-500 text-sm"></p>
     </div>
   );
 };
